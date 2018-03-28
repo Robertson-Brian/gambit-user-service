@@ -7,7 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.hydra.entities.Trainee;
+import com.revature.hydra.entities.TraineeBatch;
+import com.revature.hydra.entities.User;
+import com.revature.hydra.repo.TraineeBatchRepository;
 import com.revature.hydra.repo.TraineeRepository;
+import com.revature.hydra.repo.UserRepository;
 
 /**
  * Our Hydra Trainee Service implementation class. Implements all of the methods
@@ -20,6 +24,12 @@ import com.revature.hydra.repo.TraineeRepository;
 public class TraineeServiceImpl implements TraineeService {
 	@Autowired
 	TraineeRepository traineeRepo;
+	
+	@Autowired
+	UserRepository userRepo;
+	
+	@Autowired
+	TraineeBatchRepository traineeBatchRepo;
 
 	/**
 	 * The implemented method to create a new trainee.
@@ -27,9 +37,16 @@ public class TraineeServiceImpl implements TraineeService {
 	@Override
 	@Transactional
 	public Trainee save(Trainee trainee) {
+		User user = trainee.getTraineeUserInfo();
+		User persisted = userRepo.save(user);
+		Trainee toSend = trainee;
+		toSend.setTraineeUserInfo(persisted);
 		// Trainee id must be 0 to create a new trainee
-		trainee.setTraineeId(0);
-		return traineeRepo.save(trainee);
+		toSend.setTraineeId(0);
+		for(int i=0; i<trainee.getBatches().size(); i++) {
+			traineeBatchRepo.save(new TraineeBatch(trainee.getTraineeId(), (Integer)trainee.getBatches().toArray()[i]));
+		}
+		return traineeRepo.save(toSend);
 	}
 
 	/**
@@ -38,18 +55,8 @@ public class TraineeServiceImpl implements TraineeService {
 	 */
 	@Override
 	@Transactional
-	public List<Trainee> findAllByBatch(int batchId) {
-		return traineeRepo.findAllByBatchBatchIdAndTrainingStatusNot(batchId, "Dropped");
-	}
-
-	/**
-	 * The implemented method to find all dropped trainees in the batch with the
-	 * provided batchId.
-	 */
-	@Override
-	@Transactional
-	public List<Trainee> findDroppedByBatch(int batchId) {
-		return traineeRepo.findAllByBatchBatchIdAndTrainingStatus(batchId, "Dropped");
+	public List<Trainee> findAllByBatchAndStatus(int batchId, String status) {
+		return traineeRepo.findAllByBatchAndStatus(batchId, status);
 	}
 
 	/**

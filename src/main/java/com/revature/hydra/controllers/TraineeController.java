@@ -51,12 +51,7 @@ public class TraineeController {
 	public ResponseEntity<List<Trainee>> findAllByBatchAndStatus(@PathVariable Integer id,
 			@PathVariable String status) {
 		log.info("Finding trainees for batch: " + id + "with status: " + status);
-		List<Trainee> trainees;
-		if ("Dropped".equalsIgnoreCase(status)) {
-			trainees = traineeService.findDroppedByBatch(id);
-		} else {
-			trainees = traineeService.findAllByBatch(id);
-		}
+		List<Trainee> trainees = traineeService.findAllByBatchAndStatus(id, status);
 		return new ResponseEntity<>(trainees, HttpStatus.OK);
 	}
 
