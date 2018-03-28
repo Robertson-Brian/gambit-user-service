@@ -1,2 +1,1 @@
-# trainer-service-hydra
-Bsquad 
+#hydra-user-service
