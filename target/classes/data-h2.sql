@@ -11,6 +11,32 @@ CREATE TABLE HYDRA_TRAINER(
 	RESUME VARCHAR(30)
 );
 
+DROP TABLE IF EXISTS trainee;
+CREATE TABLE trainee(
+batch_id INT(10),
+resource_id INT(10),
+training_status VARCHAR(40),
+phone_number VARCHAR(20),
+skype_id VARCHAR(256),
+recruiter_name VARCHAR(256),
+profile_url VARCHAR(256),
+college VARCHAR(200),
+degree VARCHAR(200),
+major VARCHAR(100),
+tech_screener VARCHAR(256),
+project_completion VARCHAR(30),
+flag_status VARCHAR(30),
+flag_notes VARCHAR(256),
+grades VARCHAR(256),
+notes VARCHAR(256),
+panel_interviews VARCHAR(256),
+marketing_status VARCHAR(50),
+client VARCHAR(200),
+end_client VARCHAR(200),
+trainee_id INT(10) PRIMARY KEY,
+user_id INT(10) REFERENCES USER (USER_ID)
+);
+
 DROP TABLE IF EXISTS USER;
 CREATE TABLE USER(
 	USER_ID INT(10) PRIMARY KEY,
@@ -69,6 +95,10 @@ DROP SEQUENCE IF EXISTS USER_ID_SEQ;
 CREATE SEQUENCE IF NOT EXISTS USER_ID_SEQ MINVALUE 3 INCREMENT BY 1 START WITH 3;
 DROP SEQUENCE IF EXISTS TRAINER_ID_SEQ;
 CREATE SEQUENCE IF NOT EXISTS TRAINER_ID_SEQ MINVALUE 3 INCREMENT BY 1 START WITH 3;
+DROP SEQUENCE IF EXISTS trainee_id_sequence;
+CREATE SEQUENCE trainee_id_sequence;
+DROP SEQUENCE IF EXISTS user_id_sequence;
+CREATE SEQUENCE user_id_sequence;
 
 ----------- OLD TRAINER TABLE -------------
 --INSERT INTO HYDRA_TRAINER(TRAINER_ID, EMAIL, NAME, TITLE, TIER, RESUME) VALUES( TRAINER_ID_SEQUENCE.NEXTVAL, 'patrick.walsh@revature.com', 'Patrick Walsh', 'Lead Trainer', 'ROLE_VP', 'resume1');

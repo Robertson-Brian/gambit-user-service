@@ -29,8 +29,6 @@ public class TraineeServiceImpl implements TraineeService {
 	public Trainee save(Trainee trainee) {
 		// Trainee id must be 0 to create a new trainee
 		trainee.setTraineeId(0);
-		System.out.println(trainee.getBatch());
-
 		return traineeRepo.save(trainee);
 	}
 
