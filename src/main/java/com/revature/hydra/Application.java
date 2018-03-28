@@ -19,9 +19,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableEurekaClient
 @EntityScan(value = "com.revature.hydra.entities")
-public class TrainerApplication {
+public class Application {
 	public static void main(String[] args) {
-		SpringApplication.run(TrainerApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 	@Bean
     public Docket api() { 
