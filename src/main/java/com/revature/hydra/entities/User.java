@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "HYDRA_USER")
 @Cacheable
 public class User {
 	@Id
@@ -49,7 +49,7 @@ public class User {
 	private String backupPassword;
 
 	@Column(name = "ROLE", nullable = false)
-	private Integer role;
+	private String role;
 
 	private String homePhone;
 
@@ -63,7 +63,7 @@ public class User {
 	}
 
 	public User(Integer userId, String firstName, String middleName, String lastName, String email, String password,
-			String backupPassword, Integer role, String homePhone, String mobilePhone, String token) {
+			String backupPassword, String role, String homePhone, String mobilePhone, String token) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
@@ -227,11 +227,11 @@ public class User {
 		this.backupPassword = backupPassword;
 	}
 
-	public Integer getRole() {
+	public String getRole() {
 		return role;
 	}
 
-	public void setRole(Integer role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 

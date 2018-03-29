@@ -13,7 +13,7 @@ public interface TrainerRepository extends JpaRepository<BatchTrainer, Integer> 
 
 	BatchTrainer findByUserId(Integer userId);
 
-	@Query(value = "SELECT TITLE FROM TRAINER", nativeQuery = true)
+	@Query(value = "SELECT DISTINCT TITLE FROM TRAINER", nativeQuery = true)
 	List<String> findTitles();
 
 }

@@ -40,9 +40,9 @@ public class TrainerController {
 	private UserService userService;
 
 	@GetMapping("roles")
-	public ResponseEntity<List<Integer>> getAllUserRoles() {
+	public ResponseEntity<List<String>> getAllUserRoles() {
 		log.info("Fetching all user roles");
-		List<Integer> roles = userService.getAllRoles();
+		List<String> roles = userService.getAllRoles();
 		return new ResponseEntity<>(roles, HttpStatus.OK);
 
 	}
