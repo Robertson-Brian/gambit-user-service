@@ -54,6 +54,12 @@ public class TraineeController {
 		List<Trainee> trainees = traineeService.findAllByBatchAndStatus(id, status);
 		return new ResponseEntity<>(trainees, HttpStatus.OK);
 	}
+	
+	@GetMapping
+	public ResponseEntity<List<Trainee>> getAll() {
+		List<Trainee> trainees = traineeService.getAll();
+		return new ResponseEntity<List<Trainee>>(trainees, HttpStatus.OK);
+	}
 
 	/**
 	 * Creates a new trainee. The old endpoint url was "/all/trainee/create", in

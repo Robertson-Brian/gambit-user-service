@@ -3,6 +3,7 @@ package com.revature.hydra.repo;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -27,4 +28,8 @@ public interface TraineeRepository extends JpaRepository<Trainee, Integer> {
 //	List<Trainee> findAllByBatchBatchIdAndTrainingStatus(Integer batchId, String status);
 
 	Trainee findOneByResourceId(String asString);
+	@Modifying
+	@Query(nativeQuery = true, value = "INSERT INTO TRAINEE_BATCH (batch_id, trainee_id) VALUES (:b_id, :t_id)")
+	Integer insertBatch(@Param("b_id") Integer batchId, @Param("t_id") Integer traineeId);
+
 }

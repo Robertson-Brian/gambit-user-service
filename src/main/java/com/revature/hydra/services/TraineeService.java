@@ -19,4 +19,6 @@ public interface TraineeService {
 	void delete(Trainee trainee);
 
 	List<Trainee> findAllByBatchAndStatus(int batchId, String status);
+
+	List<Trainee> getAll();
 }

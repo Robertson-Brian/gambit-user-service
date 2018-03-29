@@ -2,11 +2,21 @@ package com.revature.hydra.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Table(name = "TRAINEE_BATCH")
 @Entity
 public class TraineeBatch {
+	
+	@Id
+	@SequenceGenerator(name = "TB_ID_SEQ", sequenceName = "TB_ID_SEQ")
+	@GeneratedValue(generator = "TB_ID_SEQ", strategy = GenerationType.AUTO)
+	Integer tb_id;
+	
 	@Column(name = "trainee_id")
 	Integer trainee_id;
 	

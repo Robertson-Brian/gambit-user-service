@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.hydra.entities.Trainee;
-import com.revature.hydra.entities.TraineeBatch;
+//import com.revature.hydra.entities.TraineeBatch;
 import com.revature.hydra.entities.User;
-import com.revature.hydra.repo.TraineeBatchRepository;
+//import com.revature.hydra.repo.TraineeBatchRepository;
 import com.revature.hydra.repo.TraineeRepository;
 import com.revature.hydra.repo.UserRepository;
 
@@ -28,8 +28,8 @@ public class TraineeServiceImpl implements TraineeService {
 	@Autowired
 	UserRepository userRepo;
 	
-	@Autowired
-	TraineeBatchRepository traineeBatchRepo;
+//	@Autowired
+//	TraineeBatchRepository traineeBatchRepo;
 
 	/**
 	 * The implemented method to create a new trainee.
@@ -43,10 +43,12 @@ public class TraineeServiceImpl implements TraineeService {
 		toSend.setTraineeUserInfo(persisted);
 		// Trainee id must be 0 to create a new trainee
 		toSend.setTraineeId(0);
+		Trainee toReturn = traineeRepo.save(toSend);
+		System.out.println(traineeRepo.findAll().size());//necessary in order to force loading. @Function is default lazy and cannot be changed as far as we know
 		for(int i=0; i<trainee.getBatches().size(); i++) {
-			traineeBatchRepo.save(new TraineeBatch(trainee.getTraineeId(), (Integer)trainee.getBatches().toArray()[i]));
+			traineeRepo.insertBatch(trainee.getBatches().get(i).intValue(), toReturn.getTraineeId());
 		}
-		return traineeRepo.save(toSend);
+		return toReturn;
 	}
 
 	/**
@@ -76,6 +78,12 @@ public class TraineeServiceImpl implements TraineeService {
 	public void delete(Trainee trainee) {
 		traineeRepo.delete(trainee);
 
+	}
+
+	@Override
+	@Transactional
+	public List<Trainee> getAll() {
+		return traineeRepo.findAll();
 	}
 
 }

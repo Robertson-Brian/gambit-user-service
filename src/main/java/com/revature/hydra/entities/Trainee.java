@@ -1,7 +1,7 @@
 package com.revature.hydra.entities;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,13 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,16 +34,17 @@ public class Trainee implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "TRAINEE_ID_SEQUENCE")
 	@SequenceGenerator(name = "TRAINEE_ID_SEQUENCE", sequenceName = "TRAINEE_ID_SEQUENCE")
 	private int traineeId;
+	
+	//@Transient
+	//@OneToMany(mappedBy = "TRAINEE_BATCH")
+//	@Formula("select TRAINEE_BATCH.BATCH_ID from TRAINEE_BATCH where TRAINEE_BATCH.TRAINEE_ID = TRAINEE_ID")
+	private List<Integer> batches;
 
 	@Column(name = "RESOURCE_ID")
 	private int resourceId;
 
 	@Column(name = "TRAINING_STATUS")
 	private String trainingStatus;
-
-	@Transient
-	@OneToMany(mappedBy = "TRAINEE_BATCH")
-	private Set<Integer> batches;
 
 	@Column(name = "PHONE_NUMBER")
 	private String phoneNumber;
@@ -109,7 +109,7 @@ public class Trainee implements Serializable {
 		super();
 	}
 
-	public Trainee(int traineeId, int resourceId, String trainingStatus, Set<Integer> batch, String phoneNumber,
+	public Trainee(int traineeId, int resourceId, String trainingStatus, List<Integer> batch, String phoneNumber,
 			String skypeId, String profileUrl, String recruiterName, String college, String degree, String major,
 			String techScreenerName, String projectCompletion, String flagStatus, String flagNotes, String grades,
 			String notes, String panelInterviews, String marketingStatus, String client, String endClient,
@@ -162,11 +162,11 @@ public class Trainee implements Serializable {
 		this.trainingStatus = trainingStatus;
 	}
 
-	public Set<Integer> getBatches() {
+	public List<Integer> getBatches() {
 		return batches;
 	}
 
-	public void setBatches(Set<Integer> batches) {
+	public void setBatches(List<Integer> batches) {
 		this.batches = batches;
 	}
 
