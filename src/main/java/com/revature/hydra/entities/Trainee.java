@@ -11,12 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import org.hibernate.annotations.Formula;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,7 +39,8 @@ public class Trainee implements Serializable {
 	//@Transient
 	//@OneToMany(mappedBy = "TRAINEE_BATCH")
 //	@Formula("select TRAINEE_BATCH.BATCH_ID from TRAINEE_BATCH where TRAINEE_BATCH.TRAINEE_ID = TRAINEE_ID")
-	private List<Integer> batches;
+	@OneToMany(mappedBy = "traineeId", fetch = FetchType.EAGER)
+	private List<TraineeBatch> batches;
 
 	@Column(name = "RESOURCE_ID")
 	private int resourceId;
@@ -109,7 +111,7 @@ public class Trainee implements Serializable {
 		super();
 	}
 
-	public Trainee(int traineeId, int resourceId, String trainingStatus, List<Integer> batch, String phoneNumber,
+	public Trainee(int traineeId, int resourceId, String trainingStatus, List<TraineeBatch> batch, String phoneNumber,
 			String skypeId, String profileUrl, String recruiterName, String college, String degree, String major,
 			String techScreenerName, String projectCompletion, String flagStatus, String flagNotes, String grades,
 			String notes, String panelInterviews, String marketingStatus, String client, String endClient,
@@ -162,11 +164,11 @@ public class Trainee implements Serializable {
 		this.trainingStatus = trainingStatus;
 	}
 
-	public List<Integer> getBatches() {
+	public List<TraineeBatch> getBatches() {
 		return batches;
 	}
 
-	public void setBatches(List<Integer> batches) {
+	public void setBatches(List<TraineeBatch> batches) {
 		this.batches = batches;
 	}
 

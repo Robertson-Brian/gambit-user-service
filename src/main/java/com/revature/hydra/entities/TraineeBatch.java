@@ -1,56 +1,70 @@
 package com.revature.hydra.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Table(name = "TRAINEE_BATCH")
 @Entity
-public class TraineeBatch {
+@IdClass(TraineeBatch.class)
+public class TraineeBatch implements Serializable {
+	
+//	@Id
+//	@SequenceGenerator(name = "TB_ID_SEQ", sequenceName = "TB_ID_SEQ")
+//	@GeneratedValue(generator = "TB_ID_SEQ", strategy = GenerationType.AUTO)
+//	Integer tb_id;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@Column(name = "trainee_id")
+	Integer traineeId;
 	
 	@Id
-	@SequenceGenerator(name = "TB_ID_SEQ", sequenceName = "TB_ID_SEQ")
-	@GeneratedValue(generator = "TB_ID_SEQ", strategy = GenerationType.AUTO)
-	Integer tb_id;
-	
-	@Column(name = "trainee_id")
-	Integer trainee_id;
-	
 	@Column(name = "batch_id")
-	Integer batch_id;
+	Integer batchId;
+	
+
+	public TraineeBatch() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public TraineeBatch(int traineeId, Integer batch_id) {
-		this.trainee_id = traineeId;
-		this.batch_id = batch_id;
+		this.traineeId = traineeId;
+		this.batchId = batch_id;
 		// TODO Auto-generated constructor stub
 	}
 
 	public Integer getTrainee_id() {
-		return trainee_id;
+		return traineeId;
 	}
 
 	public void setTrainee_id(Integer trainee_id) {
-		this.trainee_id = trainee_id;
+		this.traineeId = trainee_id;
 	}
 
 	public Integer getBatch_id() {
-		return batch_id;
+		return batchId;
 	}
 
 	public void setBatch_id(Integer batch_id) {
-		this.batch_id = batch_id;
+		this.batchId = batch_id;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((batch_id == null) ? 0 : batch_id.hashCode());
-		result = prime * result + ((trainee_id == null) ? 0 : trainee_id.hashCode());
+		result = prime * result + ((batchId == null) ? 0 : batchId.hashCode());
+		result = prime * result + ((traineeId == null) ? 0 : traineeId.hashCode());
 		return result;
 	}
 
@@ -63,15 +77,15 @@ public class TraineeBatch {
 		if (getClass() != obj.getClass())
 			return false;
 		TraineeBatch other = (TraineeBatch) obj;
-		if (batch_id == null) {
-			if (other.batch_id != null)
+		if (batchId == null) {
+			if (other.batchId != null)
 				return false;
-		} else if (!batch_id.equals(other.batch_id))
+		} else if (!batchId.equals(other.batchId))
 			return false;
-		if (trainee_id == null) {
-			if (other.trainee_id != null)
+		if (traineeId == null) {
+			if (other.traineeId != null)
 				return false;
-		} else if (!trainee_id.equals(other.trainee_id))
+		} else if (!traineeId.equals(other.traineeId))
 			return false;
 		return true;
 	}
