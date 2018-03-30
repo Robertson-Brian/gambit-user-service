@@ -30,7 +30,7 @@ public class UserService {
 		return userRepo.findByEmail(email);
 	}
 
-	public List<Integer> getAllRoles() {
+	public List<String> getAllRoles() {
 		return userRepo.findAllUserRoles();
 	}
 
@@ -44,7 +44,7 @@ public class UserService {
 
 	public void delete(Integer id) {
 		User u = userRepo.getOne(id);
-		u.setRole(1);
+		u.setRole("INACTIVE");
 		userRepo.save(u);
 	}
 

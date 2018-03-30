@@ -3,7 +3,7 @@ package com.revature.hydra.entities;
 import org.springframework.beans.BeanUtils;
 
 public class TrainerUser {
-	
+
 	private Integer userId;
 	private String firstName;
 	private String middleName;
@@ -11,22 +11,25 @@ public class TrainerUser {
 	private String email;
 	private String password;
 	private String backupPassword;
-	private Integer role;
+	private String role;
 	private String homePhone;
 	private String mobilePhone;
 	private String token;
 	private String title;
 	private Integer trainerId;
+
 	public TrainerUser() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public TrainerUser(User u, BatchTrainer bt) {
 		BeanUtils.copyProperties(bt, this);
 		BeanUtils.copyProperties(u, this);
 	}
+
 	public TrainerUser(Integer userId, String firstName, String middleName, String lastName, String email,
-			String password, String backupPassword, Integer role, String homePhone, String mobilePhone, String token,
+			String password, String backupPassword, String role, String homePhone, String mobilePhone, String token,
 			String title, Integer trainerId) {
 		super();
 		this.userId = userId;
@@ -43,6 +46,7 @@ public class TrainerUser {
 		this.title = title;
 		this.trainerId = trainerId;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -62,6 +66,7 @@ public class TrainerUser {
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -138,6 +143,7 @@ public class TrainerUser {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "TrainerUser [userId=" + userId + ", firstName=" + firstName + ", middleName=" + middleName
@@ -145,81 +151,107 @@ public class TrainerUser {
 				+ backupPassword + ", role=" + role + ", homePhone=" + homePhone + ", mobilePhone=" + mobilePhone
 				+ ", token=" + token + ", title=" + title + ", trainerId=" + trainerId + "]";
 	}
+
 	public Integer getUserId() {
 		return userId;
 	}
+
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
+
 	public String getFirstName() {
 		return firstName;
 	}
+
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+
 	public String getMiddleName() {
 		return middleName;
 	}
+
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
+
 	public String getLastName() {
 		return lastName;
 	}
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public String getBackupPassword() {
 		return backupPassword;
 	}
+
 	public void setBackupPassword(String backupPassword) {
 		this.backupPassword = backupPassword;
 	}
-	public Integer getRole() {
+
+	public String getRole() {
 		return role;
 	}
-	public void setRole(Integer role) {
+
+	public void setRole(String role) {
 		this.role = role;
 	}
+
 	public String getHomePhone() {
 		return homePhone;
 	}
+
 	public void setHomePhone(String homePhone) {
 		this.homePhone = homePhone;
 	}
+
 	public String getMobilePhone() {
 		return mobilePhone;
 	}
+
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
 	}
+
 	public String getToken() {
 		return token;
 	}
+
 	public void setToken(String token) {
 		this.token = token;
 	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public Integer getTrainerId() {
 		return trainerId;
 	}
+
 	public void setTrainerId(Integer trainerId) {
 		this.trainerId = trainerId;
 	}

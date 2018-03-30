@@ -2,7 +2,6 @@ package com.revature.hydra.services;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +14,6 @@ public class TrainerRepositoryRequestDispatcher {
 
 	@Autowired
 	private TrainerRepository trainerRepository;
-
-	@Autowired
-	private TrainerService trainerService;
-
-	private static final Logger log = Logger.getLogger(TrainerRepositoryRequestDispatcher.class);
 
 	/**
 	 * Parse JsonObject for method to execute Executable methods: findOne - find a

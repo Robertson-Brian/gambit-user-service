@@ -86,25 +86,27 @@ public class UserController {
 	@DeleteMapping
 	public ResponseEntity<Void> makeInactive(@RequestBody User user) {
 		log.info("Updating user: " + user);
-		user.setRole(0);
+		user.setRole("INACTIVE");
 		userService.update(user);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	/**
 	 * Get all User roles.
+	 * 
 	 * @return
 	 */
 	@GetMapping("roles")
-	public ResponseEntity<List<Integer>> getAllUserRoles() {
+	public ResponseEntity<List<String>> getAllUserRoles() {
 		log.info("Fetching all user roles");
-		List<Integer> roles = userService.getAllRoles();
+		List<String> roles = userService.getAllRoles();
 		return new ResponseEntity<>(roles, HttpStatus.OK);
 
 	}
 
 	/**
 	 * Retrieves all users from the User table.
+	 * 
 	 * @return
 	 */
 	@GetMapping
@@ -117,6 +119,7 @@ public class UserController {
 
 	/**
 	 * Finds an User by Id.
+	 * 
 	 * @param id
 	 * @return
 	 */

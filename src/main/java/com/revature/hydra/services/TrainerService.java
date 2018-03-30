@@ -26,10 +26,7 @@ public class TrainerService {
 
 	@Autowired
 	public TrainerRepository trainerRepository;
-
-	@Autowired
-	private TrainerMessagingService trainerMessagingService;
-
+	
 	@Autowired
 	private UserRepository userRepo;
 
