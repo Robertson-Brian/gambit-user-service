@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.hydra.entities.Trainer;
 import com.revature.hydra.entities.TrainerUser;
 import com.revature.hydra.entities.User;
+import com.revature.hydra.messaging.UserReceiver;
 import com.revature.hydra.messaging.UserSender;
 import com.revature.hydra.repo.TrainerRepository;
 import com.revature.hydra.repo.UserRepository;
@@ -38,6 +39,9 @@ public class TrainerService {
 
 	@Autowired
 	private UserSender us;
+
+	@Autowired
+	private UserReceiver ur;
 
 	private static final Logger log = Logger.getLogger(TrainerService.class);
 
@@ -138,6 +142,7 @@ public class TrainerService {
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 		}
+
 		return result;
 	}
 

@@ -5,10 +5,13 @@ import java.util.concurrent.TimeoutException;
 
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.revature.hydra.entities.Trainee;
+import com.revature.hydra.entities.TraineeDTO;
+import com.revature.hydra.entities.TrainerDTO;
 import com.revature.hydra.entities.TrainerUser;
 
 /**
@@ -33,6 +36,7 @@ public class UserSender {
 
 	private static final String TRAINEE_EXCHANGE_NAME = "hydra.trainee.exchange";
 	private static final String TRAINER_EXCHANGE_NAME = "hydra.trainer.exchange";
+	ObjectMapper om = new ObjectMapper();
 
 	public void send() throws IOException, TimeoutException {
 		ConnectionFactory factory = new ConnectionFactory();
@@ -57,16 +61,17 @@ public class UserSender {
 		ConnectionFactory factory = new ConnectionFactory();
 		// This user was created on host machine through the rabbitmq management console
 		// (localhost:15672 as of 3/28/2018)
+		TrainerDTO trainer = new TrainerDTO(tu);
 		factory.setUsername("test");
 		factory.setPassword("test");
-		factory.setHost("10.226.102.1");
+		factory.setHost(trainer.getSender());
 		// Currently this is the hard coded address of the host.
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 		channel.exchangeDeclare(TRAINER_EXCHANGE_NAME, "fanout");
-		String message = "Trainer has been created with id of " + tu.getTrainerId();
+		String message = om.writeValueAsString(trainer);
 		channel.basicPublish(TRAINER_EXCHANGE_NAME, "", null, message.getBytes());
-		System.out.println(" [x] Sent '" + message + "'");
+		System.out.println(" [x] Sent new trainer: '" + message + "'");
 
 		channel.close();
 		connection.close();
@@ -76,16 +81,17 @@ public class UserSender {
 		ConnectionFactory factory = new ConnectionFactory();
 		// This user was created on host machine through the rabbitmq management console
 		// (localhost:15672 as of 3/28/2018)
+		TraineeDTO trainee = new TraineeDTO(t);
 		factory.setUsername("test");
 		factory.setPassword("test");
-		factory.setHost("10.226.102.1");
+		factory.setHost(trainee.getSender());
 		// Currently this is the hard coded address of the host.
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 		channel.exchangeDeclare(TRAINEE_EXCHANGE_NAME, "fanout");
-		String message = "Trainee has been created with id of " + t.getTraineeId();
+		String message = om.writeValueAsString(trainee);
 		channel.basicPublish(TRAINEE_EXCHANGE_NAME, "", null, message.getBytes());
-		System.out.println(" [x] Sent '" + message + "'");
+		System.out.println(" [x] Sent new trainee: '" + message + "'");
 
 		channel.close();
 		connection.close();
@@ -95,16 +101,17 @@ public class UserSender {
 		ConnectionFactory factory = new ConnectionFactory();
 		// This user was created on host machine through the rabbitmq management console
 		// (localhost:15672 as of 3/28/2018)
+		TrainerDTO trainer = new TrainerDTO(tu);
 		factory.setUsername("test");
 		factory.setPassword("test");
-		factory.setHost("10.226.102.1");
+		factory.setHost(trainer.getSender());
 		// Currently this is the hard coded address of the host.
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 		channel.exchangeDeclare(TRAINER_EXCHANGE_NAME, "fanout");
-		String message = "Trainer with id of " + tu.getTrainerId() + " has been updated.";
+		String message = om.writeValueAsString(trainer);
 		channel.basicPublish(TRAINER_EXCHANGE_NAME, "", null, message.getBytes());
-		System.out.println(" [x] Sent '" + message + "'");
+		System.out.println(" [x] Sent updated trainer: '" + message + "'");
 
 		channel.close();
 		connection.close();
@@ -114,16 +121,17 @@ public class UserSender {
 		ConnectionFactory factory = new ConnectionFactory();
 		// This user was created on host machine through the rabbitmq management console
 		// (localhost:15672 as of 3/28/2018)
+		TraineeDTO trainee = new TraineeDTO(t);
 		factory.setUsername("test");
 		factory.setPassword("test");
-		factory.setHost("10.226.102.1");
+		factory.setHost(trainee.getSender());
 		// Currently this is the hard coded address of the host.
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 		channel.exchangeDeclare(TRAINEE_EXCHANGE_NAME, "fanout");
-		String message = "Trainee with id of " + t.getTraineeId() + " has been updated.";
+		String message = om.writeValueAsString(trainee);
 		channel.basicPublish(TRAINEE_EXCHANGE_NAME, "", null, message.getBytes());
-		System.out.println(" [x] Sent '" + message + "'");
+		System.out.println(" [x] Sent updated trainee: '" + message + "'");
 
 		channel.close();
 		connection.close();

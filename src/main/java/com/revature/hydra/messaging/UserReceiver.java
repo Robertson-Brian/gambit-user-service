@@ -34,9 +34,22 @@ import com.rabbitmq.client.Envelope;
 @Service
 public class UserReceiver {
 
-	private static final String EXCHANGE_NAME = "hydra.trainee.exchange";
+	public UserReceiver() {
+		super();
+		try {
+			this.receiveTrainer();
+			this.receiveTrainee();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
+	}
 
-	public void receive() throws IOException, TimeoutException {
+	private static final String TRAINEE_EXCHANGE_NAME = "hydra.trainee.exchange";
+	private static final String TRAINER_EXCHANGE_NAME = "hydra.trainer.exchange";
+
+	public void receiveTrainer() throws IOException, TimeoutException {
 		ConnectionFactory factory = new ConnectionFactory();
 
 		// This user was created on host machine through the rabbitmq management console
@@ -49,10 +62,10 @@ public class UserReceiver {
 		Channel channel = connection.createChannel();
 
 		// Fanout is important
-		channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+		channel.exchangeDeclare(TRAINER_EXCHANGE_NAME, "fanout");
 		// I believe this needs to be changed so that messages aren't dropped.
 		String queueName = channel.queueDeclare().getQueue();
-		channel.queueBind(queueName, EXCHANGE_NAME, "");
+		channel.queueBind(queueName, TRAINER_EXCHANGE_NAME, "");
 
 		System.out.println(" [*] Waiting for messages.");
 
@@ -61,7 +74,38 @@ public class UserReceiver {
 			public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
 					byte[] body) throws IOException {
 				String message = new String(body, "UTF-8");
-				System.out.println(" [x] Received '" + message + "'");
+				System.out.println(" [x] Trainer Received '" + message + "'");
+			}
+		};
+		channel.basicConsume(queueName, true, consumer);
+	}
+
+	public void receiveTrainee() throws IOException, TimeoutException {
+		ConnectionFactory factory = new ConnectionFactory();
+
+		// This user was created on host machine through the rabbitmq management console
+		// (localhost:15672 as of 3/28/2018)
+		factory.setUsername("test");
+		factory.setPassword("test");
+		// Currently this is the hard coded address of the host.
+		factory.setHost("10.226.102.1");
+		Connection connection = factory.newConnection();
+		Channel channel = connection.createChannel();
+
+		// Fanout is important
+		channel.exchangeDeclare(TRAINEE_EXCHANGE_NAME, "fanout");
+		// I believe this needs to be changed so that messages aren't dropped.
+		String queueName = channel.queueDeclare().getQueue();
+		channel.queueBind(queueName, TRAINEE_EXCHANGE_NAME, "");
+
+		System.out.println(" [*] Waiting for messages.");
+
+		Consumer consumer = new DefaultConsumer(channel) {
+			@Override
+			public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
+					byte[] body) throws IOException {
+				String message = new String(body, "UTF-8");
+				System.out.println(" [x] Trainee Received '" + message + "'");
 			}
 		};
 		channel.basicConsume(queueName, true, consumer);
