@@ -49,6 +49,9 @@ public class UserReceiver {
 	private static final String TRAINEE_EXCHANGE_NAME = "hydra.trainee.exchange";
 	private static final String TRAINER_EXCHANGE_NAME = "hydra.trainer.exchange";
 
+	/**
+	 * Receives messages from the Trainer exchange
+	 */
 	public void receiveTrainer() throws IOException, TimeoutException {
 		ConnectionFactory factory = new ConnectionFactory();
 
@@ -80,6 +83,9 @@ public class UserReceiver {
 		channel.basicConsume(queueName, true, consumer);
 	}
 
+	/**
+	 * Receives messages from the Trainee exchange
+	 */
 	public void receiveTrainee() throws IOException, TimeoutException {
 		ConnectionFactory factory = new ConnectionFactory();
 
