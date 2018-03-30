@@ -18,7 +18,6 @@ public class TrainerRole {
 
 	public TrainerRole() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public TrainerRole(Integer roleId, String role) {

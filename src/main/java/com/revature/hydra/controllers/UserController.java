@@ -1,8 +1,6 @@
 package com.revature.hydra.controllers;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 import javax.validation.Valid;
 
@@ -152,28 +150,6 @@ public class UserController {
 			@PathVariable("lastName") String lastName) {
 		User user = userService.findByName(firstName, lastName);
 		return new ResponseEntity<>(user, HttpStatus.OK);
-	}
-
-	@GetMapping("testing")
-	public void messaging() {
-		System.out.println("Controller has been reached.");
-		try {
-			ur.receive();
-		} catch (IOException e) {
-			System.out.println("tr io exception");
-		} catch (TimeoutException e) {
-			System.out.println("tr timeout exception");
-		}
-
-		try {
-			us.send();
-		} catch (IOException e) {
-			System.out.println("ts io exception");
-		} catch (TimeoutException e) {
-			System.out.println("ts timeout exception");
-			e.printStackTrace();
-		}
-
 	}
 
 }

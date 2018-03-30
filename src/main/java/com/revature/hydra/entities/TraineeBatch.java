@@ -13,9 +13,6 @@ import javax.persistence.Table;
 @IdClass(TraineeBatch.class)
 public class TraineeBatch implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -28,13 +25,11 @@ public class TraineeBatch implements Serializable {
 
 	public TraineeBatch() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public TraineeBatch(int traineeId, Integer batch_id) {
 		this.traineeId = traineeId;
 		this.batchId = batch_id;
-		// TODO Auto-generated constructor stub
 	}
 
 	public Integer getTrainee_id() {
