@@ -1,7 +1,7 @@
 package com.revature.hydra.entities;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,16 +35,18 @@ public class Trainee implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "TRAINEE_ID_SEQUENCE")
 	@SequenceGenerator(name = "TRAINEE_ID_SEQUENCE", sequenceName = "TRAINEE_ID_SEQUENCE")
 	private int traineeId;
+	
+	//@Transient
+	//@OneToMany(mappedBy = "TRAINEE_BATCH")
+//	@Formula("select TRAINEE_BATCH.BATCH_ID from TRAINEE_BATCH where TRAINEE_BATCH.TRAINEE_ID = TRAINEE_ID")
+	@OneToMany(mappedBy = "traineeId", fetch = FetchType.EAGER)
+	private List<TraineeBatch> batches;
 
 	@Column(name = "RESOURCE_ID")
 	private int resourceId;
 
 	@Column(name = "TRAINING_STATUS")
 	private String trainingStatus;
-
-	@Transient
-	@OneToMany(mappedBy = "TRAINEE_BATCH")
-	private Set<Integer> batches;
 
 	@Column(name = "PHONE_NUMBER")
 	private String phoneNumber;
@@ -109,7 +111,7 @@ public class Trainee implements Serializable {
 		super();
 	}
 
-	public Trainee(int traineeId, int resourceId, String trainingStatus, Set<Integer> batch, String phoneNumber,
+	public Trainee(int traineeId, int resourceId, String trainingStatus, List<TraineeBatch> batch, String phoneNumber,
 			String skypeId, String profileUrl, String recruiterName, String college, String degree, String major,
 			String techScreenerName, String projectCompletion, String flagStatus, String flagNotes, String grades,
 			String notes, String panelInterviews, String marketingStatus, String client, String endClient,
@@ -162,11 +164,11 @@ public class Trainee implements Serializable {
 		this.trainingStatus = trainingStatus;
 	}
 
-	public Set<Integer> getBatches() {
+	public List<TraineeBatch> getBatches() {
 		return batches;
 	}
 
-	public void setBatches(Set<Integer> batches) {
+	public void setBatches(List<TraineeBatch> batches) {
 		this.batches = batches;
 	}
 
