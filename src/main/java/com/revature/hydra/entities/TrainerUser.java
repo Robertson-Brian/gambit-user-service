@@ -3,7 +3,6 @@ package com.revature.hydra.entities;
 import org.springframework.beans.BeanUtils;
 
 public class TrainerUser {
-
 	private Integer userId;
 	private String firstName;
 	private String middleName;
