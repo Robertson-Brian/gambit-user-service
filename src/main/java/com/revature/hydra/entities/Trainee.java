@@ -1,23 +1,22 @@
 package com.revature.hydra.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -33,20 +32,21 @@ public class Trainee implements Serializable {
 
 	@Id
 	@Column(name = "TRAINEE_ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TRAINEE_ID_SEQUENCE")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "TRAINEE_ID_SEQUENCE")
 	@SequenceGenerator(name = "TRAINEE_ID_SEQUENCE", sequenceName = "TRAINEE_ID_SEQUENCE")
 	private int traineeId;
+	
+	//@Transient
+	//@OneToMany(mappedBy = "TRAINEE_BATCH")
+//	@Formula("select TRAINEE_BATCH.BATCH_ID from TRAINEE_BATCH where TRAINEE_BATCH.TRAINEE_ID = TRAINEE_ID")
+	@OneToMany(mappedBy = "traineeId", fetch = FetchType.EAGER)
+	private List<TraineeBatch> batches;
 
 	@Column(name = "RESOURCE_ID")
 	private int resourceId;
 
-	@NotNull
 	@Column(name = "TRAINING_STATUS")
 	private String trainingStatus;
-
-	@Embedded
-	@AttributeOverrides(value = { @AttributeOverride(name = "batchId", column = @Column(name = "BATCH_ID")) })
-	private Batch batch;
 
 	@Column(name = "PHONE_NUMBER")
 	private String phoneNumber;
@@ -111,7 +111,7 @@ public class Trainee implements Serializable {
 		super();
 	}
 
-	public Trainee(int traineeId, int resourceId, String trainingStatus, Batch batch, String phoneNumber,
+	public Trainee(int traineeId, int resourceId, String trainingStatus, List<TraineeBatch> batch, String phoneNumber,
 			String skypeId, String profileUrl, String recruiterName, String college, String degree, String major,
 			String techScreenerName, String projectCompletion, String flagStatus, String flagNotes, String grades,
 			String notes, String panelInterviews, String marketingStatus, String client, String endClient,
@@ -119,7 +119,7 @@ public class Trainee implements Serializable {
 		this.traineeId = traineeId;
 		this.resourceId = resourceId;
 		this.trainingStatus = trainingStatus;
-		this.batch = batch;
+		this.batches = batch;
 		this.phoneNumber = phoneNumber;
 		this.skypeId = skypeId;
 		this.profileUrl = profileUrl;
@@ -164,12 +164,12 @@ public class Trainee implements Serializable {
 		this.trainingStatus = trainingStatus;
 	}
 
-	public Batch getBatch() {
-		return batch;
+	public List<TraineeBatch> getBatches() {
+		return batches;
 	}
 
-	public void setBatch(Batch batch) {
-		this.batch = batch;
+	public void setBatches(List<TraineeBatch> batches) {
+		this.batches = batches;
 	}
 
 	public String getPhoneNumber() {
@@ -320,7 +320,7 @@ public class Trainee implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((batch == null) ? 0 : batch.hashCode());
+		result = prime * result + ((batches == null) ? 0 : batches.hashCode());
 		result = prime * result + ((client == null) ? 0 : client.hashCode());
 		result = prime * result + ((college == null) ? 0 : college.hashCode());
 		result = prime * result + ((degree == null) ? 0 : degree.hashCode());
@@ -354,10 +354,10 @@ public class Trainee implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Trainee other = (Trainee) obj;
-		if (batch == null) {
-			if (other.batch != null)
+		if (batches == null) {
+			if (other.batches != null)
 				return false;
-		} else if (!batch.equals(other.batch))
+		} else if (!batches.equals(other.batches))
 			return false;
 		if (client == null) {
 			if (other.client != null)
@@ -464,7 +464,7 @@ public class Trainee implements Serializable {
 	@Override
 	public String toString() {
 		return "Trainee [traineeId=" + traineeId + ", resourceId=" + resourceId + ", trainingStatus=" + trainingStatus
-				+ ", batch=" + batch + ", phoneNumber=" + phoneNumber + ", skypeId=" + skypeId + ", profileUrl="
+				+ ", batches=" + batches + ", phoneNumber=" + phoneNumber + ", skypeId=" + skypeId + ", profileUrl="
 				+ profileUrl + ", recruiterName=" + recruiterName + ", college=" + college + ", degree=" + degree
 				+ ", major=" + major + ", techScreenerName=" + techScreenerName + ", projectCompletion="
 				+ projectCompletion + ", flagStatus=" + flagStatus + ", flagNotes=" + flagNotes + ", grades=" + grades
