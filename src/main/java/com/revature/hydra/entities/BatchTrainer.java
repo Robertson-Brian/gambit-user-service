@@ -29,7 +29,6 @@ public class BatchTrainer {
 
 	public BatchTrainer() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public BatchTrainer(Integer trainerId, Integer userId, String title) {

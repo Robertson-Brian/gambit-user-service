@@ -20,7 +20,6 @@ public class TrainerUser {
 
 	public TrainerUser() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public TrainerUser(User u, BatchTrainer bt) {
