@@ -1,7 +1,9 @@
 package com.revature.hydra.services;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import com.revature.hydra.entities.Trainee;
 import com.revature.hydra.entities.TraineeBatch;
 //import com.revature.hydra.entities.TraineeBatch;
 import com.revature.hydra.entities.User;
+import com.revature.hydra.messaging.UserSender;
 import com.revature.hydra.repo.TraineeBatchRepository;
 //import com.revature.hydra.repo.TraineeBatchRepository;
 import com.revature.hydra.repo.TraineeRepository;
@@ -27,12 +30,15 @@ import com.revature.hydra.repo.UserRepository;
 public class TraineeServiceImpl implements TraineeService {
 	@Autowired
 	TraineeRepository traineeRepo;
-	
+
 	@Autowired
 	UserRepository userRepo;
-	
+
 	@Autowired
 	TraineeBatchRepository traineeBatchRepo;
+
+	@Autowired
+	private UserSender us;
 
 	/**
 	 * The implemented method to create a new trainee.
@@ -47,13 +53,21 @@ public class TraineeServiceImpl implements TraineeService {
 		toSend.setTraineeId(0);
 		Trainee toReturn = traineeRepo.save(toSend);
 		List<TraineeBatch> ltb = new ArrayList<TraineeBatch>();
-		System.out.println(traineeRepo.findAll().size());//necessary in order to force loading. @Function is default lazy and cannot be changed as far as we know
-		for(int i=0; i<trainee.getBatches().size(); i++) {
+		System.out.println(traineeRepo.findAll().size());// necessary in order to force loading. @Function is default
+															// lazy and cannot be changed as far as we know
+		for (int i = 0; i < trainee.getBatches().size(); i++) {
 			TraineeBatch tb = new TraineeBatch(toReturn.getTraineeId(), toSend.getBatches().get(i).getBatch_id());
 			ltb.add(traineeBatchRepo.save(tb));
 		}
-		//Trainee toReturn = traineeRepo.findOne(toPersist.getTraineeId());
+		// Trainee toReturn = traineeRepo.findOne(toPersist.getTraineeId());
 		toReturn.setBatches(ltb);
+		try {
+			us.sendNewTrainee(toReturn);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
 		return toReturn;
 	}
 
@@ -66,13 +80,20 @@ public class TraineeServiceImpl implements TraineeService {
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status) {
 		return traineeRepo.findAllByBatchesBatchIdAndTrainingStatus(batchId, status);
 	}
-	
+
 	/**
 	 * The implemented method to update a trainee.
 	 */
 	@Override
 	@Transactional
 	public void update(Trainee trainee) {
+		try {
+			us.sendUpdateTrainee(trainee);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
 		traineeRepo.save(trainee);
 	}
 

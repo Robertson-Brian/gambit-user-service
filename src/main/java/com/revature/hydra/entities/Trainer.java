@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Table(name = "TRAINER")
 @Cacheable
-public class BatchTrainer {
+public class Trainer {
 	
 	@Id
 	@SequenceGenerator(name = "TRAINER_ID_SEQ", sequenceName = "TRAINER_ID_SEQ")
@@ -27,11 +27,11 @@ public class BatchTrainer {
 	@NotEmpty
 	private String title;
 
-	public BatchTrainer() {
+	public Trainer() {
 		super();
 	}
 
-	public BatchTrainer(Integer trainerId, Integer userId, String title) {
+	public Trainer(Integer trainerId, Integer userId, String title) {
 		super();
 		this.trainerId = trainerId;
 		this.userId = userId;
@@ -56,7 +56,7 @@ public class BatchTrainer {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BatchTrainer other = (BatchTrainer) obj;
+		Trainer other = (Trainer) obj;
 		if (title == null) {
 			if (other.title != null)
 				return false;
@@ -77,7 +77,7 @@ public class BatchTrainer {
 
 	@Override
 	public String toString() {
-		return "BatchTrainer [trainerId=" + trainerId + ", userId=" + userId + ", title=" + title + "]";
+		return "Trainer [trainerId=" + trainerId + ", userId=" + userId + ", title=" + title + "]";
 	}
 
 	public Integer getTrainerId() {

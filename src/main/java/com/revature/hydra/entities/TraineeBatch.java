@@ -12,12 +12,7 @@ import javax.persistence.Table;
 @Entity
 @IdClass(TraineeBatch.class)
 public class TraineeBatch implements Serializable {
-	
-//	@Id
-//	@SequenceGenerator(name = "TB_ID_SEQ", sequenceName = "TB_ID_SEQ")
-//	@GeneratedValue(generator = "TB_ID_SEQ", strategy = GenerationType.AUTO)
-//	Integer tb_id;
-	
+
 	/**
 	 * 
 	 */
@@ -26,11 +21,10 @@ public class TraineeBatch implements Serializable {
 	@Id
 	@Column(name = "trainee_id")
 	Integer traineeId;
-	
+
 	@Id
 	@Column(name = "batch_id")
 	Integer batchId;
-	
 
 	public TraineeBatch() {
 		super();
@@ -89,6 +83,5 @@ public class TraineeBatch implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
+
 }

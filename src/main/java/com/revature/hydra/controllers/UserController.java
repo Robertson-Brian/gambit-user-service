@@ -1,6 +1,8 @@
 package com.revature.hydra.controllers;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import javax.validation.Valid;
 
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.hydra.entities.User;
+import com.revature.hydra.messaging.UserReceiver;
+import com.revature.hydra.messaging.UserSender;
 import com.revature.hydra.services.UserService;
 
 /**
@@ -35,6 +39,12 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private UserReceiver ur;
+
+	@Autowired
+	private UserSender us;
 
 	/**
 	 * Creates a new User.
@@ -142,6 +152,28 @@ public class UserController {
 			@PathVariable("lastName") String lastName) {
 		User user = userService.findByName(firstName, lastName);
 		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+
+	@GetMapping("testing")
+	public void messaging() {
+		System.out.println("Controller has been reached.");
+		try {
+			ur.receive();
+		} catch (IOException e) {
+			System.out.println("tr io exception");
+		} catch (TimeoutException e) {
+			System.out.println("tr timeout exception");
+		}
+
+		try {
+			us.send();
+		} catch (IOException e) {
+			System.out.println("ts io exception");
+		} catch (TimeoutException e) {
+			System.out.println("ts timeout exception");
+			e.printStackTrace();
+		}
+
 	}
 
 }

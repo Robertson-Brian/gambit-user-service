@@ -22,7 +22,7 @@ public class TrainerUser {
 		super();
 	}
 
-	public TrainerUser(User u, BatchTrainer bt) {
+	public TrainerUser(User u, Trainer bt) {
 		BeanUtils.copyProperties(bt, this);
 		BeanUtils.copyProperties(u, this);
 	}
