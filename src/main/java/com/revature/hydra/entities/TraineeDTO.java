@@ -12,15 +12,18 @@ public class TraineeDTO {
 
 	private String sender;
 
+	private String requestType;
+
 	public TraineeDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public TraineeDTO(Trainee t) {
+	public TraineeDTO(Trainee t, String type) {
 		super();
 		this.time = LocalDateTime.now();
 		this.t = t;
+		this.requestType = type;
 		try {
 			this.sender = InetAddress.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e) {
@@ -50,6 +53,14 @@ public class TraineeDTO {
 
 	public void setSender(String sender) {
 		this.sender = sender;
+	}
+
+	public String getRequestType() {
+		return requestType;
+	}
+
+	public void setRequestType(String requestType) {
+		this.requestType = requestType;
 	}
 
 	@Override

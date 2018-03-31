@@ -62,7 +62,7 @@ public class TraineeServiceImpl implements TraineeService {
 		// Trainee toReturn = traineeRepo.findOne(toPersist.getTraineeId());
 		toReturn.setBatches(ltb);
 		try {
-			us.sendNewTrainee(toReturn);
+			us.sendTrainee(toReturn, "POST");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (TimeoutException e) {
@@ -88,7 +88,7 @@ public class TraineeServiceImpl implements TraineeService {
 	@Transactional
 	public void update(Trainee trainee) {
 		try {
-			us.sendUpdateTrainee(trainee);
+			us.sendTrainee(trainee, "PUT");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (TimeoutException e) {

@@ -94,7 +94,7 @@ public class TrainerService {
 		Trainer saved = trainerRepository.save(bt);
 		TrainerUser result = ClassUtil.merge(persisted, saved);
 		try {
-			us.sendNewTrainer(result);
+			us.sendTrainer(result, "POST");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (TimeoutException e) {
@@ -136,7 +136,7 @@ public class TrainerService {
 		Trainer ret = trainerRepository.save(bt);
 		TrainerUser result = ClassUtil.merge(persisted, ret);
 		try {
-			us.sendUpdateTrainer(result);
+			us.sendTrainer(result, "PUT");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (TimeoutException e) {

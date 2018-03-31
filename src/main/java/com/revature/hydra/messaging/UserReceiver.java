@@ -15,7 +15,7 @@ import com.rabbitmq.client.Envelope;
 
 /**
  * 
- * @author Ben Zahler (Blake 1801)
+ * @author Brandon Cross (Blake 1801)
  *
  *         In order to receive messages through rabbitmq your computer must have
  *         port 5672 open.
@@ -64,9 +64,7 @@ public class UserReceiver {
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 
-		// Fanout is important
 		channel.exchangeDeclare(TRAINER_EXCHANGE_NAME, "fanout");
-		// I believe this needs to be changed so that messages aren't dropped.
 		String queueName = channel.queueDeclare().getQueue();
 		channel.queueBind(queueName, TRAINER_EXCHANGE_NAME, "");
 
@@ -98,9 +96,7 @@ public class UserReceiver {
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 
-		// Fanout is important
 		channel.exchangeDeclare(TRAINEE_EXCHANGE_NAME, "fanout");
-		// I believe this needs to be changed so that messages aren't dropped.
 		String queueName = channel.queueDeclare().getQueue();
 		channel.queueBind(queueName, TRAINEE_EXCHANGE_NAME, "");
 

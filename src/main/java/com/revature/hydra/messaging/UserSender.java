@@ -64,10 +64,10 @@ public class UserSender {
 	 * Message is JSON representation of the DTO, written by Object Mapper
 	 */
 
-	public void sendNewTrainer(TrainerUser tu) throws IOException, TimeoutException {
+	public void sendTrainer(TrainerUser tu, String type) throws IOException, TimeoutException {
 		ConnectionFactory factory = new ConnectionFactory();
 		// Wrapper Object containing the trainer, timestamp and sender IP address
-		TrainerDTO trainer = new TrainerDTO(tu);
+		TrainerDTO trainer = new TrainerDTO(tu, type);
 		// This user was created on host machine through the rabbitmq management console
 		// (localhost:15672 as of 3/28/2018)
 		factory.setUsername("test");
@@ -94,10 +94,10 @@ public class UserSender {
 	 * Message is JSON representation of the DTO, written by Object Mapper
 	 */
 
-	public void sendNewTrainee(Trainee t) throws IOException, TimeoutException {
+	public void sendTrainee(Trainee t, String type) throws IOException, TimeoutException {
 		ConnectionFactory factory = new ConnectionFactory();
 		// Wrapper Object containing the trainee, timestamp and sender IP address
-		TraineeDTO trainee = new TraineeDTO(t);
+		TraineeDTO trainee = new TraineeDTO(t, type);
 		// This user was created on host machine through the rabbitmq management console
 		// (localhost:15672 as of 3/28/2018)
 		factory.setUsername("test");
@@ -124,25 +124,27 @@ public class UserSender {
 	 * Message is JSON representation of the DTO, written by Object Mapper
 	 */
 
-	public void sendUpdateTrainer(TrainerUser tu) throws IOException, TimeoutException {
-		ConnectionFactory factory = new ConnectionFactory();
-		TrainerDTO trainer = new TrainerDTO(tu);
-		// This user was created on host machine through the rabbitmq management console
-		// (localhost:15672 as of 3/28/2018)
-		factory.setUsername("test");
-		factory.setPassword("test");
-		factory.setHost(trainer.getSender());
-		// Currently this is the hard coded address of the host.
-		Connection connection = factory.newConnection();
-		Channel channel = connection.createChannel();
-		channel.exchangeDeclare(TRAINER_EXCHANGE, "fanout");
-		String message = om.writeValueAsString(trainer);
-		channel.basicPublish(TRAINER_EXCHANGE, "", null, message.getBytes());
-		System.out.println(" [x] Sent updated trainer: '" + message + "'");
-
-		channel.close();
-		connection.close();
-	}
+	// public void sendUpdateTrainer(TrainerUser tu) throws IOException,
+	// TimeoutException {
+	// ConnectionFactory factory = new ConnectionFactory();
+	// TrainerDTO trainer = new TrainerDTO(tu);
+	// // This user was created on host machine through the rabbitmq management
+	// console
+	// // (localhost:15672 as of 3/28/2018)
+	// factory.setUsername("test");
+	// factory.setPassword("test");
+	// factory.setHost(trainer.getSender());
+	// // Currently this is the hard coded address of the host.
+	// Connection connection = factory.newConnection();
+	// Channel channel = connection.createChannel();
+	// channel.exchangeDeclare(TRAINER_EXCHANGE, "fanout");
+	// String message = om.writeValueAsString(trainer);
+	// channel.basicPublish(TRAINER_EXCHANGE, "", null, message.getBytes());
+	// System.out.println(" [x] Sent updated trainer: '" + message + "'");
+	//
+	// channel.close();
+	// connection.close();
+	// }
 
 	/**
 	 * Sends message to trainee exchange when any trainee is updated Creates Wrapper
@@ -151,24 +153,26 @@ public class UserSender {
 	 * JSON representation of the DTO, written by Object Mapper
 	 */
 
-	public void sendUpdateTrainee(Trainee t) throws IOException, TimeoutException {
-		ConnectionFactory factory = new ConnectionFactory();
-		// This user was created on host machine through the rabbitmq management console
-		// (localhost:15672 as of 3/28/2018)
-		TraineeDTO trainee = new TraineeDTO(t);
-		factory.setUsername("test");
-		factory.setPassword("test");
-		factory.setHost(trainee.getSender());
-		// Currently this is the hard coded address of the host.
-		Connection connection = factory.newConnection();
-		Channel channel = connection.createChannel();
-		channel.exchangeDeclare(TRAINEE_EXCHANGE, "fanout");
-		String message = om.writeValueAsString(trainee);
-		channel.basicPublish(TRAINEE_EXCHANGE, "", null, message.getBytes());
-		System.out.println(" [x] Sent updated trainee: '" + message + "'");
-
-		channel.close();
-		connection.close();
-	}
+	// public void sendUpdateTrainee(Trainee t) throws IOException, TimeoutException
+	// {
+	// ConnectionFactory factory = new ConnectionFactory();
+	// // This user was created on host machine through the rabbitmq management
+	// console
+	// // (localhost:15672 as of 3/28/2018)
+	// TraineeDTO trainee = new TraineeDTO(t);
+	// factory.setUsername("test");
+	// factory.setPassword("test");
+	// factory.setHost(trainee.getSender());
+	// // Currently this is the hard coded address of the host.
+	// Connection connection = factory.newConnection();
+	// Channel channel = connection.createChannel();
+	// channel.exchangeDeclare(TRAINEE_EXCHANGE, "fanout");
+	// String message = om.writeValueAsString(trainee);
+	// channel.basicPublish(TRAINEE_EXCHANGE, "", null, message.getBytes());
+	// System.out.println(" [x] Sent updated trainee: '" + message + "'");
+	//
+	// channel.close();
+	// connection.close();
+	// }
 
 }
