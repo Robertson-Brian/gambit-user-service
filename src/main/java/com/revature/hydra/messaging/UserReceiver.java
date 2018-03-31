@@ -1,6 +1,7 @@
 package com.revature.hydra.messaging;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.concurrent.TimeoutException;
 
 import org.springframework.stereotype.Service;
@@ -60,7 +61,7 @@ public class UserReceiver {
 		factory.setUsername("test");
 		factory.setPassword("test");
 		// Currently this is the hard coded address of the host.
-		factory.setHost("10.226.102.1");
+		factory.setHost(InetAddress.getLocalHost().getHostAddress());
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 
@@ -92,7 +93,7 @@ public class UserReceiver {
 		factory.setUsername("test");
 		factory.setPassword("test");
 		// Currently this is the hard coded address of the host.
-		factory.setHost("10.226.102.1");
+		factory.setHost(InetAddress.getLocalHost().getHostAddress());
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 
