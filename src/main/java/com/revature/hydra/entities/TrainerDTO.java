@@ -2,13 +2,14 @@ package com.revature.hydra.entities;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.util.Date;
 
 public class TrainerDTO {
 
-	private LocalDateTime time;
+	private Timestamp time;
 
-	private TrainerUser tu;
+	private TrainerUser trainerUser;
 
 	private String sender;
 
@@ -21,8 +22,8 @@ public class TrainerDTO {
 
 	public TrainerDTO(TrainerUser tu, String Type) {
 		super();
-		this.time = LocalDateTime.now();
-		this.tu = tu;
+		this.time = new Timestamp(new Date().getTime());
+		this.trainerUser = tu;
 		this.requestType = Type;
 		try {
 			this.sender = InetAddress.getLocalHost().getHostAddress();
@@ -31,20 +32,28 @@ public class TrainerDTO {
 		}
 	}
 
-	public LocalDateTime getTime() {
+	public TrainerDTO(Timestamp time, TrainerUser tu, String sender, String requestType) {
+		super();
+		this.time = time;
+		this.trainerUser = tu;
+		this.sender = sender;
+		this.requestType = requestType;
+	}
+
+	public Timestamp getTime() {
 		return time;
 	}
 
-	public void setTime(LocalDateTime time) {
+	public void setTime(Timestamp time) {
 		this.time = time;
 	}
 
-	public TrainerUser getTu() {
-		return tu;
+	public TrainerUser getTrainerUser() {
+		return trainerUser;
 	}
 
-	public void setTu(TrainerUser tu) {
-		this.tu = tu;
+	public void setTrainerUser(TrainerUser tu) {
+		this.trainerUser = tu;
 	}
 
 	public String getSender() {

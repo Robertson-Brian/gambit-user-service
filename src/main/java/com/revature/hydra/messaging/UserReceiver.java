@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.concurrent.TimeoutException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -13,6 +15,10 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+import com.revature.hydra.entities.TraineeDTO;
+import com.revature.hydra.entities.TrainerDTO;
+import com.revature.hydra.services.TraineeService;
+import com.revature.hydra.services.TrainerService;
 
 /**
  * 
@@ -47,6 +53,14 @@ public class UserReceiver {
 		}
 	}
 
+	private ObjectMapper om = new ObjectMapper();
+
+	@Autowired
+	private TrainerService trainerService;
+
+	@Autowired
+	private TraineeService traineeService;
+
 	private static final String TRAINEE_EXCHANGE_NAME = "hydra.trainee.exchange";
 	private static final String TRAINER_EXCHANGE_NAME = "hydra.trainer.exchange";
 
@@ -77,6 +91,17 @@ public class UserReceiver {
 					byte[] body) throws IOException {
 				String message = new String(body, "UTF-8");
 				System.out.println(" [x] Trainer Received '" + message + "'");
+				TrainerDTO trainer = om.readValue(message, TrainerDTO.class);
+				if (trainer.getSender().equals(InetAddress.getLocalHost().getHostAddress())) {
+					System.out.println(":^)");
+				} else {
+					if (trainer.getRequestType().equals("PUT")) {
+						trainerService.update(trainer.getTrainerUser());
+					}
+					if (trainer.getRequestType().equals("POST")) {
+						trainerService.newTrainer(trainer.getTrainerUser());
+					}
+				}
 			}
 		};
 		channel.basicConsume(queueName, true, consumer);
@@ -109,6 +134,19 @@ public class UserReceiver {
 					byte[] body) throws IOException {
 				String message = new String(body, "UTF-8");
 				System.out.println(" [x] Trainee Received '" + message + "'");
+				TraineeDTO trainee = om.readValue(message, TraineeDTO.class);
+				if (trainee.getSender().equals(InetAddress.getLocalHost().getHostAddress())) {
+					System.out.println(":^)");
+				} else {
+					if (trainee.getRequestType().equals("PUT")) {
+						traineeService.update(trainee.getTrainee());
+					}
+					if (trainee.getRequestType().equals("POST")) {
+						// gets the trainee object from the wrapper object
+						traineeService.save(trainee.getTrainee());
+					}
+				}
+
 			}
 		};
 		channel.basicConsume(queueName, true, consumer);
