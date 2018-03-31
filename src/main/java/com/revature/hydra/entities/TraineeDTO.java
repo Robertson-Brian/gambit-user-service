@@ -17,7 +17,6 @@ public class TraineeDTO {
 
 	public TraineeDTO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public TraineeDTO(Trainee t, String type) {
@@ -74,7 +73,7 @@ public class TraineeDTO {
 
 	@Override
 	public String toString() {
-		return "TraineeDTO [time=" + time + ", t=" + t + ", sender=" + sender + "]";
+		return "TraineeDTO [time=" + time + ", trainee=" + trainee + ", sender=" + sender + "]";
 	}
 
 }

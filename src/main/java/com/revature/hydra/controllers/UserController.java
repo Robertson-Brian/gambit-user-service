@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.hydra.entities.User;
-import com.revature.hydra.messaging.UserReceiver;
-import com.revature.hydra.messaging.UserSender;
 import com.revature.hydra.services.UserService;
 
 /**
@@ -30,19 +28,13 @@ import com.revature.hydra.services.UserService;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(value = "users", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
 	private static final Logger log = Logger.getLogger(UserController.class);
 
 	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private UserReceiver ur;
-
-	@Autowired
-	private UserSender us;
 
 	/**
 	 * Creates a new User.
