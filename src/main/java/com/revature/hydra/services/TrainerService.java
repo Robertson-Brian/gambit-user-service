@@ -58,8 +58,7 @@ public class TrainerService {
 		log.info("Trainer Id: " + trainerId);
 		BatchTrainer bt = trainerRepository.findByTrainerId(trainerId);
 		User u = userRepo.findByUserId(bt.getUserId());
-		TrainerUser result = ClassUtil.merge(u, bt);
-		return result;
+		return new TrainerUser(u, bt);
 	}
 
 	/**
@@ -82,7 +81,7 @@ public class TrainerService {
 		bt.setUserId(persisted.getUserId());
 		bt.setTrainerId(0);
 		BatchTrainer saved = trainerRepository.save(bt);
-		TrainerUser result = ClassUtil.merge(persisted, saved);
+		TrainerUser result = new TrainerUser(persisted, saved);
 		return result;
 	}
 
@@ -99,7 +98,7 @@ public class TrainerService {
 		bt.setUserId(u.getUserId());
 		bt.setTitle(tu.getTitle());
 		bt.setTrainerId(0);
-		return ClassUtil.merge(u, bt);
+		return new TrainerUser(u, bt);
 	}
 
 	/**
@@ -117,7 +116,7 @@ public class TrainerService {
 		User persisted = userRepo.save(u);
 		bt.setTitle(tu.getTitle());
 		BatchTrainer ret = trainerRepository.save(bt);
-		TrainerUser result = ClassUtil.merge(persisted, ret);
+		TrainerUser result = new TrainerUser(persisted, ret);
 		return result;
 	}
 
@@ -131,7 +130,7 @@ public class TrainerService {
 	public TrainerUser findTrainerByEmail(String email) {
 		User u = userRepo.findByEmail(email);
 		BatchTrainer bt = trainerRepository.findByUserId(u.getUserId());
-		return ClassUtil.merge(u, bt);
+		return new TrainerUser(u, bt);
 	}
 
 	public List<String> allTitles() {
@@ -149,7 +148,7 @@ public class TrainerService {
 		List<BatchTrainer> allTrainers = trainerRepository.findAll();
 		List<TrainerUser> result = new ArrayList<TrainerUser>();
 		for (BatchTrainer b : allTrainers) {
-			result.add(ClassUtil.merge(userRepo.findByUserId(b.getUserId()), b));
+			result.add(new TrainerUser(userRepo.findByUserId(b.getUserId()), b));
 		}
 		return result;
 	}
@@ -157,7 +156,7 @@ public class TrainerService {
 	public TrainerUser findByName(String firstName, String lastName) {
 		User u = userService.findByName(firstName, lastName);
 		BatchTrainer bt = trainerRepository.findByUserId(u.getUserId());
-		return ClassUtil.merge(u, bt);
+		return new TrainerUser(u, bt);
 	}
 
 }
