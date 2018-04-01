@@ -28,7 +28,7 @@ import com.revature.hydra.services.UserService;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = "trainers", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class TrainerController {
 
 	private static final Logger log = Logger.getLogger(TrainerController.class);
