@@ -28,7 +28,7 @@ import com.revature.hydra.services.TraineeService;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "trainees", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TraineeController {
 	private static final Logger log = Logger.getLogger(TraineeController.class);
 
@@ -50,7 +50,7 @@ public class TraineeController {
 	// @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER', 'STAGING', 'PANEL')")
 	public ResponseEntity<List<Trainee>> findAllByBatchAndStatus(@PathVariable Integer id,
 			@PathVariable String status) {
-		log.info("Finding trainees for batch: " + id + "with status: " + status);
+		log.info("Finding trainees for batch: " + id + " with status: " + status);
 		List<Trainee> trainees = traineeService.findAllByBatchAndStatus(id, status);
 		return new ResponseEntity<>(trainees, HttpStatus.OK);
 	}
