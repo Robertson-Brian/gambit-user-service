@@ -64,8 +64,7 @@ public class TrainerService {
 		log.info("Trainer Id: " + trainerId);
 		Trainer bt = trainerRepository.findByTrainerId(trainerId);
 		User u = userRepo.findByUserId(bt.getUserId());
-		TrainerUser result = ClassUtil.merge(u, bt);
-		return result;
+		return new TrainerUser(u, bt);
 	}
 
 	/**
@@ -112,7 +111,7 @@ public class TrainerService {
 		bt.setUserId(u.getUserId());
 		bt.setTitle(tu.getTitle());
 		bt.setTrainerId(0);
-		return ClassUtil.merge(u, bt);
+		return new TrainerUser(u, bt);
 	}
 
 	/**
@@ -138,7 +137,6 @@ public class TrainerService {
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 		}
-
 		return result;
 	}
 
