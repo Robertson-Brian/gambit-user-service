@@ -1,7 +1,9 @@
 package com.revature.hydra.services;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.log4j.Logger;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -10,9 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.hydra.entities.BatchTrainer;
+import com.revature.hydra.entities.Trainer;
 import com.revature.hydra.entities.TrainerUser;
 import com.revature.hydra.entities.User;
+import com.revature.hydra.messaging.UserSender;
 import com.revature.hydra.repo.TrainerRepository;
 import com.revature.hydra.repo.UserRepository;
 import com.revature.hydra.util.ClassUtil;
@@ -26,12 +29,15 @@ public class TrainerService {
 
 	@Autowired
 	public TrainerRepository trainerRepository;
-	
+
 	@Autowired
 	private UserRepository userRepo;
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private UserSender us;
 
 	private static final Logger log = Logger.getLogger(TrainerService.class);
 
@@ -43,7 +49,7 @@ public class TrainerService {
 	 * @return
 	 */
 	public void delete(Integer id) {
-		BatchTrainer bt = trainerRepository.findByTrainerId(id);
+		Trainer bt = trainerRepository.findByTrainerId(id);
 		userService.delete(bt.getUserId());
 	}
 
@@ -56,7 +62,7 @@ public class TrainerService {
 	 */
 	public TrainerUser findById(Integer trainerId) {
 		log.info("Trainer Id: " + trainerId);
-		BatchTrainer bt = trainerRepository.findByTrainerId(trainerId);
+		Trainer bt = trainerRepository.findByTrainerId(trainerId);
 		User u = userRepo.findByUserId(bt.getUserId());
 		return new TrainerUser(u, bt);
 	}
@@ -74,14 +80,21 @@ public class TrainerService {
 		BeanUtils.copyProperties(tu, u);
 		u.setRole(tu.getRole());
 		log.info("Persisting user with the following credentials: " + u.toString());
-		BatchTrainer bt = new BatchTrainer();
+		Trainer bt = new Trainer();
 		bt.setTitle(tu.getTitle());
 		log.info("Setting that user to be a trainer with title: " + bt.getTitle());
 		User persisted = userRepo.save(u);
 		bt.setUserId(persisted.getUserId());
 		bt.setTrainerId(0);
-		BatchTrainer saved = trainerRepository.save(bt);
-		TrainerUser result = new TrainerUser(persisted, saved);
+		Trainer saved = trainerRepository.save(bt);
+		TrainerUser result = ClassUtil.merge(persisted, saved);
+		try {
+			us.sendTrainer(result, "POST");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
 		return result;
 	}
 
@@ -94,7 +107,7 @@ public class TrainerService {
 	 */
 	public TrainerUser promoteToTrainer(TrainerUser tu) {
 		User u = userRepo.findByUserId(tu.getUserId());
-		BatchTrainer bt = new BatchTrainer();
+		Trainer bt = new Trainer();
 		bt.setUserId(u.getUserId());
 		bt.setTitle(tu.getTitle());
 		bt.setTrainerId(0);
@@ -110,13 +123,20 @@ public class TrainerService {
 	 */
 	public TrainerUser update(TrainerUser tu) {
 		System.out.println(("The trainer id passed in is " + tu.getTrainerId()));
-		BatchTrainer bt = trainerRepository.findByTrainerId(tu.getTrainerId());
+		Trainer bt = trainerRepository.findByTrainerId(tu.getTrainerId());
 		User u = userService.findUserById((bt.getUserId()));
 		BeanUtils.copyProperties(tu, u, "userId");
 		User persisted = userRepo.save(u);
 		bt.setTitle(tu.getTitle());
-		BatchTrainer ret = trainerRepository.save(bt);
-		TrainerUser result = new TrainerUser(persisted, ret);
+		Trainer ret = trainerRepository.save(bt);
+		TrainerUser result = ClassUtil.merge(persisted, ret);
+		try {
+			us.sendTrainer(result, "PUT");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
 		return result;
 	}
 
@@ -129,8 +149,8 @@ public class TrainerService {
 	 */
 	public TrainerUser findTrainerByEmail(String email) {
 		User u = userRepo.findByEmail(email);
-		BatchTrainer bt = trainerRepository.findByUserId(u.getUserId());
-		return new TrainerUser(u, bt);
+		Trainer bt = trainerRepository.findByUserId(u.getUserId());
+		return ClassUtil.merge(u, bt);
 	}
 
 	public List<String> allTitles() {
@@ -145,18 +165,18 @@ public class TrainerService {
 	 * @return
 	 */
 	public List<TrainerUser> getAll() {
-		List<BatchTrainer> allTrainers = trainerRepository.findAll();
+		List<Trainer> allTrainers = trainerRepository.findAll();
 		List<TrainerUser> result = new ArrayList<TrainerUser>();
-		for (BatchTrainer b : allTrainers) {
-			result.add(new TrainerUser(userRepo.findByUserId(b.getUserId()), b));
+		for (Trainer b : allTrainers) {
+			result.add(ClassUtil.merge(userRepo.findByUserId(b.getUserId()), b));
 		}
 		return result;
 	}
 
 	public TrainerUser findByName(String firstName, String lastName) {
 		User u = userService.findByName(firstName, lastName);
-		BatchTrainer bt = trainerRepository.findByUserId(u.getUserId());
-		return new TrainerUser(u, bt);
+		Trainer bt = trainerRepository.findByUserId(u.getUserId());
+		return ClassUtil.merge(u, bt);
 	}
 
 }

@@ -3,7 +3,6 @@ package com.revature.hydra.entities;
 import org.springframework.beans.BeanUtils;
 
 public class TrainerUser {
-
 	private Integer userId;
 	private String firstName;
 	private String middleName;
@@ -20,10 +19,9 @@ public class TrainerUser {
 
 	public TrainerUser() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public TrainerUser(User u, BatchTrainer bt) {
+	public TrainerUser(User u, Trainer bt) {
 		BeanUtils.copyProperties(bt, this);
 		BeanUtils.copyProperties(u, this);
 	}

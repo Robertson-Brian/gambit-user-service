@@ -16,7 +16,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -26,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * The type Trainee
  */
 @Entity
-@Table(name = "Trainee")
+@Table(name = "HYDRA_TRAINEE")
 public class Trainee implements Serializable {
 	private static final long serialVersionUID = -9090223980655307018L;
 
@@ -35,10 +34,11 @@ public class Trainee implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "TRAINEE_ID_SEQUENCE")
 	@SequenceGenerator(name = "TRAINEE_ID_SEQUENCE", sequenceName = "TRAINEE_ID_SEQUENCE")
 	private int traineeId;
-	
-	//@Transient
-	//@OneToMany(mappedBy = "TRAINEE_BATCH")
-//	@Formula("select TRAINEE_BATCH.BATCH_ID from TRAINEE_BATCH where TRAINEE_BATCH.TRAINEE_ID = TRAINEE_ID")
+
+	// @Transient
+	// @OneToMany(mappedBy = "TRAINEE_BATCH")
+	// @Formula("select TRAINEE_BATCH.BATCH_ID from TRAINEE_BATCH where
+	// TRAINEE_BATCH.TRAINEE_ID = TRAINEE_ID")
 	@OneToMany(mappedBy = "traineeId", fetch = FetchType.EAGER)
 	private List<TraineeBatch> batches;
 
