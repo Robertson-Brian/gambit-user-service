@@ -50,13 +50,14 @@ public class TraineeController {
 	// @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER', 'STAGING', 'PANEL')")
 	public ResponseEntity<List<Trainee>> findAllByBatchAndStatus(@PathVariable Integer id,
 			@PathVariable String status) {
-		log.info("Finding trainees for batch: " + id + " with status: " + status);
+		log.info("Trainee Controller received request: Finding trainees for batch: " + id + " with status: " + status);
 		List<Trainee> trainees = traineeService.findAllByBatchAndStatus(id, status);
 		return new ResponseEntity<>(trainees, HttpStatus.OK);
 	}
 	
 	@GetMapping
 	public ResponseEntity<List<Trainee>> getAll() {
+		log.info("Trainee Controller received request: getAll trainees");
 		List<Trainee> trainees = traineeService.getAll();
 		return new ResponseEntity<List<Trainee>>(trainees, HttpStatus.OK);
 	}
@@ -72,7 +73,7 @@ public class TraineeController {
 	@PostMapping
 	// @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER', 'PANEL')")
 	public ResponseEntity<Trainee> createTrainee(@RequestBody Trainee trainee) {
-		log.info("Saving trainee: " + trainee);
+		log.info("Trainee Controller received request: Creating trainee: " + trainee);
 		traineeService.save(trainee);
 		return new ResponseEntity<>(trainee, HttpStatus.CREATED);
 	}
@@ -88,7 +89,7 @@ public class TraineeController {
 	@PutMapping
 	// @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER','PANEL')")
 	public ResponseEntity<Void> updateTrainee(@RequestBody Trainee trainee) {
-		log.info("Updating trainee: " + trainee);
+		log.info("Trainee Controller received request: Updating trainee: " + trainee);
 		traineeService.update(trainee);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -107,7 +108,7 @@ public class TraineeController {
 	public ResponseEntity<Void> deleteTrainee(@PathVariable Integer traineeId) {
 		Trainee trainee = new Trainee();
 		trainee.setTraineeId(traineeId);
-		log.info("Deleting trainee: " + traineeId);
+		log.info("Trainee Controller received request: Deleting trainee: " + traineeId);
 		traineeService.delete(trainee);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
