@@ -5,6 +5,7 @@ security:
     enabled: false
 eureka:
   instance:
+    preferIpAddress: true
     leaseRenewalIntervalInSeconds: 1
     leaseExpirationDurationInSeconds: 2
   client:
@@ -32,5 +33,3 @@ spring:
     port: 5672
     username: guest
     password: guest
-  application:
-    name: user-service
