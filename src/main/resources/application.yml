@@ -5,6 +5,7 @@ security:
     enabled: false
 eureka:
   instance:
+    preferIpAddress: true
     leaseRenewalIntervalInSeconds: 1
     leaseExpirationDurationInSeconds: 2
   client:

@@ -44,7 +44,7 @@ public class UserController {
 	 */
 	@PostMapping
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-		log.info("Saving trainer: " + user);
+		log.info("User Controller received request: create User: " + user);
 		User persisted = userService.makeUser(user);
 		return new ResponseEntity<>(persisted, HttpStatus.CREATED);
 	}
@@ -57,7 +57,7 @@ public class UserController {
 	 */
 	@PutMapping
 	public ResponseEntity<Void> updateUser(@Valid @RequestBody User user) {
-		log.info("Updating user " + user);
+		log.info("User Controller received request: Update user " + user);
 		userService.update(user);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
@@ -72,7 +72,7 @@ public class UserController {
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> findUserByEmail(@PathVariable String email) {
 		log.info(email);
-		log.info("Finding user by email of " + email);
+		log.info("User Controller received request: Find user by email: " + email);
 		User user = userService.findUserByEmail(email);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
@@ -85,7 +85,7 @@ public class UserController {
 	 */
 	@DeleteMapping
 	public ResponseEntity<Void> makeInactive(@RequestBody User user) {
-		log.info("Updating user: " + user);
+		log.info("User Controller received request: Updating user: " + user);
 		user.setRole("INACTIVE");
 		userService.update(user);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -98,7 +98,7 @@ public class UserController {
 	 */
 	@GetMapping("roles")
 	public ResponseEntity<List<String>> getAllUserRoles() {
-		log.info("Fetching all user roles");
+		log.info("User Controller received request: Fetching all user roles");
 		List<String> roles = userService.getAllRoles();
 		return new ResponseEntity<>(roles, HttpStatus.OK);
 
@@ -111,7 +111,7 @@ public class UserController {
 	 */
 	@GetMapping
 	public ResponseEntity<List<User>> getAllUsers() {
-		log.info("Viewing all users");
+		log.info("User Controller received request: get all users");
 		List<User> userList = userService.getAllUsers();
 		return new ResponseEntity<>(userList, HttpStatus.OK);
 
@@ -125,7 +125,7 @@ public class UserController {
 	 */
 	@GetMapping("id/{id}")
 	public ResponseEntity<User> findUserById(@PathVariable Integer id) {
-		log.info("Fetching user based on id.");
+		log.info("User Controller received request: find user by id.");
 		User user = userService.findUserById(id);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
@@ -140,6 +140,7 @@ public class UserController {
 	@GetMapping("name/{firstName}/{lastName}")
 	public ResponseEntity<User> findByName(@PathVariable("firstName") String firstName,
 			@PathVariable("lastName") String lastName) {
+		log.info("User Controller received request: find user by name");
 		User user = userService.findByName(firstName, lastName);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
