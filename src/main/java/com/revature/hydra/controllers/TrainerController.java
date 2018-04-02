@@ -28,7 +28,7 @@ import com.revature.hydra.services.UserService;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value= "trainers", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "trainers", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TrainerController {
 
 	private static final Logger log = Logger.getLogger(TrainerController.class);
@@ -39,22 +39,27 @@ public class TrainerController {
 	@Autowired
 	private UserService userService;
 
+	/**
+	 * 
+	 * @return a List<String> containing the different possibly user roles
+	 */
 	@GetMapping("roles")
 	public ResponseEntity<List<String>> getAllUserRoles() {
-		log.info("Fetching all user roles");
+		log.info("Trainer Controller received request: Fetching all user roles");
 		List<String> roles = userService.getAllRoles();
 		return new ResponseEntity<>(roles, HttpStatus.OK);
-
 	}
-	
+  
+  
 	/**
 	 * Creates a new Trainer
 	 * 
-	 * @param tu
-	 * @return
+	 * @param TrainerUser - the TrainerUser used to create the trainer and corresponding user
+	 * @return the trainerUser object and http status 200
 	 */
 	@PostMapping
 	public ResponseEntity<TrainerUser> makeTrainer(@RequestBody TrainerUser tu) {
+		log.info("Trainer Controller received request: create Trainer");
 		TrainerUser t = trainerService.newTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
@@ -62,11 +67,15 @@ public class TrainerController {
 	/**
 	 * Promotes User to Trainer.
 	 * 
-	 * @param tu
-	 * @return
+	 * Users can be trainees or trainers.
+	 * This function is used to create a TrainerUser object from a trainer
+	 * 
+	 * @param TrainerUser - contains the user information
+	 * @return new TrainerUser created
 	 */
 	@PostMapping(value = "promote")
 	public ResponseEntity<TrainerUser> promote(@RequestBody TrainerUser tu) {
+		log.info("Trainer Controller received request: promote to Trainer");
 		TrainerUser t = trainerService.promoteToTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 
@@ -75,11 +84,12 @@ public class TrainerController {
 	/**
 	 * Update Trainer information.
 	 * 
-	 * @param tu
-	 * @return
+	 * @param TrainerUser to be updated
+	 * @return the updated TrainerUser
 	 */
 	@PutMapping
 	public ResponseEntity<TrainerUser> updateTrainer(@RequestBody TrainerUser tu) {
+		log.info("Trainer Controller received request: update Trainer");
 		TrainerUser t = trainerService.update(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
@@ -87,49 +97,48 @@ public class TrainerController {
 	/**
 	 * Finds Trainer by email.
 	 * 
-	 * @param email
-	 * @return
+	 * @param email to find by
+	 * @return requested TrainerUser
 	 */
-
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TrainerUser> findTrainerByEmail(@PathVariable String email) {
-		log.info(email);
-		log.info("Finding trainer by email of " + email);
-		TrainerUser user = trainerService.findTrainerByEmail(email);
-		return new ResponseEntity<>(user, HttpStatus.OK);
+		log.info("Trainer Controller received request: Finding trainer by email of " + email);
+		TrainerUser tUser = trainerService.findTrainerByEmail(email);
+		return new ResponseEntity<>(tUser, HttpStatus.OK);
 	}
 
 	/**
 	 * Retrieve Trainer by Id
 	 * 
-	 * @param id
-	 * @return
+	 * @param id of trainer
+	 * @return TrainerUser of requested trainer
 	 */
-
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TrainerUser> findTrainerById(@PathVariable("id") Integer id) {
-		log.info("Fetching trainer base on id.");
+		log.info("Trainer Controller received request: findTrainerById");
 		return new ResponseEntity<TrainerUser>(trainerService.findById(id), HttpStatus.OK);
 	}
 
 	/**
 	 * Retrieve all titles.
 	 * 
-	 * @return
+	 * @return List<String> of the titles
 	 */
-
 	@GetMapping(value = "/titles")
 	public ResponseEntity<List<String>> getTitles() {
+		log.info("Trainer Controller received request: getTitles");
 		List<String> titles = trainerService.allTitles();
 		return new ResponseEntity<List<String>>(titles, HttpStatus.OK);
 	}
 
 	/**
 	 * Deactivates the User account associated with the given TrainerId.
+	 * 
+	 * @return Http status 200
 	 */
-
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id") Integer id) {
+		log.info("Trainer Controller received request: deleteByTrainerId");
 		trainerService.delete(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
@@ -137,10 +146,11 @@ public class TrainerController {
 	/**
 	 * Retrieve all trainers.
 	 * 
-	 * @return
+	 * @return List<TrainerUser> of all trainers
 	 */
 	@GetMapping
-	public ResponseEntity<List<TrainerUser>> getAllTrainers() {
+	public ResponseEntity<List<TrainerUser>> getAll() {
+		log.info("Trainer Controller received request: getAll");
 		List<TrainerUser> allTrainers = trainerService.getAll();
 		return new ResponseEntity<List<TrainerUser>>(allTrainers, HttpStatus.OK);
 	}
@@ -148,11 +158,14 @@ public class TrainerController {
 	/**
 	 * Finds a user by unique firstname/lastname combination. This needs further
 	 * thought.
+	 * 
+	 * @param first name and last name to search by
+	 * @return TrainerUser with the requested name
 	 */
-
 	@GetMapping("name/{firstName}/{lastName}")
 	public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName") String firstName,
 			@PathVariable("lastName") String lastName) {
+		log.info("Trainer Controller received request: findByName");
 		TrainerUser trainer = trainerService.findByName(firstName, lastName);
 		return new ResponseEntity<TrainerUser>(trainer, HttpStatus.OK);
 	}

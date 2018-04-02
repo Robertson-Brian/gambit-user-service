@@ -5,11 +5,12 @@ security:
     enabled: false
 eureka:
   instance:
+    preferIpAddress: true
     leaseRenewalIntervalInSeconds: 1
     leaseExpirationDurationInSeconds: 2
   client:
     serviceUrl:
-      defaultZone: http://192.168.0.20:8761/eureka
+      defaultZone: http://10.226.124.149:8761/eureka
 spring:
   application:
     name: user-service
