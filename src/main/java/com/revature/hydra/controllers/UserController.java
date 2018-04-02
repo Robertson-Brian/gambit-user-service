@@ -39,8 +39,8 @@ public class UserController {
 	/**
 	 * Creates a new User.
 	 * 
-	 * @param user
-	 * @return
+	 * @param user object to create
+	 * @return created user and http status CREATED.
 	 */
 	@PostMapping
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
@@ -52,8 +52,8 @@ public class UserController {
 	/**
 	 * Update User information.
 	 * 
-	 * @param user
-	 * @return
+	 * @param User to update
+	 * @return http status success but no content
 	 */
 	@PutMapping
 	public ResponseEntity<Void> updateUser(@Valid @RequestBody User user) {
@@ -66,8 +66,8 @@ public class UserController {
 	/**
 	 * Finds the user by matching email address.
 	 * 
-	 * @param email
-	 * @return
+	 * @param email to search by
+	 * @return user with requested email and status OK
 	 */
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> findUserByEmail(@PathVariable String email) {
@@ -80,8 +80,8 @@ public class UserController {
 	/**
 	 * Change User role to inactive.
 	 * 
-	 * @param user
-	 * @return
+	 * @param user to deactivate
+	 * @return http status NO_CONTENT
 	 */
 	@DeleteMapping
 	public ResponseEntity<Void> makeInactive(@RequestBody User user) {
@@ -94,7 +94,7 @@ public class UserController {
 	/**
 	 * Get all User roles.
 	 * 
-	 * @return
+	 * @return List<String> of all the roles a User can be.
 	 */
 	@GetMapping("roles")
 	public ResponseEntity<List<String>> getAllUserRoles() {
@@ -107,7 +107,7 @@ public class UserController {
 	/**
 	 * Retrieves all users from the User table.
 	 * 
-	 * @return
+	 * @return List<user> of all users
 	 */
 	@GetMapping
 	public ResponseEntity<List<User>> getAllUsers() {
@@ -120,8 +120,8 @@ public class UserController {
 	/**
 	 * Finds an User by Id.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id of user to find
+	 * @return user with the given id
 	 */
 	@GetMapping("id/{id}")
 	public ResponseEntity<User> findUserById(@PathVariable Integer id) {
@@ -135,7 +135,7 @@ public class UserController {
 	 * 
 	 * @param firstName
 	 * @param lastName
-	 * @return
+	 * @return user with the associated first/last name
 	 */
 	@GetMapping("name/{firstName}/{lastName}")
 	public ResponseEntity<User> findByName(@PathVariable("firstName") String firstName,

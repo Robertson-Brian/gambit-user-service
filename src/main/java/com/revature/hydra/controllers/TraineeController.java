@@ -23,7 +23,7 @@ import com.revature.hydra.services.TraineeService;
 /**
  * Handles all Janus requests for Trainee resources.
  *
- * @author Charles Courtois
+ * @author Charles Courtois (Blake 1801)
  *
  */
 @RestController
@@ -37,13 +37,16 @@ public class TraineeController {
 
 	/**
 	 * Returns all trainees from a batch that has the input batch id and input
-	 * status. Merged two old endpoints into this one. The old endpoint urls were
-	 * "/all/trainee" and "/all/trainee/dropped", in Caliber the old urls were
+	 * status. 
+	 * Merged two old endpoints into this one. The old endpoint urls were:
+	 * "/all/trainee" and "/all/trainee/dropped".
+	 * 
+	 * In Caliber the old urls were:
 	 * "${context}all/trainee?batch=${batchId}" and
 	 * "${context}all/trainee/dropped?batch=${batchId}".
 	 * 
-	 * @param batchId
-	 *            - id of the batch desired.
+	 * @param batchId - id of the batch desired.
+	 * 		  status - status of trainees desired.
 	 * @return The list of trainees within that batch with the given batchId.
 	 */
 	@GetMapping("batch/{id}/status/{status}")
@@ -55,6 +58,10 @@ public class TraineeController {
 		return new ResponseEntity<>(trainees, HttpStatus.OK);
 	}
 	
+	/**
+	 * 
+	 * @return a List of all trainees
+	 */
 	@GetMapping
 	public ResponseEntity<List<Trainee>> getAll() {
 		log.info("Trainee Controller received request: getAll trainees");
@@ -63,8 +70,9 @@ public class TraineeController {
 	}
 
 	/**
-	 * Creates a new trainee. The old endpoint url was "/all/trainee/create", in
-	 * Caliber the old url was "${context}all/trainee/create".
+	 * Creates a new trainee. 
+	 * The old endpoint url was: "/all/trainee/create"
+	 * In Caliber the old url was: "${context}all/trainee/create".
 	 * 
 	 * @param trainee
 	 *            - the trainee to be created.
@@ -79,8 +87,10 @@ public class TraineeController {
 	}
 
 	/**
-	 * Updates the given trainee. The old endpoint url was "/all/trainee/update", in
-	 * Caliber the old url was "${context}all/trainee/update".
+	 * Updates the given trainee. 
+	 * 
+	 * The old endpoint url was: "/all/trainee/update"
+	 * in Caliber the old url was: "${context}all/trainee/update".
 	 * 
 	 * @param trainee
 	 *            - the trainee to be updated.
@@ -95,9 +105,10 @@ public class TraineeController {
 	}
 
 	/**
-	 * Deletes the given trainee. The old endpoint url was
-	 * "/all/trainee/delete/{id}", in Caliber the old url was
-	 * "${context}all/trainee/delete/${traineeId}"
+	 * Deletes the given trainee. 
+	 * 
+	 * The old endpoint url was: "/all/trainee/delete/{id}"
+	 * In Caliber the old url was: "${context}all/trainee/delete/${traineeId}"
 	 *
 	 * @param traineeId
 	 *            - the id of the trainee to delete
