@@ -41,18 +41,11 @@ public class TrainerController {
 
 	@GetMapping("roles")
 	public ResponseEntity<List<String>> getAllUserRoles() {
-		log.info("Fetching all user roles");
+		log.info("Trainer Controller received request: Fetching all user roles");
 		List<String> roles = userService.getAllRoles();
 		return new ResponseEntity<>(roles, HttpStatus.OK);
 
 	}
-
-	/**
-	 * Creates a new User.
-	 * 
-	 * @param user
-	 * @return
-	 */
 
 	/**
 	 * Creates a new Trainer
@@ -62,6 +55,7 @@ public class TrainerController {
 	 */
 	@PostMapping
 	public ResponseEntity<TrainerUser> makeTrainer(@RequestBody TrainerUser tu) {
+		log.info("Trainer Controller received request: create Trainer");
 		TrainerUser t = trainerService.newTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
@@ -74,6 +68,7 @@ public class TrainerController {
 	 */
 	@PostMapping(value = "promote")
 	public ResponseEntity<TrainerUser> promote(@RequestBody TrainerUser tu) {
+		log.info("Trainer Controller received request: promote to Trainer");
 		TrainerUser t = trainerService.promoteToTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 
@@ -87,6 +82,7 @@ public class TrainerController {
 	 */
 	@PutMapping
 	public ResponseEntity<TrainerUser> updateTrainer(@RequestBody TrainerUser tu) {
+		log.info("Trainer Controller received request: update Trainer");
 		TrainerUser t = trainerService.update(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
@@ -97,11 +93,9 @@ public class TrainerController {
 	 * @param email
 	 * @return
 	 */
-
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TrainerUser> findTrainerByEmail(@PathVariable String email) {
-		log.info(email);
-		log.info("Finding trainer by email of " + email);
+		log.info("Trainer Controller received request: Finding trainer by email of " + email);
 		TrainerUser user = trainerService.findTrainerByEmail(email);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
@@ -112,10 +106,9 @@ public class TrainerController {
 	 * @param id
 	 * @return
 	 */
-
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TrainerUser> findTrainerById(@PathVariable("id") Integer id) {
-		log.info("Fetching trainer base on id.");
+		log.info("Trainer Controller received request: findTrainerById");
 		return new ResponseEntity<TrainerUser>(trainerService.findById(id), HttpStatus.OK);
 	}
 
@@ -124,9 +117,9 @@ public class TrainerController {
 	 * 
 	 * @return
 	 */
-
 	@GetMapping(value = "/titles")
 	public ResponseEntity<List<String>> getTitles() {
+		log.info("Trainer Controller received request: getTitles");
 		List<String> titles = trainerService.allTitles();
 		return new ResponseEntity<List<String>>(titles, HttpStatus.OK);
 	}
@@ -134,9 +127,9 @@ public class TrainerController {
 	/**
 	 * Deactivates the User account associated with the given TrainerId.
 	 */
-
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id") Integer id) {
+		log.info("Trainer Controller received request: deleteByTrainerId");
 		trainerService.delete(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
@@ -148,6 +141,7 @@ public class TrainerController {
 	 */
 	@GetMapping
 	public ResponseEntity<List<TrainerUser>> getAll() {
+		log.info("Trainer Controller received request: getAll");
 		List<TrainerUser> allTrainers = trainerService.getAll();
 		return new ResponseEntity<List<TrainerUser>>(allTrainers, HttpStatus.OK);
 	}
@@ -156,10 +150,10 @@ public class TrainerController {
 	 * Finds a user by unique firstname/lastname combination. This needs further
 	 * thought.
 	 */
-
 	@GetMapping("name/{firstName}/{lastName}")
 	public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName") String firstName,
 			@PathVariable("lastName") String lastName) {
+		log.info("Trainer Controller received request: findByName");
 		TrainerUser trainer = trainerService.findByName(firstName, lastName);
 		return new ResponseEntity<TrainerUser>(trainer, HttpStatus.OK);
 	}
