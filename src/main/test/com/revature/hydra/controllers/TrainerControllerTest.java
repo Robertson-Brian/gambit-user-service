@@ -31,20 +31,21 @@ public class TrainerControllerTest {
 	static String json = "";
 	static ObjectMapper om = new ObjectMapper();
 	static ObjectWriter ow = om.writer().withDefaultPrettyPrinter();
-	static String email = "nota17@real.email";
+	static String email = "nota20@real.email";//must be constantly changed to obey unique constraint
 	
 	
 	@LocalServerPort
 	private static int port = 8909;
 
+	//making a new traineruser prior to testing
 	@BeforeClass
 	public static void prepare() throws Exception {
 		RestAssured.port = port;
 		
 		tu.setUserId(-1);
-		tu.setFirstName("rlynewfName");
-		tu.setMiddleName("rlynewmName");
-		tu.setLastName("rlynewlName");
+		tu.setFirstName("verynewfName");
+		tu.setMiddleName("verynewmName");
+		tu.setLastName("verynewlName");
 		tu.setEmail(email);
 		tu.setPassword("password");
 		tu.setBackupPassword("badpassword");
@@ -55,6 +56,7 @@ public class TrainerControllerTest {
 		tu.setTitle("Senior Technical Manager");
 		tu.setTrainerId(-1);
 		
+		//save traineruser object as json
 		try {
 			json = ow.writeValueAsString(tu);
 		} catch (JsonProcessingException e) {
@@ -63,7 +65,8 @@ public class TrainerControllerTest {
 			e.printStackTrace();
 		}
 		
-		//creating traineruser object before testing
+		//doing post request before testing
+		//if fail, no tests will run
 		Response res = given().
 		body(json).
 		header("Content-Type", "application/json").
@@ -76,6 +79,7 @@ public class TrainerControllerTest {
 		extract().
 		response();
 		
+		//save modified objects (spring data will change the userId and trainerId)
 		try {
 			tu = om.readValue(res.asString(), TrainerUser.class);
 			json = ow.writeValueAsString(tu);
@@ -93,14 +97,6 @@ public class TrainerControllerTest {
 			e.printStackTrace();
 			}
 		}
-	
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
 
 	@Test
 	public void testGetAllUserRoles() {
@@ -115,46 +111,47 @@ public class TrainerControllerTest {
 		body("[3]", equalTo("INACTIVE")).
 		body("[4]", equalTo("Trainer"));
 	}
+
+	@Test
+	public void testMakeTrainer() {
+		log.warn("Testing makeTrainer");
+		
+		TrainerUser tu2 = new TrainerUser();
+		tu2.setUserId(-1);
+		tu2.setFirstName("testFName");
+		tu2.setMiddleName("testMName");
+		tu2.setLastName("testlName");
+		tu2.setEmail("test@test.test");
+		tu2.setPassword("testpass");
+		tu2.setBackupPassword("testbackuppass");
+		tu2.setRole("VP");
+		tu2.setHomePhone("999-867-5309");
+		tu2.setMobilePhone("111-111-1111");
+		tu2.setToken("token");
+		tu2.setTitle("Senior Technical Manager");
+		tu2.setTrainerId(-1);
+		
+		String thisJson = "";
+		try {
+			thisJson = ow.writeValueAsString(tu2);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			fail("Failed to convert to JSON");
+			e.printStackTrace();
+		}
+		
+		given().
+		body(thisJson).
+		header("Content-Type", "application/json").
+		post("trainers").
+		then().
+		statusCode(200).
+		contentType(equalTo("application/json;charset=UTF-8")).
+		body("userId", not(-1)).
+		body("trainerId", not(-1));
+	}
 	
-	
-//	@Test
-//	public void testMakeTrainer() {
-//		log.warn("Testing makeTrainer");
-//		
-//		try {
-//			json = ow.writeValueAsString(tu);
-//		} catch (JsonProcessingException e) {
-//			// TODO Auto-generated catch block
-//			fail("Failed to convert to JSON");
-//			e.printStackTrace();
-//		}
-//		
-//		Response res = given().
-//				body(json).
-//				header("Content-Type", "application/json").
-//				post("trainers").
-//				then().
-//				statusCode(200).
-//				contentType(equalTo("application/json;charset=UTF-8")).
-//				body("userId", not(-1)).
-//				body("trainerId", not(-1)).
-//				extract().
-//				response();
-//		
-//		try {
-//			tu = om.readValue(res.asString(), TrainerUser.class);
-//		} catch (JsonParseException e) {
-//			fail("Could not parse JSON");
-//			e.printStackTrace();
-//		} catch (JsonMappingException e) {
-//			fail("Could not map JSON to object");
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			fail("IO Exception");
-//			e.printStackTrace();
-//		}
-//	}
-	
+	//left untested due to a lack of need, but kept for future batches
 //	@Test
 //	public void testPromote() {
 //		try {
