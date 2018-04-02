@@ -28,7 +28,7 @@ import com.revature.hydra.services.UserService;
 
 @RestController
 @CrossOrigin
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value= "trainers", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TrainerController {
 
 	private static final Logger log = Logger.getLogger(TrainerController.class);
@@ -46,14 +46,7 @@ public class TrainerController {
 		return new ResponseEntity<>(roles, HttpStatus.OK);
 
 	}
-
-	/**
-	 * Creates a new User.
-	 * 
-	 * @param user
-	 * @return
-	 */
-
+	
 	/**
 	 * Creates a new Trainer
 	 * 
@@ -147,7 +140,7 @@ public class TrainerController {
 	 * @return
 	 */
 	@GetMapping
-	public ResponseEntity<List<TrainerUser>> getAll() {
+	public ResponseEntity<List<TrainerUser>> getAllTrainers() {
 		List<TrainerUser> allTrainers = trainerService.getAll();
 		return new ResponseEntity<List<TrainerUser>>(allTrainers, HttpStatus.OK);
 	}

@@ -28,7 +28,7 @@ import com.revature.hydra.services.TraineeService;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value="trainees", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TraineeController {
 	private static final Logger log = Logger.getLogger(TraineeController.class);
 
@@ -56,7 +56,7 @@ public class TraineeController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Trainee>> getAll() {
+	public ResponseEntity<List<Trainee>> getAllTrainees() {
 		List<Trainee> trainees = traineeService.getAll();
 		return new ResponseEntity<List<Trainee>>(trainees, HttpStatus.OK);
 	}
