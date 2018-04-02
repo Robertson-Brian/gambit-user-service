@@ -35,6 +35,7 @@ import io.restassured.response.Response;
 public class TraineeControllerTest {
 	Logger log = Logger.getRootLogger();
 	static Trainee tr = new Trainee();
+	static User u = new User();
 	static String json = "";
 	static ObjectMapper om = new ObjectMapper();
 	static ObjectWriter ow = om.writer().withDefaultPrettyPrinter();
@@ -66,7 +67,7 @@ public class TraineeControllerTest {
 		tr.setPanelInterviews("no really is this guy fired yet");
 		tr.setMarketingStatus("Unmarketable");
 		tr.setClient("No one");
-		tr.setEndClient("Someone take him off our hands");
+		tr.setEndClient("Someone take him off our hands");		
 		tr.setTraineeUserInfo(new User());
 		
 		//save traineruser object as json
