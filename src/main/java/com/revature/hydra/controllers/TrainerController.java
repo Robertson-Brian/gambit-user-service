@@ -49,7 +49,8 @@ public class TrainerController {
 		List<String> roles = userService.getAllRoles();
 		return new ResponseEntity<>(roles, HttpStatus.OK);
 	}
-
+  
+  
 	/**
 	 * Creates a new Trainer
 	 * 
