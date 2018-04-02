@@ -39,19 +39,22 @@ public class TrainerController {
 	@Autowired
 	private UserService userService;
 
+	/**
+	 * 
+	 * @return a List<String> containing the different possibly user roles
+	 */
 	@GetMapping("roles")
 	public ResponseEntity<List<String>> getAllUserRoles() {
 		log.info("Trainer Controller received request: Fetching all user roles");
 		List<String> roles = userService.getAllRoles();
 		return new ResponseEntity<>(roles, HttpStatus.OK);
-
 	}
 
 	/**
 	 * Creates a new Trainer
 	 * 
-	 * @param tu
-	 * @return
+	 * @param TrainerUser - the TrainerUser used to create the trainer and corresponding user
+	 * @return the trainerUser object and http status 200
 	 */
 	@PostMapping
 	public ResponseEntity<TrainerUser> makeTrainer(@RequestBody TrainerUser tu) {
@@ -63,8 +66,11 @@ public class TrainerController {
 	/**
 	 * Promotes User to Trainer.
 	 * 
-	 * @param tu
-	 * @return
+	 * Users can be trainees or trainers.
+	 * This function is used to create a TrainerUser object from a trainer
+	 * 
+	 * @param TrainerUser - contains the user information
+	 * @return new TrainerUser created
 	 */
 	@PostMapping(value = "promote")
 	public ResponseEntity<TrainerUser> promote(@RequestBody TrainerUser tu) {
@@ -77,8 +83,8 @@ public class TrainerController {
 	/**
 	 * Update Trainer information.
 	 * 
-	 * @param tu
-	 * @return
+	 * @param TrainerUser to be updated
+	 * @return the updated TrainerUser
 	 */
 	@PutMapping
 	public ResponseEntity<TrainerUser> updateTrainer(@RequestBody TrainerUser tu) {
@@ -90,21 +96,21 @@ public class TrainerController {
 	/**
 	 * Finds Trainer by email.
 	 * 
-	 * @param email
-	 * @return
+	 * @param email to find by
+	 * @return requested TrainerUser
 	 */
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TrainerUser> findTrainerByEmail(@PathVariable String email) {
 		log.info("Trainer Controller received request: Finding trainer by email of " + email);
-		TrainerUser user = trainerService.findTrainerByEmail(email);
-		return new ResponseEntity<>(user, HttpStatus.OK);
+		TrainerUser tUser = trainerService.findTrainerByEmail(email);
+		return new ResponseEntity<>(tUser, HttpStatus.OK);
 	}
 
 	/**
 	 * Retrieve Trainer by Id
 	 * 
-	 * @param id
-	 * @return
+	 * @param id of trainer
+	 * @return TrainerUser of requested trainer
 	 */
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TrainerUser> findTrainerById(@PathVariable("id") Integer id) {
@@ -115,7 +121,7 @@ public class TrainerController {
 	/**
 	 * Retrieve all titles.
 	 * 
-	 * @return
+	 * @return List<String> of the titles
 	 */
 	@GetMapping(value = "/titles")
 	public ResponseEntity<List<String>> getTitles() {
@@ -126,6 +132,8 @@ public class TrainerController {
 
 	/**
 	 * Deactivates the User account associated with the given TrainerId.
+	 * 
+	 * @return Http status 200
 	 */
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id") Integer id) {
@@ -137,7 +145,7 @@ public class TrainerController {
 	/**
 	 * Retrieve all trainers.
 	 * 
-	 * @return
+	 * @return List<TrainerUser> of all trainers
 	 */
 	@GetMapping
 	public ResponseEntity<List<TrainerUser>> getAll() {
@@ -149,6 +157,9 @@ public class TrainerController {
 	/**
 	 * Finds a user by unique firstname/lastname combination. This needs further
 	 * thought.
+	 * 
+	 * @param first name and last name to search by
+	 * @return TrainerUser with the requested name
 	 */
 	@GetMapping("name/{firstName}/{lastName}")
 	public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName") String firstName,
