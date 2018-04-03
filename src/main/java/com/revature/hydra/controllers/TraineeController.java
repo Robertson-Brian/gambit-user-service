@@ -27,7 +27,6 @@ import com.revature.hydra.services.TraineeService;
  *
  */
 @RestController
-@CrossOrigin
 @RequestMapping(value = "trainees", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TraineeController {
 	private static final Logger log = Logger.getLogger(TraineeController.class);
@@ -82,8 +81,8 @@ public class TraineeController {
 	// @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER', 'PANEL')")
 	public ResponseEntity<Trainee> createTrainee(@RequestBody Trainee trainee) {
 		log.info("Trainee Controller received request: Creating trainee: " + trainee);
-		traineeService.save(trainee);
-		return new ResponseEntity<>(trainee, HttpStatus.CREATED);
+		Trainee t = traineeService.save(trainee);
+		return new ResponseEntity<>(t, HttpStatus.CREATED);
 	}
 
 	/**

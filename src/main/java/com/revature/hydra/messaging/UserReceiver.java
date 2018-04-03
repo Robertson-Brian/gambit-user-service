@@ -76,7 +76,7 @@ public class UserReceiver {
 		factory.setPassword("test");
 		// Gets the address of the local machine
 		// Has not been tested on an EC2  04/02/2018
-		factory.setHost(InetAddress.getLocalHost().getHostAddress());
+		factory.setHost("10.226.124.149");
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 
@@ -129,7 +129,7 @@ public class UserReceiver {
 		factory.setPassword("test");
 		// Gets the address of the local machine
 		// Has not been tested on an EC2  04/02/2018
-		factory.setHost(InetAddress.getLocalHost().getHostAddress());
+		factory.setHost("10.226.124.149");
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 

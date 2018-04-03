@@ -91,7 +91,7 @@ public class UserSender {
 		factory.setPassword("test");
 		
 		// Gets IP of the sender
-		factory.setHost(trainee.getSender());
+		factory.setHost("10.226.124.149");
 		
 		// Creates a connection channel, declares Trainee exchange
 		Connection connection = factory.newConnection();
