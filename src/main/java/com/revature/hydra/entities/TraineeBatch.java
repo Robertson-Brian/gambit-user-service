@@ -7,7 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
-
+/**
+ * This entity represents the Junction table between Trainees and Batches
+ * (TrainerUser is NOT a similar combination)
+ */
 @Table(name = "TRAINEE_BATCH")
 @Entity
 @IdClass(TraineeBatch.class)
