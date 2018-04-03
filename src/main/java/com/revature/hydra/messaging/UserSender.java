@@ -44,7 +44,7 @@ public class UserSender {
 		// (localhost:15672 as of 3/28/2018)
 		factory.setUsername("test");
 		factory.setPassword("test");
-		factory.setHost("10.226.102.1");
+		factory.setHost("10.226.124.149");
 		// Currently this is the hard coded address of the host.
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();

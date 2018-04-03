@@ -27,7 +27,6 @@ import com.revature.hydra.services.UserService;
  */
 
 @RestController
-@CrossOrigin
 @RequestMapping(value = "trainers", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TrainerController {
 
@@ -49,12 +48,13 @@ public class TrainerController {
 		List<String> roles = userService.getAllRoles();
 		return new ResponseEntity<>(roles, HttpStatus.OK);
 	}
-  
-  
+
 	/**
 	 * Creates a new Trainer
 	 * 
-	 * @param TrainerUser - the TrainerUser used to create the trainer and corresponding user
+	 * @param TrainerUser
+	 *            - the TrainerUser used to create the trainer and corresponding
+	 *            user
 	 * @return the trainerUser object and http status 200
 	 */
 	@PostMapping
@@ -67,10 +67,11 @@ public class TrainerController {
 	/**
 	 * Promotes User to Trainer.
 	 * 
-	 * Users can be trainees or trainers.
-	 * This function is used to create a TrainerUser object from a trainer
+	 * Users can be trainees or trainers. This function is used to create a
+	 * TrainerUser object from a trainer
 	 * 
-	 * @param TrainerUser - contains the user information
+	 * @param TrainerUser
+	 *            - contains the user information
 	 * @return new TrainerUser created
 	 */
 	@PostMapping(value = "promote")
@@ -84,7 +85,8 @@ public class TrainerController {
 	/**
 	 * Update Trainer information.
 	 * 
-	 * @param TrainerUser to be updated
+	 * @param TrainerUser
+	 *            to be updated
 	 * @return the updated TrainerUser
 	 */
 	@PutMapping
@@ -97,7 +99,8 @@ public class TrainerController {
 	/**
 	 * Finds Trainer by email.
 	 * 
-	 * @param email to find by
+	 * @param email
+	 *            to find by
 	 * @return requested TrainerUser
 	 */
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -110,7 +113,8 @@ public class TrainerController {
 	/**
 	 * Retrieve Trainer by Id
 	 * 
-	 * @param id of trainer
+	 * @param id
+	 *            of trainer
 	 * @return TrainerUser of requested trainer
 	 */
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -159,7 +163,8 @@ public class TrainerController {
 	 * Finds a user by unique firstname/lastname combination. This needs further
 	 * thought.
 	 * 
-	 * @param first name and last name to search by
+	 * @param first
+	 *            name and last name to search by
 	 * @return TrainerUser with the requested name
 	 */
 	@GetMapping("name/{firstName}/{lastName}")
