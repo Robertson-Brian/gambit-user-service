@@ -27,7 +27,6 @@ import com.revature.hydra.services.UserService;
  *
  */
 @RestController
-@CrossOrigin
 @RequestMapping(value = "users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
