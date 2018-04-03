@@ -16,7 +16,6 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import com.revature.hydra.controllers.TraineeController;
 import com.revature.hydra.entities.TraineeDTO;
 import com.revature.hydra.entities.TrainerDTO;
 import com.revature.hydra.services.TraineeService;
