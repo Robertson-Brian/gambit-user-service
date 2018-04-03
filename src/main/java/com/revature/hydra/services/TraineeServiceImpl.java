@@ -49,18 +49,21 @@ public class TraineeServiceImpl implements TraineeService {
 		User persisted = userRepo.save(trainee.getTraineeUserInfo());
 		Trainee toSend = trainee;
 		toSend.setTraineeUserInfo(persisted);
+		
 		// Trainee id must be 0 to create a new trainee
 		toSend.setTraineeId(0);
 		Trainee toReturn = traineeRepo.save(toSend);
 		List<TraineeBatch> ltb = new ArrayList<TraineeBatch>();
 		System.out.println(traineeRepo.findAll().size());// necessary in order to force loading. @Function is default
-															// lazy and cannot be changed as far as we know
+														 // lazy and cannot be changed as far as we know
 		for (int i = 0; i < trainee.getBatches().size(); i++) {
 			TraineeBatch tb = new TraineeBatch(toReturn.getTraineeId(), toSend.getBatches().get(i).getBatch_id());
 			ltb.add(traineeBatchRepo.save(tb));
 		}
+		
 		// Trainee toReturn = traineeRepo.findOne(toPersist.getTraineeId());
 		toReturn.setBatches(ltb);
+		
 		try {
 			us.sendTrainee(toReturn, "POST");
 		} catch (IOException e) {

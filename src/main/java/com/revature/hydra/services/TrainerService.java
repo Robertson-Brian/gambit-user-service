@@ -44,9 +44,7 @@ public class TrainerService {
 	/**
 	 * Delete a single Trainer
 	 *
-	 * @param id
-	 *
-	 * @return
+	 * @param id - to find by
 	 */
 	public void delete(Integer id) {
 		Trainer bt = trainerRepository.findByTrainerId(id);
@@ -56,9 +54,8 @@ public class TrainerService {
 	/**
 	 * Find a single Trainer by trainerId
 	 *
-	 * @param trainerId
-	 *
-	 * @return Trainer
+	 * @param trainerId - to find by
+	 * @return TrainerUser - that was found
 	 */
 	public TrainerUser findById(Integer trainerId) {
 		log.info("Trainer Id: " + trainerId);
@@ -68,12 +65,11 @@ public class TrainerService {
 	}
 
 	/**
-	 * 
 	 * Creates a new User in the User database and a new Trainer in the trainer
 	 * database associated with that User.
 	 * 
-	 * @param trainerUser
-	 * @return TrainerUser
+	 * @param - trainerUser which contains the user and trainer data
+	 * @return new TrainerUser - that was stored in the database.
 	 */
 	public TrainerUser newTrainer(TrainerUser tu) {
 		User u = new User();
@@ -102,8 +98,8 @@ public class TrainerService {
 	 * 
 	 * Creates a new trainer object to associate with a pre-existing User object
 	 * 
-	 * @param trainerUser
-	 * @return TrainerUser
+	 * @param trainerUser - which contains the pre-existing user information
+	 * @return new TrainerUser - that was created from given user and new trainer
 	 */
 	public TrainerUser promoteToTrainer(TrainerUser tu) {
 		User u = userRepo.findByUserId(tu.getUserId());
@@ -118,11 +114,11 @@ public class TrainerService {
 	 * 
 	 * Updates both the User and Trainer components of a trainer's credentials
 	 * 
-	 * @param TrainerUser
-	 * @return TrainerUser
+	 * @param TrainerUser - which contains user and trainer information
+	 * @return TrainerUser - which contains updated user and trainer information
 	 */
 	public TrainerUser update(TrainerUser tu) {
-		System.out.println(("The trainer id passed in is " + tu.getTrainerId()));
+		log.info(("The trainer id passed in is " + tu.getTrainerId()));
 		Trainer bt = trainerRepository.findByTrainerId(tu.getTrainerId());
 		User u = userService.findUserById((bt.getUserId()));
 		BeanUtils.copyProperties(tu, u, "userId");
@@ -142,10 +138,11 @@ public class TrainerService {
 
 	/**
 	 * Find a single Trainer by email
+	 * 
+	 * Searches Users by email, then searches trainers by the userId that was found.
 	 *
-	 * @param trainerId
-	 *
-	 * @return TrainerUser
+	 * @param String email - to search by
+	 * @return TrainerUser - combination of the user and trainer that were found
 	 */
 	public TrainerUser findTrainerByEmail(String email) {
 		User u = userRepo.findByEmail(email);
