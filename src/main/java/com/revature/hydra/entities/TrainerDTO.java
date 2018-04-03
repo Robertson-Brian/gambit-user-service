@@ -5,6 +5,10 @@ import java.net.UnknownHostException;
 import java.sql.Timestamp;
 import java.util.Date;
 
+/**
+ * This object contains the trainer object, as well as
+ * some metadata for the purpose of sending rabbitmq messages.
+ */
 public class TrainerDTO {
 
 	private Timestamp time;
