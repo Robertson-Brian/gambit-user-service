@@ -1,7 +1,3 @@
-# Hydra Client Module
-
-Create a single Hydra Client module that will standardize all API calls for all services in every module of the Janus web application, which include Caliber, BAM, AssignForce, and TrackForce.
-
 ## User Service (Trainee and Trainer)
 The Hydra User Microservice was created by the 1801 January USF batch. It contains the Trainer and Trainee microservices that are being used by the Janus web application. 
 We decided to combine these microservices mainly because the Entity Relationship Diagram we were given had both Trainer and Trainee be tightly coupled to a User table. 
