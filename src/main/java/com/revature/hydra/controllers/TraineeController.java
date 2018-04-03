@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -78,8 +77,8 @@ public class TraineeController {
 	// @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER', 'PANEL')")
 	public ResponseEntity<Trainee> createTrainee(@RequestBody Trainee trainee) {
 		log.info("Trainee Controller received request: Creating trainee: " + trainee);
-		traineeService.save(trainee);
-		return new ResponseEntity<>(trainee, HttpStatus.CREATED);
+		Trainee t = traineeService.save(trainee);
+		return new ResponseEntity<>(t, HttpStatus.CREATED);
 	}
 
 	/**
