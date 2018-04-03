@@ -47,6 +47,7 @@ public class TrainerService {
 	 * @param id - to find by
 	 */
 	public void delete(Integer id) {
+		log.trace("Method called to delete a trainer.");
 		Trainer bt = trainerRepository.findByTrainerId(id);
 		userService.delete(bt.getUserId());
 	}
@@ -58,7 +59,7 @@ public class TrainerService {
 	 * @return TrainerUser - that was found
 	 */
 	public TrainerUser findById(Integer trainerId) {
-		log.info("Trainer Id: " + trainerId);
+		log.trace("Method called to find Trainer by ID with id: " + trainerId);
 		Trainer bt = trainerRepository.findByTrainerId(trainerId);
 		User u = userRepo.findByUserId(bt.getUserId());
 		return new TrainerUser(u, bt);
@@ -72,6 +73,7 @@ public class TrainerService {
 	 * @return new TrainerUser - that was stored in the database.
 	 */
 	public TrainerUser newTrainer(TrainerUser tu) {
+		log.trace("Method called to create a new trainer and user from TrainerUser object.");
 		User u = new User();
 		BeanUtils.copyProperties(tu, u);
 		u.setRole(tu.getRole());
@@ -102,6 +104,7 @@ public class TrainerService {
 	 * @return new TrainerUser - that was created from given user and new trainer
 	 */
 	public TrainerUser promoteToTrainer(TrainerUser tu) {
+		log.trace("Method called to promote a user to a trainer.");
 		User u = userRepo.findByUserId(tu.getUserId());
 		Trainer bt = new Trainer();
 		bt.setUserId(u.getUserId());
@@ -118,6 +121,7 @@ public class TrainerService {
 	 * @return TrainerUser - which contains updated user and trainer information
 	 */
 	public TrainerUser update(TrainerUser tu) {
+		log.trace("Method called to update a trainer and associated user.");
 		log.info(("The trainer id passed in is " + tu.getTrainerId()));
 		Trainer bt = trainerRepository.findByTrainerId(tu.getTrainerId());
 		User u = userService.findUserById((bt.getUserId()));
@@ -145,12 +149,14 @@ public class TrainerService {
 	 * @return TrainerUser - combination of the user and trainer that were found
 	 */
 	public TrainerUser findTrainerByEmail(String email) {
+		log.trace("Method called to findTrainerByEmail with email: " + email);
 		User u = userRepo.findByEmail(email);
 		Trainer bt = trainerRepository.findByUserId(u.getUserId());
 		return ClassUtil.merge(u, bt);
 	}
 
 	public List<String> allTitles() {
+		log.trace("Method called to list all titles.");
 		List<String> titles = trainerRepository.findTitles();
 		return titles;
 	}
@@ -162,6 +168,7 @@ public class TrainerService {
 	 * @return
 	 */
 	public List<TrainerUser> getAll() {
+		log.trace("Method called to get all trainers.");
 		List<Trainer> allTrainers = trainerRepository.findAll();
 		List<TrainerUser> result = new ArrayList<TrainerUser>();
 		for (Trainer b : allTrainers) {
@@ -171,6 +178,7 @@ public class TrainerService {
 	}
 
 	public TrainerUser findByName(String firstName, String lastName) {
+		log.trace("Method called to get findByName.");
 		User u = userService.findByName(firstName, lastName);
 		Trainer bt = trainerRepository.findByUserId(u.getUserId());
 		return ClassUtil.merge(u, bt);
