@@ -65,7 +65,7 @@ public class UserReceiver {
 	private static final String TRAINER_EXCHANGE_NAME = "hydra.trainer.exchange";
 
 	/**
-	 * Receives messages from the Trainer exchange
+	 * Receives messages from the TRAINER exchange
 	 */
 	public void receiveTrainer() throws IOException, TimeoutException {
 		ConnectionFactory factory = new ConnectionFactory();
@@ -82,9 +82,9 @@ public class UserReceiver {
 
 		channel.exchangeDeclare(TRAINER_EXCHANGE_NAME, "fanout");
 		// Declares a queue, allows rabbitmq to automatically generate the queue's name.
-		// Recommend research on .queueDeclare() for more information
+		// Recommend research on .queueDeclare() for more information on customizing queues
 		String queueName = channel.queueDeclare().getQueue();
-		// Assigns the queue to the exchange
+		// Binds the queue to the exchange
 		channel.queueBind(queueName, TRAINER_EXCHANGE_NAME, "");
 
 		log.info(" [*] Waiting for messages.");
@@ -96,9 +96,15 @@ public class UserReceiver {
 				String message = new String(body, "UTF-8");
 				log.info(" [x] Trainer Received '" + message + "'");
 				TrainerDTO trainer = om.readValue(message, TrainerDTO.class);
+				
+				// Checks if the sender receives their own message, which is intended behavior.
+				// It is not required for function, but does show that it is working
 				if (trainer.getSender().equals(InetAddress.getLocalHost().getHostAddress())) {
-					log.info(":^)");
+					log.info("Received own message, as intended.");
 				} else {
+					/* 
+					 * Additional functions would be added here based on what you want to do with the received information
+					*/
 					if (trainer.getRequestType().equals("PUT")) {
 						trainerService.update(trainer.getTrainerUser());
 					}
@@ -112,7 +118,7 @@ public class UserReceiver {
 	}
 
 	/**
-	 * Receives messages from the Trainee exchange
+	 * Receives messages from the TRAINEE exchange
 	 */
 	public void receiveTrainee() throws IOException, TimeoutException {
 		ConnectionFactory factory = new ConnectionFactory();
@@ -121,7 +127,8 @@ public class UserReceiver {
 		// (localhost:15672 as of 3/28/2018)
 		factory.setUsername("test");
 		factory.setPassword("test");
-		// Currently this is the hard coded address of the host.
+		// Gets the address of the local machine
+		// Has not been tested on an EC2  04/02/2018
 		factory.setHost(InetAddress.getLocalHost().getHostAddress());
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
@@ -139,9 +146,15 @@ public class UserReceiver {
 				String message = new String(body, "UTF-8");
 				log.info(" [x] Trainee Received '" + message + "'");
 				TraineeDTO trainee = om.readValue(message, TraineeDTO.class);
+				
+				// Checks if the sender receives their own message, which is intended behavior.
+				// It is not required for function, but does show that it is working
 				if (trainee.getSender().equals(InetAddress.getLocalHost().getHostAddress())) {
-					log.info(":^)");
+					log.info("Received own message, as intended.");
 				} else {
+					/* 
+					 * Additional functions would be added here based on what you want to do with the received information
+					*/
 					if (trainee.getRequestType().equals("PUT")) {
 						traineeService.update(trainee.getTrainee());
 					}
