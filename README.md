@@ -1,5 +1,5 @@
-## User Service (Trainee and Trainer)
-# Description
+# User Service (Trainee and Trainer)
+## Description
 The Hydra User Microservice was created by the 1801 January USF batch. It contains the Trainer and Trainee microservices that are being used by the Janus web application. 
 We decided to combine these microservices mainly because the Entity Relationship Diagram we were given had both Trainer and Trainee be tightly coupled to a User table. 
 This microservice also contains many User endpoints that aren't actually used in the Janus web application but are mainly for testing. 
