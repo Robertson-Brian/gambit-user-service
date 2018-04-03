@@ -39,12 +39,12 @@ public class UserController {
 	/**
 	 * Creates a new User.
 	 * 
-	 * @param user
-	 * @return
+	 * @param user object to create
+	 * @return created user and http status CREATED.
 	 */
 	@PostMapping
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-		log.info("Saving trainer: " + user);
+		log.info("User Controller received request: create User: " + user);
 		User persisted = userService.makeUser(user);
 		return new ResponseEntity<>(persisted, HttpStatus.CREATED);
 	}
@@ -52,12 +52,12 @@ public class UserController {
 	/**
 	 * Update User information.
 	 * 
-	 * @param user
-	 * @return
+	 * @param User to update
+	 * @return http status success but no content
 	 */
 	@PutMapping
 	public ResponseEntity<Void> updateUser(@Valid @RequestBody User user) {
-		log.info("Updating user " + user);
+		log.info("User Controller received request: Update user " + user);
 		userService.update(user);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
@@ -66,13 +66,13 @@ public class UserController {
 	/**
 	 * Finds the user by matching email address.
 	 * 
-	 * @param email
-	 * @return
+	 * @param email to search by
+	 * @return user with requested email and status OK
 	 */
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> findUserByEmail(@PathVariable String email) {
 		log.info(email);
-		log.info("Finding user by email of " + email);
+		log.info("User Controller received request: Find user by email: " + email);
 		User user = userService.findUserByEmail(email);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
@@ -80,12 +80,12 @@ public class UserController {
 	/**
 	 * Change User role to inactive.
 	 * 
-	 * @param user
-	 * @return
+	 * @param user to deactivate
+	 * @return http status NO_CONTENT
 	 */
 	@DeleteMapping
 	public ResponseEntity<Void> makeInactive(@RequestBody User user) {
-		log.info("Updating user: " + user);
+		log.info("User Controller received request: Updating user: " + user);
 		user.setRole("INACTIVE");
 		userService.update(user);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -94,11 +94,11 @@ public class UserController {
 	/**
 	 * Get all User roles.
 	 * 
-	 * @return
+	 * @return List<String> of all the roles a User can be.
 	 */
 	@GetMapping("roles")
 	public ResponseEntity<List<String>> getAllUserRoles() {
-		log.info("Fetching all user roles");
+		log.info("User Controller received request: Fetching all user roles");
 		List<String> roles = userService.getAllRoles();
 		return new ResponseEntity<>(roles, HttpStatus.OK);
 
@@ -107,11 +107,11 @@ public class UserController {
 	/**
 	 * Retrieves all users from the User table.
 	 * 
-	 * @return
+	 * @return List<user> of all users
 	 */
 	@GetMapping
 	public ResponseEntity<List<User>> getAllUsers() {
-		log.info("Viewing all users");
+		log.info("User Controller received request: get all users");
 		List<User> userList = userService.getAllUsers();
 		return new ResponseEntity<>(userList, HttpStatus.OK);
 
@@ -120,12 +120,12 @@ public class UserController {
 	/**
 	 * Finds an User by Id.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id of user to find
+	 * @return user with the given id
 	 */
 	@GetMapping("id/{id}")
 	public ResponseEntity<User> findUserById(@PathVariable Integer id) {
-		log.info("Fetching user based on id.");
+		log.info("User Controller received request: find user by id.");
 		User user = userService.findUserById(id);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
@@ -135,11 +135,12 @@ public class UserController {
 	 * 
 	 * @param firstName
 	 * @param lastName
-	 * @return
+	 * @return user with the associated first/last name
 	 */
 	@GetMapping("name/{firstName}/{lastName}")
 	public ResponseEntity<User> findByName(@PathVariable("firstName") String firstName,
 			@PathVariable("lastName") String lastName) {
+		log.info("User Controller received request: find user by name");
 		User user = userService.findByName(firstName, lastName);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
