@@ -42,6 +42,9 @@ public class UserService {
 		return userRepo.findUserByFirstNameAndLastName(firstName, lastName);
 	}
 
+	/**
+	 * Users are not deleted, they are simply set to inactive.
+	 */
 	public void delete(Integer id) {
 		User u = userRepo.getOne(id);
 		u.setRole("INACTIVE");

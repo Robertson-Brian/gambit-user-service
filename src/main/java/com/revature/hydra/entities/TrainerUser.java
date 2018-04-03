@@ -2,6 +2,15 @@ package com.revature.hydra.entities;
 
 import org.springframework.beans.BeanUtils;
 
+/**
+ * The Trainer User object is a combination of the Trainer and User objects.
+ * The trainer entity contains very little information. Often when a call 
+ * to get a specific trainer is made, they are actually looking for user data.
+ * 
+ * When the project was first assigned, trainees, users, and trainers were supposed
+ * to be separate services. It was later determined that they were too tightly coupled
+ * and were merged into a single service.
+ */
 public class TrainerUser {
 	private Integer userId;
 	private String firstName;

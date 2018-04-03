@@ -11,6 +11,9 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+/**
+ * The Trainer Entity
+ */
 @Entity
 @Table(name = "TRAINER")
 @Cacheable
