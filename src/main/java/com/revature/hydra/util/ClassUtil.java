@@ -14,7 +14,6 @@ public class ClassUtil {
 		tu.setTitle(bt.getTitle());
 		tu.setTrainerId(bt.getTrainerId());
 		return tu;
-		
 	}
 	
 }
