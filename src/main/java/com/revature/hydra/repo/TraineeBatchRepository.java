@@ -6,6 +6,8 @@ import com.revature.hydra.entities.TraineeBatch;
 
 public interface TraineeBatchRepository extends JpaRepository<TraineeBatch, Integer>{
 
+	void deleteByTraineeId(int traineeId);
+
 //	@SuppressWarnings("unchecked")
 //	TraineeBatch save(TraineeBatch traineeBatch);
 	
