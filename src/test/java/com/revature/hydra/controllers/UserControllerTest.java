@@ -30,7 +30,7 @@ public class UserControllerTest {
 	static String json = "";
 	static ObjectMapper om = new ObjectMapper();
 	static ObjectWriter ow = om.writer().withDefaultPrettyPrinter();
-	static String email = "nota24@real.email";//must be constantly changed to obey unique constraint
+	static String email = "nota@real.email";
 	
 	@LocalServerPort
 	private static int port = 8090;
@@ -39,9 +39,9 @@ public class UserControllerTest {
 	public static void prepare() throws Exception {
 		RestAssured.port = port;
 		u.setUserId(-1);
-		u.setFirstName("ooofname");
-		u.setMiddleName("ooomname");
-		u.setLastName("ooolname");
+		u.setFirstName("fname");
+		u.setMiddleName("mname");
+		u.setLastName("lname");
 		u.setEmail(email);
 		u.setPassword("password");
 		u.setBackupPassword("badpassword");

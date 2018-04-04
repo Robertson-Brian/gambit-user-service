@@ -126,9 +126,7 @@ public class TraineeServiceImpl implements TraineeService {
 	public void delete(Trainee trainee) {
 		log.trace("Method called to delete a trainee.");
 		
-		for(int i=0; i<trainee.getBatches().size(); i++) {
-			traineeBatchRepo.delete(trainee.getBatches().get(i));
-		}
+		traineeBatchRepo.deleteByTraineeId(trainee.getTraineeId());
 		
 		traineeRepo.delete(trainee);
 
