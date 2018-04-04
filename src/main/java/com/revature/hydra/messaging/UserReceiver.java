@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import com.rabbitmq.client.Envelope;
 import com.revature.hydra.entities.TraineeDTO;
 import com.revature.hydra.entities.Trainer;
 import com.revature.hydra.entities.TrainerDTO;
+import com.revature.hydra.entities.User;
 import com.revature.hydra.repo.TraineeRepository;
 import com.revature.hydra.repo.TrainerRepository;
 import com.revature.hydra.repo.UserRepository;
@@ -120,14 +122,24 @@ public class UserReceiver {
 					 * the received information
 					 */
 					if (trainer.getRequestType().equals("PUT")) {
+						User u = new User();
+						BeanUtils.copyProperties(trainer.getTrainerUser(), u);
+						userRepo.save(u);
 						Trainer t = new Trainer();
 						t.setTitle(trainer.getTrainerUser().getTitle());
 						t.setTrainerId(trainer.getTrainerUser().getTrainerId());
 						t.setUserId(trainer.getTrainerUser().getUserId());
-						TrainerRepository.update(t);
+						trainerRepository.save(t);
 					}
 					if (trainer.getRequestType().equals("POST")) {
-						trainerService.newTrainer(trainer.getTrainerUser());
+						User u = new User();
+						BeanUtils.copyProperties(trainer.getTrainerUser(), u);
+						userRepo.save(u);
+						Trainer t = new Trainer();
+						t.setTitle(trainer.getTrainerUser().getTitle());
+						t.setTrainerId(trainer.getTrainerUser().getTrainerId());
+						t.setUserId(trainer.getTrainerUser().getUserId());
+						trainerRepository.save(t);
 					}
 				}
 			}
@@ -175,7 +187,7 @@ public class UserReceiver {
 					 * the received information
 					 */
 					if (trainee.getRequestType().equals("PUT")) {
-						traineeRepository.update(trainee.getTrainee());
+						traineeRepository.save(trainee.getTrainee());
 					}
 					if (trainee.getRequestType().equals("POST")) {
 						// gets the trainee object from the wrapper object

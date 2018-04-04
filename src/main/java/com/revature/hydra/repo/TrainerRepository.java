@@ -16,9 +16,4 @@ public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
 	@Query(value = "SELECT DISTINCT TITLE FROM TRAINER", nativeQuery = true)
 	List<String> findTitles();
 
-	static void update(Trainer t) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

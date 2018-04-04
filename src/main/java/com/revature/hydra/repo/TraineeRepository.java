@@ -38,6 +38,4 @@ public interface TraineeRepository extends JpaRepository<Trainee, Integer> {
 	@Query(nativeQuery = true, value = "INSERT INTO TRAINEE_BATCH (batch_id, trainee_id) VALUES (:b_id, :t_id)")
 	Integer insertBatch(@Param("b_id") Integer batchId, @Param("t_id") Integer traineeId);
 
-	void update(Trainee trainee);
-
 }
