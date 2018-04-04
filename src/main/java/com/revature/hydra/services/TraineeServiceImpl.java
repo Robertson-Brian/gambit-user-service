@@ -122,6 +122,9 @@ public class TraineeServiceImpl implements TraineeService {
 	@Transactional
 	public void delete(Trainee trainee) {
 		log.trace("Method called to delete a trainee.");
+		
+		traineeBatchRepo.deleteByTraineeId(trainee.getTraineeId());
+		
 		traineeRepo.delete(trainee);
 
 	}
