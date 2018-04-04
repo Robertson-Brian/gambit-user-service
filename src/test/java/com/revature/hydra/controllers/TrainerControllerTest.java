@@ -31,7 +31,7 @@ public class TrainerControllerTest {
 	static String json = "";
 	static ObjectMapper om = new ObjectMapper();
 	static ObjectWriter ow = om.writer().withDefaultPrettyPrinter();
-	static String email = "nota20@real.email";
+	static String email = "nota2@real.email";
 	
 	
 	@LocalServerPort
