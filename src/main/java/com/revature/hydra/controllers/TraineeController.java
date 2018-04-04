@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.hydra.entities.Trainee;
+import com.revature.hydra.messaging.UserSender;
 import com.revature.hydra.services.TraineeService;
 
 /**
@@ -32,6 +33,9 @@ public class TraineeController {
 
 	@Autowired
 	private TraineeService traineeService;
+
+	@Autowired
+	private UserSender userSender;
 
 	/**
 	 * Returns all trainees from a batch that has the input batch id and input

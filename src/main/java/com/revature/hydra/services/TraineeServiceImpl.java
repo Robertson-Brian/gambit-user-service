@@ -41,9 +41,8 @@ public class TraineeServiceImpl implements TraineeService {
 
 	@Autowired
 	private UserSender us;
-	
-	private static final Logger log = Logger.getLogger(TraineeController.class);
 
+	private static final Logger log = Logger.getLogger(TraineeController.class);
 
 	/**
 	 * The implemented method to create a new trainee.
@@ -52,34 +51,32 @@ public class TraineeServiceImpl implements TraineeService {
 	@Transactional
 	public Trainee save(Trainee trainee) {
 		log.trace("Method called to save a trainee.");
-		
+
 		log.trace("Getting the trainees user information.");
 		// A trainee is a User, and that information should already exist.
 		User persisted = userRepo.save(trainee.getTraineeUserInfo());
 		Trainee toSend = trainee;
 		toSend.setTraineeUserInfo(persisted);
-		
+
 		// Trainee id must be 0 to create a new trainee
 		toSend.setTraineeId(0);
-		
+
 		log.trace("Saving the trainee.");
 		Trainee toReturn = traineeRepo.save(toSend);
-		
+
 		// Create a list of trainee batches
 		List<TraineeBatch> ltb = new ArrayList<TraineeBatch>();
 		System.out.println(traineeRepo.findAll().size());// necessary in order to force loading. @Function is default
-														 // lazy and cannot be changed as far as we know
+															// lazy and cannot be changed as far as we know
 		// The Trainee entity has a list of batches
 		// This for loop saves those batches to the traineeBatch repo.
 		for (int i = 0; i < trainee.getBatches().size(); i++) {
 			TraineeBatch tb = new TraineeBatch(toReturn.getTraineeId(), toSend.getBatches().get(i).getBatch_id());
 			ltb.add(traineeBatchRepo.save(tb));
 		}
-		
+
 		// Trainee toReturn = traineeRepo.findOne(toPersist.getTraineeId());
 		toReturn.setBatches(ltb);
-		
-		// Rabbitmq
 		try {
 			us.sendTrainee(toReturn, "POST");
 		} catch (IOException e) {
@@ -108,6 +105,7 @@ public class TraineeServiceImpl implements TraineeService {
 	@Transactional
 	public void update(Trainee trainee) {
 		log.trace("Method called to update a Trainee.");
+		traineeRepo.save(trainee);
 		try {
 			us.sendTrainee(trainee, "PUT");
 		} catch (IOException e) {
@@ -115,7 +113,6 @@ public class TraineeServiceImpl implements TraineeService {
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 		}
-		traineeRepo.save(trainee);
 	}
 
 	/**

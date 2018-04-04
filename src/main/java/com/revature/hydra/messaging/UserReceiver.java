@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,12 @@ import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.revature.hydra.entities.TraineeDTO;
+import com.revature.hydra.entities.Trainer;
 import com.revature.hydra.entities.TrainerDTO;
+import com.revature.hydra.entities.User;
+import com.revature.hydra.repo.TraineeRepository;
+import com.revature.hydra.repo.TrainerRepository;
+import com.revature.hydra.repo.UserRepository;
 import com.revature.hydra.services.TraineeService;
 import com.revature.hydra.services.TrainerService;
 
@@ -60,6 +66,15 @@ public class UserReceiver {
 	@Autowired
 	private TraineeService traineeService;
 
+	@Autowired
+	public TrainerRepository trainerRepository;
+
+	@Autowired
+	public TraineeRepository traineeRepository;
+
+	@Autowired
+	private UserRepository userRepo;
+
 	private static final String TRAINEE_EXCHANGE_NAME = "hydra.trainee.exchange";
 	private static final String TRAINER_EXCHANGE_NAME = "hydra.trainer.exchange";
 
@@ -74,14 +89,15 @@ public class UserReceiver {
 		factory.setUsername("test");
 		factory.setPassword("test");
 		// Gets the address of the local machine
-		// Has not been tested on an EC2  04/02/2018
+		// Has not been tested on an EC2 04/02/2018
 		factory.setHost("10.226.124.149");
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 
 		channel.exchangeDeclare(TRAINER_EXCHANGE_NAME, "fanout");
 		// Declares a queue, allows rabbitmq to automatically generate the queue's name.
-		// Recommend research on .queueDeclare() for more information on customizing queues
+		// Recommend research on .queueDeclare() for more information on customizing
+		// queues
 		String queueName = channel.queueDeclare().getQueue();
 		// Binds the queue to the exchange
 		channel.queueBind(queueName, TRAINER_EXCHANGE_NAME, "");
@@ -95,20 +111,35 @@ public class UserReceiver {
 				String message = new String(body, "UTF-8");
 				log.info(" [x] Trainer Received '" + message + "'");
 				TrainerDTO trainer = om.readValue(message, TrainerDTO.class);
-				
+
 				// Checks if the sender receives their own message, which is intended behavior.
 				// It is not required for function, but does show that it is working
 				if (trainer.getSender().equals(InetAddress.getLocalHost().getHostAddress())) {
 					log.info("Received own message, as intended.");
 				} else {
-					/* 
-					 * Additional functions would be added here based on what you want to do with the received information
-					*/
+					/*
+					 * Additional functions would be added here based on what you want to do with
+					 * the received information
+					 */
 					if (trainer.getRequestType().equals("PUT")) {
-						trainerService.update(trainer.getTrainerUser());
+						User u = new User();
+						BeanUtils.copyProperties(trainer.getTrainerUser(), u);
+						userRepo.save(u);
+						Trainer t = new Trainer();
+						t.setTitle(trainer.getTrainerUser().getTitle());
+						t.setTrainerId(trainer.getTrainerUser().getTrainerId());
+						t.setUserId(trainer.getTrainerUser().getUserId());
+						trainerRepository.save(t);
 					}
 					if (trainer.getRequestType().equals("POST")) {
-						trainerService.newTrainer(trainer.getTrainerUser());
+						User u = new User();
+						BeanUtils.copyProperties(trainer.getTrainerUser(), u);
+						userRepo.save(u);
+						Trainer t = new Trainer();
+						t.setTitle(trainer.getTrainerUser().getTitle());
+						t.setTrainerId(trainer.getTrainerUser().getTrainerId());
+						t.setUserId(trainer.getTrainerUser().getUserId());
+						trainerRepository.save(t);
 					}
 				}
 			}
@@ -127,7 +158,7 @@ public class UserReceiver {
 		factory.setUsername("test");
 		factory.setPassword("test");
 		// Gets the address of the local machine
-		// Has not been tested on an EC2  04/02/2018
+		// Has not been tested on an EC2 04/02/2018
 		factory.setHost("10.226.124.149");
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
@@ -145,21 +176,22 @@ public class UserReceiver {
 				String message = new String(body, "UTF-8");
 				log.info(" [x] Trainee Received '" + message + "'");
 				TraineeDTO trainee = om.readValue(message, TraineeDTO.class);
-				
+
 				// Checks if the sender receives their own message, which is intended behavior.
 				// It is not required for function, but does show that it is working
 				if (trainee.getSender().equals(InetAddress.getLocalHost().getHostAddress())) {
 					log.info("Received own message, as intended.");
 				} else {
-					/* 
-					 * Additional functions would be added here based on what you want to do with the received information
-					*/
+					/*
+					 * Additional functions would be added here based on what you want to do with
+					 * the received information
+					 */
 					if (trainee.getRequestType().equals("PUT")) {
-						traineeService.update(trainee.getTrainee());
+						traineeRepository.save(trainee.getTrainee());
 					}
 					if (trainee.getRequestType().equals("POST")) {
 						// gets the trainee object from the wrapper object
-						traineeService.save(trainee.getTrainee());
+						traineeRepository.save(trainee.getTrainee());
 					}
 				}
 

@@ -6,8 +6,8 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 /**
- * This object contains the trainee object, as well as
- * some metadata for the purpose of sending rabbitmq messages.
+ * This object contains the trainee object, as well as some metadata for the
+ * purpose of sending rabbitmq messages.
  */
 public class TraineeDTO {
 
