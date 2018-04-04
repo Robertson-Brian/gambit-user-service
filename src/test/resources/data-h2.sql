@@ -47,3 +47,8 @@ password VARCHAR2(100),
 backup_password VARCHAR2(100),
 role VARCHAR2(30)
 );
+
+CREATE TABLE roles(
+role_id NUMBER(10) PRIMARY KEY,
+role VARCHAR2(30)
+);

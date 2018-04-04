@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	User findUserByFirstNameAndLastName(String firstName, String lastName);
 
-	@Query("select distinct r.role from TrainerRole r")
+	@Query("select distinct r.role from User r")
 	List<String> findAllUserRoles();
 
 }
