@@ -36,7 +36,7 @@ public class UserSender {
 	private static final String TRAINEE_EXCHANGE = "hydra.trainee.exchange";
 	private static final String TRAINER_EXCHANGE = "hydra.trainer.exchange";
 	ObjectMapper om = new ObjectMapper();
-
+  
 	/**
 	 * Sends message to trainer exchange when a new trainer is created. 
 	 * 

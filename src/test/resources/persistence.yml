@@ -1,0 +1,9 @@
+jdbc:
+  driverClassName=com.oracle.jdbc.Driver
+  url=jdbc:mysql://localhost:3306/myDb
+  user=user
+  pass=pass
+ 
+hibernate:
+  dialect=org.hibernate.dialect.OracleSQL11gDialect
+  hbm2ddl.auto=create-drop
