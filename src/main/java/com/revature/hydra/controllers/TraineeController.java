@@ -114,7 +114,7 @@ public class TraineeController {
 	public ResponseEntity<Void> deleteTrainee(@PathVariable Integer traineeId) {
 		Trainee trainee = new Trainee();
 		trainee.setTraineeId(traineeId);
-		log.info("Trainee Controller received request: Deleting trainee: " + traineeId);
+		log.info("Trainee Controller received request: Deleting trainee: " + traineeId);		
 		traineeService.delete(trainee);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

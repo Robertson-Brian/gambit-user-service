@@ -33,7 +33,7 @@ public class UserControllerTest {
 	static String email = "nota24@real.email";//must be constantly changed to obey unique constraint
 	
 	@LocalServerPort
-	private static int port = 8909;
+	private static int port = 8090;
 	
 	@BeforeClass
 	public static void prepare() throws Exception {

@@ -14,6 +14,7 @@ public class TrainerUserTest {
 
 	@After
 	public void tearDown() throws Exception {
+		
 	}
 
 	@Test
