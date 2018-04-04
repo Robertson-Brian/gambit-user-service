@@ -78,15 +78,6 @@ public class TraineeServiceImpl implements TraineeService {
 		
 		// Trainee toReturn = traineeRepo.findOne(toPersist.getTraineeId());
 		toReturn.setBatches(ltb);
-		
-		// Rabbitmq
-		try {
-			us.sendTrainee(toReturn, "POST");
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (TimeoutException e) {
-			e.printStackTrace();
-		}
 		return toReturn;
 	}
 

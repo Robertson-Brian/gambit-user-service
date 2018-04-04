@@ -1,6 +1,8 @@
 package com.revature.hydra.controllers;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.hydra.entities.Trainee;
+import com.revature.hydra.messaging.UserSender;
 import com.revature.hydra.services.TraineeService;
 
 /**
@@ -32,6 +35,9 @@ public class TraineeController {
 
 	@Autowired
 	private TraineeService traineeService;
+	
+	@Autowired
+	private UserSender userSender;
 
 	/**
 	 * Returns all trainees from a batch that has the input batch id and input
@@ -81,6 +87,13 @@ public class TraineeController {
 	public ResponseEntity<Trainee> createTrainee(@RequestBody Trainee trainee) {
 		log.info("Trainee Controller received request: Creating trainee: " + trainee);
 		Trainee t = traineeService.save(trainee);
+		try {
+			userSender.sendTrainee(t, "POST");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
 		return new ResponseEntity<>(t, HttpStatus.CREATED);
 	}
 
