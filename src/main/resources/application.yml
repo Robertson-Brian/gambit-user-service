@@ -16,7 +16,7 @@ spring:
     name: user-service
   datasource:
     driver-class-name: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:@orcl.chkv5c8s1oal.us-east-1.rds.amazonaws.com:1521:orcl
+    url: jdbc:oracle:thin:@localhost:1521:xe
     username: HydraTrainee
     password: momonga
   jpa:

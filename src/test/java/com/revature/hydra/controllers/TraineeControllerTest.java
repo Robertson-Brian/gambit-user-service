@@ -23,9 +23,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.revature.hydra.entities.Trainee;
-import com.revature.hydra.entities.TraineeBatch;
-import com.revature.hydra.entities.User;
+import com.revature.gambit.entities.Trainee;
+import com.revature.gambit.entities.TraineeBatch;
+import com.revature.gambit.entities.User;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
