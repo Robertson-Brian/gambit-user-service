@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.revature.gambit.entities.TraineeBatch;
+
 public class TraineeBatchTest {
     
     Logger log = Logger.getRootLogger();

@@ -2,28 +2,28 @@ package com.revature.hydra.controllers;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.boot.context.embedded.LocalServerPort;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.revature.hydra.entities.TrainerUser;
+import com.revature.gambit.entities.TrainerUser;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+
 // @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TrainerControllerTest {
 	Logger log = Logger.getRootLogger();
@@ -32,16 +32,15 @@ public class TrainerControllerTest {
 	static ObjectMapper om = new ObjectMapper();
 	static ObjectWriter ow = om.writer().withDefaultPrettyPrinter();
 	static String email = "nota2@real.email";
-	
-	
-	@LocalServerPort
-	private static int port=8090;
 
-	//making a new traineruser prior to testing
+	@LocalServerPort
+	private static int port = 8090;
+
+	// making a new traineruser prior to testing
 	@BeforeClass
 	public static void prepare() throws Exception {
 		RestAssured.port = port;
-		
+
 		tu.setUserId(-1);
 		tu.setFirstName("verynewfName");
 		tu.setMiddleName("verynewmName");
@@ -55,8 +54,8 @@ public class TrainerControllerTest {
 		tu.setToken("token");
 		tu.setTitle("Senior Technical Manager");
 		tu.setTrainerId(-1);
-		
-		//save traineruser object as json
+
+		// save traineruser object as json
 		try {
 			json = ow.writeValueAsString(tu);
 		} catch (JsonProcessingException e) {
@@ -64,54 +63,40 @@ public class TrainerControllerTest {
 			fail("Failed to convert to JSON");
 			e.printStackTrace();
 		}
-		
-		//doing post request before testing
-		//if fail, no tests will run
-		Response res = given().
-		body(json).
-		header("Content-Type", "application/json").
-		post("trainers").
-		then().
-		statusCode(200).
-		contentType(equalTo("application/json;charset=UTF-8")).
-		body("userId", not(-1)).
-		body("trainerId", not(-1)).
-		extract().
-		response();
-		
-		//save modified objects (spring data will change the userId and trainerId)
+
+		// doing post request before testing
+		// if fail, no tests will run
+		Response res = given().body(json).header("Content-Type", "application/json").post("trainers").then()
+				.statusCode(200).contentType(equalTo("application/json;charset=UTF-8")).body("userId", not(-1))
+				.body("trainerId", not(-1)).extract().response();
+
+		// save modified objects (spring data will change the userId and trainerId)
 		try {
 			tu = om.readValue(res.asString(), TrainerUser.class);
 			json = ow.writeValueAsString(tu);
-			}
-		catch (JsonParseException e) {
+		} catch (JsonParseException e) {
 			fail("Could not parse JSON");
 			e.printStackTrace();
-			}
-		catch (JsonMappingException e) {
+		} catch (JsonMappingException e) {
 			fail("Could not map JSON to object");
 			e.printStackTrace();
-			}
-		catch (IOException e) {
+		} catch (IOException e) {
 			fail("IO Exception");
 			e.printStackTrace();
-			}
 		}
+	}
 
 	@Test
 	public void testGetAllUserRoles() {
 		log.warn("Testing getAllUserRoles");
-		get("trainers/roles").
-		then().
-		statusCode(200).
-		contentType(equalTo("application/json;charset=UTF-8")).
-		body("[0]", notNullValue());//only role we insert at test time
+		get("trainers/roles").then().statusCode(200).contentType(equalTo("application/json;charset=UTF-8")).body("[0]",
+				notNullValue());// only role we insert at test time
 	}
 
 	@Test
 	public void testMakeTrainer() {
 		log.warn("Testing makeTrainer");
-		
+
 		TrainerUser tu2 = new TrainerUser();
 		tu2.setUserId(-1);
 		tu2.setFirstName("testFName");
@@ -126,7 +111,7 @@ public class TrainerControllerTest {
 		tu2.setToken("token");
 		tu2.setTitle("Senior Technical Manager");
 		tu2.setTrainerId(-1);
-		
+
 		String thisJson = "";
 		try {
 			thisJson = ow.writeValueAsString(tu2);
@@ -135,53 +120,47 @@ public class TrainerControllerTest {
 			fail("Failed to convert to JSON");
 			e.printStackTrace();
 		}
-		
-		given().
-		body(thisJson).
-		header("Content-Type", "application/json").
-		post("trainers").
-		then().
-		statusCode(200).
-		contentType(equalTo("application/json;charset=UTF-8")).
-		body("userId", not(-1)).
-		body("trainerId", not(-1));
+
+		given().body(thisJson).header("Content-Type", "application/json").post("trainers").then().statusCode(200)
+				.contentType(equalTo("application/json;charset=UTF-8")).body("userId", not(-1))
+				.body("trainerId", not(-1));
 	}
-	
-	//left untested due to a lack of need, but kept for future batches
-//	@Test
-//	public void testPromote() {
-//		try {
-//			json = ow.writeValueAsString(tu);
-//		} catch (JsonProcessingException e) {
-//			// TODO Auto-generated catch block
-//			fail("Failed to convert to JSON");
-//			e.printStackTrace();
-//		}
-//		Response res = given().body(json).header("Content-Type", "application/json").
-//				post("trainers/promote").
-//				then().
-//				statusCode(200).
-//				.extract().response();
-//				
-//				try {
-//					tu = om.readValue(res.asString(), TrainerUser.class);
-//				} catch (JsonParseException e) {
-//					fail("Could not parse JSON");
-//					e.printStackTrace();
-//				} catch (JsonMappingException e) {
-//					fail("Could not map JSON to object");
-//					e.printStackTrace();
-//				} catch (IOException e) {
-//					fail("IO Exception");
-//					e.printStackTrace();
-//				}
-//	}
-	
+
+	// left untested due to a lack of need, but kept for future batches
+	// @Test
+	// public void testPromote() {
+	// try {
+	// json = ow.writeValueAsString(tu);
+	// } catch (JsonProcessingException e) {
+	// // TODO Auto-generated catch block
+	// fail("Failed to convert to JSON");
+	// e.printStackTrace();
+	// }
+	// Response res = given().body(json).header("Content-Type", "application/json").
+	// post("trainers/promote").
+	// then().
+	// statusCode(200).
+	// .extract().response();
+	//
+	// try {
+	// tu = om.readValue(res.asString(), TrainerUser.class);
+	// } catch (JsonParseException e) {
+	// fail("Could not parse JSON");
+	// e.printStackTrace();
+	// } catch (JsonMappingException e) {
+	// fail("Could not map JSON to object");
+	// e.printStackTrace();
+	// } catch (IOException e) {
+	// fail("IO Exception");
+	// e.printStackTrace();
+	// }
+	// }
+
 	@Test
 	public void testUpdateTrainer() {
 		log.warn("Testing updateTrainer");
 		tu.setTitle("Trainer");
-		
+
 		try {
 			json = ow.writeValueAsString(tu);
 		} catch (JsonProcessingException e) {
@@ -189,88 +168,57 @@ public class TrainerControllerTest {
 			fail("Failed to convert to JSON");
 			e.printStackTrace();
 		}
-		
-		given().
-		body(json).
-		header("Content-Type", "application/json").
-		put("trainers").
-		then().
-		statusCode(200).
-		contentType(equalTo("application/json;charset=UTF-8")).
-		body("title", equalTo("Trainer"));
+
+		given().body(json).header("Content-Type", "application/json").put("trainers").then().statusCode(200)
+				.contentType(equalTo("application/json;charset=UTF-8")).body("title", equalTo("Trainer"));
 	}
-	
+
 	@Test
 	public void testFindTrainerByEmail() {
 		log.warn("Testing findTrainerByEmail");
-		
-		given().
-		get("trainers/email/" + email + "/").
-		then().
-		statusCode(200).
-		contentType(equalTo("application/json;charset=UTF-8")).
-		body("email", equalTo(email));
+
+		given().get("trainers/email/" + email + "/").then().statusCode(200)
+				.contentType(equalTo("application/json;charset=UTF-8")).body("email", equalTo(email));
 	}
-	
+
 	@Test
 	public void testFindTrainerById() {
 		log.warn("Testing findTrainerById");
 
-		given().
-		get("trainers/" + tu.getTrainerId()).
-		then().
-		statusCode(200).
-		contentType(equalTo("application/json;charset=UTF-8")).
-		body("trainerId", equalTo(tu.getTrainerId()));
+		given().get("trainers/" + tu.getTrainerId()).then().statusCode(200)
+				.contentType(equalTo("application/json;charset=UTF-8")).body("trainerId", equalTo(tu.getTrainerId()));
 	}
-	
+
 	@Test
 	public void testGetTitles() {
 		log.warn("Testing getTitles");
-		
-		given().
-		get("trainers/titles").
-		then().
-		statusCode(200).
-		contentType(equalTo("application/json;charset=UTF-8")).
-		body("[0]", equalTo("Senior Technical Manager")).
-		body("[1]", equalTo("Trainer"));
+
+		given().get("trainers/titles").then().statusCode(200).contentType(equalTo("application/json;charset=UTF-8"))
+				.body("[0]", equalTo("Senior Technical Manager")).body("[1]", equalTo("Trainer"));
 	}
-	
+
 	@Test
 	public void testGetAllTrainers() {
 		log.warn("Testing getAllTrainers");
-		
-		given().
-		get("trainers").
-		then().
-		statusCode(200).
-		contentType(equalTo("application/json;charset=UTF-8"));
+
+		given().get("trainers").then().statusCode(200).contentType(equalTo("application/json;charset=UTF-8"));
 	}
-	
+
 	@Test
 	public void testFindByName() {
 		log.warn("Testing findByName");
-		
-		given().
-		get("trainers/name/" + tu.getFirstName() + "/" + tu.getLastName()).
-		then().
-		statusCode(200).
-		contentType(equalTo("application/json;charset=UTF-8")).
-		body("firstName", equalTo(tu.getFirstName())).
-		body("lastName", equalTo(tu.getLastName()));
+
+		given().get("trainers/name/" + tu.getFirstName() + "/" + tu.getLastName()).then().statusCode(200)
+				.contentType(equalTo("application/json;charset=UTF-8")).body("firstName", equalTo(tu.getFirstName()))
+				.body("lastName", equalTo(tu.getLastName()));
 	}
-	
+
 	@Test
 	public void testDeleteByTrainerId() {
 		log.warn("Testing deleteByTrainerId");
-		
-		given().
-		body(json).
-		header("Content-Type", "application/json").
-		delete("trainers/" + tu.getTrainerId()).
-		then().
-		statusCode(200);
+
+		given().body(json).header("Content-Type", "application/json").delete("trainers/" + tu.getTrainerId()).then()
+				.statusCode(200);
 	}
 
 }
