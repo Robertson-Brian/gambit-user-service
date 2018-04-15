@@ -10,17 +10,22 @@ eureka:
     leaseExpirationDurationInSeconds: 2
   client:
     serviceUrl:
-      defaultZone: http://10.226.124.149:8761/eureka
+      defaultZone: http://localhost:8761/eureka
+# H2 during development
 spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   application:
     name: user-service
-  datasource:
-    driver-class-name: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:@localhost:1521:xe
-    username: HydraTrainee
-    password: momonga
+  #datasource:
+    #driver-class-name: oracle.jdbc.driver.OracleDriver
+    #url: jdbc:oracle:thin:@localhost:1521:xe
+    #username: HydraTrainee
+    #password: momonga
   jpa:
-    database-platform: org.hibernate.dialect.Oracle10gDialect
+    #database-platform: org.hibernate.dialect.Oracle10gDialect
     properties:
       hibernate:
         show_sql: false
@@ -28,9 +33,9 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: none
-  rabbitmq:
-    host: 35.183.27.227
-    port: 5672
-    username: guest
-    password: guest
+  #rabbitmq:
+    #host: 35.183.27.227
+    #port: 5672
+    #username: guest
+    #password: guest
  

@@ -48,8 +48,7 @@ public class TraineeController {
 	public ResponseEntity<List<Trainee>> findAllByBatchAndStatus(@PathVariable Integer id,
 			@PathVariable String status) {
 		log.info("Trainee Controller received request: Finding trainees for batch: " + id + " with status: " + status);
-		List<Trainee> trainees = traineeService.findAllByBatchAndStatus(id, status);
-		return new ResponseEntity<>(trainees, HttpStatus.OK);
+		return new ResponseEntity<>(traineeService.findAllByBatchAndStatus(id, status), HttpStatus.OK);
 	}
 
 	/**
@@ -59,8 +58,7 @@ public class TraineeController {
 	@GetMapping
 	public ResponseEntity<List<Trainee>> getAll() {
 		log.info("Trainee Controller received request: getAll trainees");
-		List<Trainee> trainees = traineeService.getAll();
-		return new ResponseEntity<List<Trainee>>(trainees, HttpStatus.OK);
+		return new ResponseEntity<List<Trainee>>(traineeService.getAll(), HttpStatus.OK);
 	}
 
 	/**
@@ -75,8 +73,7 @@ public class TraineeController {
 	// @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER', 'PANEL')")
 	public ResponseEntity<Trainee> createTrainee(@RequestBody Trainee trainee) {
 		log.info("Trainee Controller received request: Creating trainee: " + trainee);
-		Trainee t = traineeService.save(trainee);
-		return new ResponseEntity<>(t, HttpStatus.CREATED);
+		return new ResponseEntity<>(traineeService.save(trainee), HttpStatus.CREATED);
 	}
 
 	/**
@@ -91,10 +88,9 @@ public class TraineeController {
 	 */
 	@PutMapping
 	// @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER','PANEL')")
-	public ResponseEntity<Void> updateTrainee(@RequestBody Trainee trainee) {
+	public ResponseEntity<Trainee> updateTrainee(@RequestBody Trainee trainee) {
 		log.info("Trainee Controller received request: Updating trainee: " + trainee);
-		traineeService.update(trainee);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(traineeService.save(trainee), HttpStatus.NO_CONTENT);
 	}
 
 	/**
@@ -110,10 +106,8 @@ public class TraineeController {
 	@DeleteMapping("/{traineeId}")
 	// @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER','PANEL')")
 	public ResponseEntity<Void> deleteTrainee(@PathVariable Integer traineeId) {
-		Trainee trainee = new Trainee();
-		trainee.setTraineeId(traineeId);
 		log.info("Trainee Controller received request: Deleting trainee: " + traineeId);		
-		traineeService.delete(trainee);
+		traineeService.delete(traineeId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 

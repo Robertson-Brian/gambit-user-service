@@ -80,7 +80,7 @@ public class TrainerService {
 		log.info("Setting that user to be a trainer with title: " + bt.getTitle());
 		User persisted = userRepo.save(u);
 		bt.setUserId(persisted.getUserId());
-		bt.setTrainerId(0);
+		bt.setUserId(0);
 		Trainer saved = trainerRepository.save(bt);
 		TrainerUser result = ClassUtil.merge(persisted, saved);
 		try {
@@ -107,7 +107,7 @@ public class TrainerService {
 		Trainer bt = new Trainer();
 		bt.setUserId(u.getUserId());
 		bt.setTitle(tu.getTitle());
-		bt.setTrainerId(0);
+		bt.setUserId(0);
 		return new TrainerUser(u, bt);
 	}
 
@@ -157,7 +157,7 @@ public class TrainerService {
 
 	public List<String> allTitles() {
 		log.trace("Method called to list all titles.");
-		List<String> titles = trainerRepository.findTitles();
+		List<String> titles = trainerRepository.findDistinctTitle();
 		return titles;
 	}
 

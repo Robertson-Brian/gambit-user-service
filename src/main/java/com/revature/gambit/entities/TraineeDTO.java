@@ -7,14 +7,23 @@ import java.util.Date;
 
 /**
  * This object contains the trainee object, as well as some metadata for the
- * purpose of sending rabbitmq messages.
+ * purpose of sending Kafka messages.
  */
 public class TraineeDTO {
 
+	/**
+	 * The time the message was created
+	 */
 	private Timestamp time;
 
-	private Trainee trainee;
+	/**
+	 * The trainee to be sent over the queue
+	 */
+	private Trainee payload;
 
+	/**
+	 * The service that originated the request
+	 */
 	private String sender;
 
 	private String requestType;
@@ -26,7 +35,7 @@ public class TraineeDTO {
 	public TraineeDTO(Trainee t, String type) {
 		super();
 		this.time = new Timestamp(new Date().getTime());
-		this.trainee = t;
+		this.payload = t;
 		this.requestType = type;
 		try {
 			this.sender = InetAddress.getLocalHost().getHostAddress();
@@ -38,7 +47,7 @@ public class TraineeDTO {
 	public TraineeDTO(Timestamp time, Trainee t, String sender, String requestType) {
 		super();
 		this.time = time;
-		this.trainee = t;
+		this.payload = t;
 		this.sender = sender;
 		this.requestType = requestType;
 	}
@@ -52,11 +61,11 @@ public class TraineeDTO {
 	}
 
 	public Trainee getTrainee() {
-		return trainee;
+		return payload;
 	}
 
 	public void setTrainee(Trainee t) {
-		this.trainee = t;
+		this.payload = t;
 	}
 
 	public String getSender() {
@@ -77,7 +86,7 @@ public class TraineeDTO {
 
 	@Override
 	public String toString() {
-		return "TraineeDTO [time=" + time + ", trainee=" + trainee + ", sender=" + sender + "]";
+		return "TraineeDTO [time=" + time + ", trainee=" + payload + ", sender=" + sender + "]";
 	}
 
 }

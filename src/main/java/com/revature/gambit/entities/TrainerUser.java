@@ -35,25 +35,6 @@ public class TrainerUser {
 		BeanUtils.copyProperties(u, this);
 	}
 
-	public TrainerUser(Integer userId, String firstName, String middleName, String lastName, String email,
-			String password, String backupPassword, String role, String homePhone, String mobilePhone, String token,
-			String title, Integer trainerId) {
-		super();
-		this.userId = userId;
-		this.firstName = firstName;
-		this.middleName = middleName;
-		this.lastName = lastName;
-		this.email = email;
-		this.password = password;
-		this.backupPassword = backupPassword;
-		this.role = role;
-		this.homePhone = homePhone;
-		this.mobilePhone = mobilePhone;
-		this.token = token;
-		this.title = title;
-		this.trainerId = trainerId;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

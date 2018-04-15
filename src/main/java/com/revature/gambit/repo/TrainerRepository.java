@@ -9,11 +9,9 @@ import com.revature.gambit.entities.Trainer;
 
 public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
 
-	Trainer findByTrainerId(Integer trainerId);
+	public Trainer findByUserId(int userId);
 
-	Trainer findByUserId(Integer userId);
-
-	@Query(value = "SELECT DISTINCT TITLE FROM TRAINER", nativeQuery = true)
-	List<String> findTitles();
+	@Query("SELECT DISTINCT title FROM Trainer")
+	public List<String> findDistinctTitle();
 
 }

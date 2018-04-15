@@ -6,8 +6,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ROLES")
-public class TrainerRole {
+@Table(name = "USER_ROLE")
+public class UserRole {
 
 	@Id
 	@Column(name = "ROLE_ID")
@@ -16,11 +16,11 @@ public class TrainerRole {
 	@Column(name = "ROLE")
 	private String role;
 
-	public TrainerRole() {
+	public UserRole() {
 		super();
 	}
 
-	public TrainerRole(Integer roleId, String role) {
+	public UserRole(Integer roleId, String role) {
 		super();
 		this.roleId = roleId;
 		this.role = role;
@@ -59,7 +59,7 @@ public class TrainerRole {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TrainerRole other = (TrainerRole) obj;
+		UserRole other = (UserRole) obj;
 		if (role == null) {
 			if (other.role != null)
 				return false;
