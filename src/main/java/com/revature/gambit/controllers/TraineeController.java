@@ -20,8 +20,6 @@ public interface TraineeController {
 	 *            - id of the batch desired. status - status of trainees desired.
 	 * @return The list of trainees within that batch with the given batchId.
 	 */
-
-	// @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER', 'STAGING', 'PANEL')")
 	ResponseEntity<List<Trainee>> findAllByBatchAndStatus(Integer id, String status);
 
 	/**
@@ -38,8 +36,6 @@ public interface TraineeController {
 	 *            - the trainee to be created.
 	 * @return The newly created trainee.
 	 */
-
-	// @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER', 'PANEL')")
 	ResponseEntity<Trainee> createTrainee(Trainee trainee);
 
 	/**
@@ -52,8 +48,6 @@ public interface TraineeController {
 	 *            - the trainee to be updated.
 	 * @return A response entity signifying a successful update.
 	 */
-
-	// @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER','PANEL')")
 	ResponseEntity<Trainee> updateTrainee(Trainee trainee);
 
 	/**
@@ -66,11 +60,8 @@ public interface TraineeController {
 	 *            - the id of the trainee to delete
 	 * @return A response entity signifying a successful deletion
 	 */
-
-	// @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER','PANEL')")
 	ResponseEntity<Void> deleteTrainee(Integer traineeId);
 
-	// @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER', 'STAGING', 'PANEL')")
 	ResponseEntity<Trainee> findByEmail(String email);
 
 }
