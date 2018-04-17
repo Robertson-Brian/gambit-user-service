@@ -23,7 +23,7 @@ import com.revature.gambit.services.TraineeService;
  * Handles all Janus requests for Trainee resources.
  *
  */
-@RestController
+@RestController("traineeController")
 @RequestMapping(value = "trainees", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TraineeControllerImpl implements TraineeController {
 	private static final Logger log = Logger.getLogger(TraineeControllerImpl.class);

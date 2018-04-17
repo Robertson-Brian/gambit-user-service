@@ -25,7 +25,7 @@ import com.revature.gambit.services.UserService;
  * Controller to retrieve User information.
  *
  */
-@RestController
+@RestController("userController")
 @RequestMapping(value = "users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserControllerImpl implements UserController {
 

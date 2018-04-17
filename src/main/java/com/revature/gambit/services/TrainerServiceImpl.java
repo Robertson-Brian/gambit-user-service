@@ -14,7 +14,7 @@ import com.revature.gambit.entities.User;
 import com.revature.gambit.repositories.TrainerRepository;
 import com.revature.gambit.repositories.UserRepository;
 
-@Service
+@Service("trainerService")
 public class TrainerServiceImpl implements TrainerService {
 
 	@Autowired

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.repositories.TraineeRepository;
 
-@Service
+@Service("traineeService")
 public class TraineeServiceImpl implements TraineeService {
 
 	private static final Logger log = Logger.getLogger(TraineeServiceImpl.class);

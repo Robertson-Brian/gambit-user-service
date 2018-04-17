@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.revature.gambit.entities.User;
 import com.revature.gambit.repositories.UserRepository;
 
-@Service
+@Service("userService")
 public class UserServiceImpl implements UserService {
 
 	@Autowired
