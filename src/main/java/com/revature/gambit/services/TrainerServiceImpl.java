@@ -15,7 +15,7 @@ import com.revature.gambit.repositories.TrainerRepository;
 import com.revature.gambit.repositories.UserRepository;
 
 @Service
-public class TrainerServiceAlpha implements TrainerService {
+public class TrainerServiceImpl implements TrainerService {
 
 	@Autowired
 	public TrainerRepository trainerRepository;
@@ -26,7 +26,7 @@ public class TrainerServiceAlpha implements TrainerService {
 	@Autowired
 	private UserService userService;
 
-	private static final Logger log = Logger.getLogger(TrainerServiceAlpha.class);
+	private static final Logger log = Logger.getLogger(TrainerServiceImpl.class);
 
 	@Override
 	public void delete(Integer id) {

@@ -27,9 +27,9 @@ import com.revature.gambit.services.UserService;
  */
 @RestController
 @RequestMapping(value = "users", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserControllerAlpha implements UserController {
+public class UserControllerImpl implements UserController {
 
-	private static final Logger log = Logger.getLogger(UserControllerAlpha.class);
+	private static final Logger log = Logger.getLogger(UserControllerImpl.class);
 
 	@Autowired
 	private UserService userService;

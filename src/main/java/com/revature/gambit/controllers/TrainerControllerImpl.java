@@ -26,9 +26,9 @@ import com.revature.gambit.services.TrainerService;
 
 @RestController
 @RequestMapping(value = "trainers", produces = MediaType.APPLICATION_JSON_VALUE)
-public class TrainerControllerAlpha implements TrainerController {
+public class TrainerControllerImpl implements TrainerController {
 
-	private static final Logger log = Logger.getLogger(TrainerControllerAlpha.class);
+	private static final Logger log = Logger.getLogger(TrainerControllerImpl.class);
 
 	@Autowired
 	private TrainerService trainerService;

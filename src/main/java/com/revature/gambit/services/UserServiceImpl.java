@@ -9,7 +9,7 @@ import com.revature.gambit.entities.User;
 import com.revature.gambit.repositories.UserRepository;
 
 @Service
-public class UserServiceAlpha implements UserService {
+public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepo;
