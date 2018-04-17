@@ -38,16 +38,16 @@ public class TrainerServiceImpl implements TrainerService {
 		return trainerRepository.findByUserId(trainerId);
 	}
 
-	public Trainer newTrainer(Trainer tu) {
-		log.debug("Method called to create a new trainer and user from TrainerUser object.");
-		User u = new User();
-		BeanUtils.copyProperties(tu, u);
-		u.setRole(tu.getRole());
-		log.trace("Persisting user with the following credentials: " + u.toString());
+	public Trainer newTrainer(Trainer trainer) {
+		log.debug("Method called to create a new trainer and user from Trainer object.");
+		User user = new User();
+		BeanUtils.copyProperties(trainer, user);
+		user.setRole(trainer.getRole());
+		log.trace("Persisting user with the following credentials: " + user.toString());
 		Trainer bt = new Trainer();
-		bt.setTitle(tu.getTitle());
+		bt.setTitle(trainer.getTitle());
 		log.trace("Setting that user to be a trainer with title: " + bt.getTitle());
-		User persisted = userRepository.save(u);
+		User persisted = userRepository.save(user);
 		bt.setUserId(persisted.getUserId());
 		bt.setUserId(0);
 		Trainer saved = trainerRepository.save(bt);
