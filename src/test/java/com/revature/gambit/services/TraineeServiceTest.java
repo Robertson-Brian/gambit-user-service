@@ -3,7 +3,9 @@ package com.revature.gambit.services;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -61,5 +63,48 @@ public class TraineeServiceTest {
 		assertNotEquals(0, candidate.getUserId());
 		log.trace("Trainee saved! " + candidate);
 
+	}
+	
+	@Test
+	public void findAllTraineeByBatchAndStatus(){
+		Trainee trainee1 = new Trainee("John", "Smith", "John.smith@gogomail.com", "ayasn161hs9aes1",
+				TrainingStatus.Training, 2, "Extensure");
+		log.info("1: batch " + trainee1.getBatches());
+		trainee1.getBatches().add(3);
+		trainee1 = traineeService.save(trainee1);
+		//assertNotEquals(0, trainee1.getUserId());
+		log.info("1: batch " + trainee1.getBatches());
+		Trainee trainee2 = new Trainee("John2", "Smith", "John2.smith@gogomail.com", "ayasn161hs9aes2",
+				TrainingStatus.Training, 2, "Extensure");
+		trainee2.getBatches().add(3);
+		trainee2 = traineeService.save(trainee2);
+		//assertNotEquals(0, trainee2.getUserId());
+		Trainee trainee3 = new Trainee("John3", "Smith", "John3.pickles@gogomail.com", "ayasn161hs9aes3",
+				TrainingStatus.Marketing, 1, "Extensure");
+		trainee3.getBatches().add(3);
+		trainee3 = traineeService.save(trainee3);
+		//assertNotEquals(0, trainee3.getUserId());
+		Trainee trainee4 = new Trainee("John4", "Smith", "John4.pickles@gogomail.com", "ayasn161hs9aes4",
+				TrainingStatus.Employed, 1, "Extensure");
+		trainee4.getBatches().add(4);
+		trainee4 = traineeService.save(trainee4);
+		//assertNotEquals(0, trainee4.getUserId());
+		Trainee trainee5 = new Trainee("John5", "Smith", "John5.smith@gogomail.com", "ayasn161hs9aes5",
+				TrainingStatus.Dropped, 1, "Extensure");
+		trainee5.getBatches().add(4);
+		trainee5 = traineeService.save(trainee5);
+		assertNotEquals(0, trainee5.getUserId());
+		
+		log.trace("5 trainee's made. proceeding to test.");
+		
+		List<Trainee> expected = new ArrayList<>();
+		expected.add(trainee1);
+		expected.add(trainee2);
+		//assertSame(expected, traineeService.findAllByBatchAndStatus(1, "Training"));
+		List<Trainee> result = traineeService.findAllByBatchAndStatus(3, "Training");
+		assertEquals(expected, result);
+		
+		
+		
 	}
 }
