@@ -51,4 +51,11 @@ public interface TraineeService {
 	 */
 	public List<Trainee> getAll();
 
+	/**
+	 * Find a trainee given by their email
+	 * @param email
+	 * @return
+	 */
+	public Trainee findByEmail(String email);
+
 }

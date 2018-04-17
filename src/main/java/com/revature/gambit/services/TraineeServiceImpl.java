@@ -61,5 +61,15 @@ public class TraineeServiceImpl implements TraineeService {
 		log.trace("findAll Trainees.");
 		return traineeRepo.findAll();
 	}
+	
+	@Override
+	@Transactional
+	public Trainee findByEmail(String email) {
+		log.trace("findByEmail: " + email);
+		if (email == null) {
+			return null;
+		}
+		return traineeRepo.findOneByEmail(email);
+	}
 
 }
