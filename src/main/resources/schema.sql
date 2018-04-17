@@ -1,12 +1,4 @@
 --------------------------------------------------------
---  DDL for Sequence TRAINEE_ID_SEQUENCE
---------------------------------------------------------
-   CREATE SEQUENCE  "TRAINEE_ID_SEQ" INCREMENT BY 1 START WITH 1;
---------------------------------------------------------
---  DDL for Sequence TRAINER_ID_SEQ
---------------------------------------------------------
-   CREATE SEQUENCE  "TRAINER_ID_SEQ" INCREMENT BY 1 START WITH 1;
---------------------------------------------------------
 --  DDL for Sequence USER_ID_SEQ
 --------------------------------------------------------
    CREATE SEQUENCE  "USER_ID_SEQ" INCREMENT BY 1 START WITH 1;
@@ -68,7 +60,7 @@
 --  DDL for Table TRAINER
 --------------------------------------------------------
 
-  CREATE TABLE "TRAINEE_BATCH"(	
+  CREATE TABLE "TRAINEE_BATCHES"(	
     "BATCH_ID" NUMBER(10) NOT NULL,  
 	"USER_ID" NUMBER(10) NOT NULL
    );
@@ -76,7 +68,7 @@
 --  Constraints for Table TRAINEE_BATCH
 --------------------------------------------------------
 
-  ALTER TABLE "TRAINEE_BATCH" ADD CONSTRAINT "TRAINEE_BATCH_PRIMARY_KEY" PRIMARY KEY ("BATCH_ID", "USER_ID");
+  ALTER TABLE "TRAINEE_BATCHES" ADD PRIMARY KEY ("BATCH_ID", "USER_ID");
 --------------------------------------------------------
 --  Constraints for Table TRAINER
 --------------------------------------------------------

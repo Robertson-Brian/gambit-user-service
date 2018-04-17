@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 /**
@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @Table(name = "TRAINEE")
 public class Trainee extends User {
 
+	@JsonIgnore
 	@ElementCollection
 	private Set<Integer> batches;
 	
