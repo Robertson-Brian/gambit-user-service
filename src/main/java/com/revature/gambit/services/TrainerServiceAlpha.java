@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.TrainerUser;
 import com.revature.gambit.entities.User;
-import com.revature.gambit.repo.TrainerRepository;
-import com.revature.gambit.repo.UserRepository;
+import com.revature.gambit.repositories.TrainerRepository;
+import com.revature.gambit.repositories.UserRepository;
 
 @Service
 public class TrainerServiceAlpha implements TrainerService {

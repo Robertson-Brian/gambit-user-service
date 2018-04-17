@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.gambit.entities.Trainee;
-import com.revature.gambit.repo.TraineeRepository;
+import com.revature.gambit.repositories.TraineeRepository;
 
 @Service
 public class TraineeServiceAlpha implements TraineeService {

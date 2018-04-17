@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.gambit.entities.User;
-import com.revature.gambit.repo.UserRepository;
+import com.revature.gambit.repositories.UserRepository;
 
 @Service
 public class UserServiceAlpha implements UserService {

@@ -1,4 +1,4 @@
-package com.revature.gambit.repo;
+package com.revature.gambit.repositories;
 
 import java.util.List;
 
