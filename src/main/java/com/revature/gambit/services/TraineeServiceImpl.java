@@ -20,17 +20,17 @@ public class TraineeServiceImpl implements TraineeService {
 
 	@Transactional
 	public Trainee save(Trainee trainee) {
-		log.trace("save trainee: " + trainee);
+		log.warn("save trainee: " + trainee);
 		// check if trainee already exists
 		Trainee preexisting = traineeRepository.findOneByEmail(trainee.getEmail());
-		log.trace("Trainee exists: " + preexisting);
+		log.warn("Trainee exists: " + preexisting);
 		if (preexisting != null && preexisting.getBatches() != null) {
 			// if so, add the trainee's batch assignments
 			log.trace("adding prexisting batches: " + preexisting.getBatches() + " to new batches: "
 					+ trainee.getBatches());
 			trainee.getBatches().addAll(preexisting.getBatches());
 			// maintain their Salesforce resourceId
-			log.trace("setting resourceId for trainee as: " + preexisting.getResourceId());
+			log.warn("setting resourceId for trainee as: " + preexisting.getResourceId());
 			trainee.setResourceId(preexisting.getResourceId());
 			trainee.setUserId(preexisting.getUserId());
 			return traineeRepository.save(trainee);
