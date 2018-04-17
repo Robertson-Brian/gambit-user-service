@@ -11,9 +11,9 @@ import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.repo.TraineeRepository;
 
 @Service
-public class TraineeServiceImpl implements TraineeService {
+public class TraineeServiceAlpha implements TraineeService {
 
-	private static final Logger log = Logger.getLogger(TraineeServiceImpl.class);
+	private static final Logger log = Logger.getLogger(TraineeServiceAlpha.class);
 
 	@Autowired
 	private TraineeRepository traineeRepo;

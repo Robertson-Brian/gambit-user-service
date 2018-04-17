@@ -15,6 +15,7 @@ import com.revature.gambit.entities.Trainee;
  * @author Blake Kruppa
  * @author Nick Jurczak
  * @author Emily Higgins
+ * @author Peter Alagna
  *
  */
 @Service

@@ -2,53 +2,27 @@ package com.revature.gambit.services;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.revature.gambit.entities.User;
-import com.revature.gambit.repo.UserRepository;
 
-@Service
-public class UserService {
+public interface UserService {
 
-	@Autowired
-	UserRepository userRepo;
+	User makeUser(User user);
 
-	public User makeUser(User user) {
-		return userRepo.save(user);
-	}
+	List<User> getAllUsers();
 
-	public List<User> getAllUsers() {
-		return userRepo.findAll();
-	}
+	User update(User user);
 
-	public User update(User user) {
-		return userRepo.save(user);
-	}
+	User findUserByEmail(String email);
 
-	public User findUserByEmail(String email) {
-		return userRepo.findByEmail(email);
-	}
+	List<String> getAllRoles();
 
-	public List<String> getAllRoles() {
-		return userRepo.findAllUserRoles();
-	}
+	User findUserById(Integer id);
 
-	public User findUserById(Integer id) {
-		return userRepo.findByUserId(id);
-	}
-
-	public User findByName(String firstName, String lastName) {
-		return userRepo.findUserByFirstNameAndLastName(firstName, lastName);
-	}
+	User findByName(String firstName, String lastName);
 
 	/**
 	 * Users are not deleted, they are simply set to inactive.
 	 */
-	public void delete(Integer id) {
-		User u = userRepo.getOne(id);
-		u.setRole("INACTIVE");
-		userRepo.save(u);
-	}
+	void delete(Integer id);
 
 }
