@@ -21,7 +21,7 @@ public class TrainerServiceImpl implements TrainerService {
 	public TrainerRepository trainerRepository;
 
 	@Autowired
-	private UserRepository userRepo;
+	private UserRepository userRepository;
 
 	@Autowired
 	private UserService userService;
@@ -37,7 +37,7 @@ public class TrainerServiceImpl implements TrainerService {
 	public TrainerUser findById(Integer trainerId) {
 		log.trace("Method called to find Trainer by ID with id: " + trainerId);
 		Trainer bt = trainerRepository.findByUserId(trainerId);
-		User u = userRepo.findByUserId(bt.getUserId());
+		User u = userRepository.findByUserId(bt.getUserId());
 		return new TrainerUser(u, bt);
 	}
 
@@ -50,7 +50,7 @@ public class TrainerServiceImpl implements TrainerService {
 		Trainer bt = new Trainer();
 		bt.setTitle(tu.getTitle());
 		log.info("Setting that user to be a trainer with title: " + bt.getTitle());
-		User persisted = userRepo.save(u);
+		User persisted = userRepository.save(u);
 		bt.setUserId(persisted.getUserId());
 		bt.setUserId(0);
 		Trainer saved = trainerRepository.save(bt);
@@ -60,7 +60,7 @@ public class TrainerServiceImpl implements TrainerService {
 
 	public TrainerUser promoteToTrainer(TrainerUser tu) {
 		log.trace("Method called to promote a user to a trainer.");
-		User u = userRepo.findByUserId(tu.getUserId());
+		User u = userRepository.findByUserId(tu.getUserId());
 		Trainer bt = new Trainer();
 		bt.setUserId(u.getUserId());
 		bt.setTitle(tu.getTitle());
@@ -74,7 +74,7 @@ public class TrainerServiceImpl implements TrainerService {
 		Trainer bt = trainerRepository.findByUserId(tu.getTrainerId());
 		User u = userService.findUserById((bt.getUserId()));
 		BeanUtils.copyProperties(tu, u, "userId");
-		User persisted = userRepo.save(u);
+		User persisted = userRepository.save(u);
 		bt.setTitle(tu.getTitle());
 		Trainer ret = trainerRepository.save(bt);
 		
@@ -84,7 +84,7 @@ public class TrainerServiceImpl implements TrainerService {
 
 	public TrainerUser findTrainerByEmail(String email) {
 		log.trace("Method called to findTrainerByEmail with email: " + email);
-		User u = userRepo.findByEmail(email);
+		User u = userRepository.findByEmail(email);
 		Trainer bt = trainerRepository.findByUserId(u.getUserId());
 		
 		//Momentarily solving reds.

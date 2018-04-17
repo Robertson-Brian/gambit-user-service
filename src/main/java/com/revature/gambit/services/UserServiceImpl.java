@@ -12,40 +12,40 @@ import com.revature.gambit.repositories.UserRepository;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	UserRepository userRepo;
+	UserRepository userRepository;
 
 	public User makeUser(User user) {
-		return userRepo.save(user);
+		return userRepository.save(user);
 	}
 
 	public List<User> getAllUsers() {
-		return userRepo.findAll();
+		return userRepository.findAll();
 	}
 
 	public User update(User user) {
-		return userRepo.save(user);
+		return userRepository.save(user);
 	}
 
 	public User findUserByEmail(String email) {
-		return userRepo.findByEmail(email);
+		return userRepository.findByEmail(email);
 	}
 
 	public List<String> getAllRoles() {
-		return userRepo.findAllUserRoles();
+		return userRepository.findAllUserRoles();
 	}
 
 	public User findUserById(Integer id) {
-		return userRepo.findByUserId(id);
+		return userRepository.findByUserId(id);
 	}
 
 	public User findByName(String firstName, String lastName) {
-		return userRepo.findUserByFirstNameAndLastName(firstName, lastName);
+		return userRepository.findUserByFirstNameAndLastName(firstName, lastName);
 	}
 
 	public void delete(Integer id) {
-		User u = userRepo.getOne(id);
+		User u = userRepository.getOne(id);
 		u.setRole("INACTIVE");
-		userRepo.save(u);
+		userRepository.save(u);
 	}
 
 }
