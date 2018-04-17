@@ -23,7 +23,6 @@ import com.revature.gambit.services.TrainerService;
  * Controller to retrieve Trainer information.
  *
  */
-
 @RestController
 @RequestMapping(value = "trainers", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TrainerControllerImpl implements TrainerController {

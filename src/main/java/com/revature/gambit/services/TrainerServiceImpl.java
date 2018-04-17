@@ -28,14 +28,12 @@ public class TrainerServiceImpl implements TrainerService {
 
 	private static final Logger log = Logger.getLogger(TrainerServiceImpl.class);
 
-	@Override
 	public void delete(Integer id) {
 		log.trace("Method called to delete a trainer.");
 		Trainer bt = trainerRepository.findByUserId(id);
 		userService.delete(bt.getUserId());
 	}
 
-	@Override
 	public TrainerUser findById(Integer trainerId) {
 		log.trace("Method called to find Trainer by ID with id: " + trainerId);
 		Trainer bt = trainerRepository.findByUserId(trainerId);
@@ -43,7 +41,6 @@ public class TrainerServiceImpl implements TrainerService {
 		return new TrainerUser(u, bt);
 	}
 
-	@Override
 	public TrainerUser newTrainer(TrainerUser tu) {
 		log.trace("Method called to create a new trainer and user from TrainerUser object.");
 		User u = new User();
@@ -61,7 +58,6 @@ public class TrainerServiceImpl implements TrainerService {
 		return new TrainerUser();
 	}
 
-	@Override
 	public TrainerUser promoteToTrainer(TrainerUser tu) {
 		log.trace("Method called to promote a user to a trainer.");
 		User u = userRepo.findByUserId(tu.getUserId());
@@ -72,7 +68,6 @@ public class TrainerServiceImpl implements TrainerService {
 		return new TrainerUser(u, bt);
 	}
 
-	@Override
 	public TrainerUser update(TrainerUser tu) {
 		log.trace("Method called to update a trainer and associated user.");
 		log.info(("The trainer id passed in is " + tu.getTrainerId()));
@@ -87,7 +82,6 @@ public class TrainerServiceImpl implements TrainerService {
 		return new TrainerUser();
 	}
 
-	@Override
 	public TrainerUser findTrainerByEmail(String email) {
 		log.trace("Method called to findTrainerByEmail with email: " + email);
 		User u = userRepo.findByEmail(email);
@@ -97,14 +91,12 @@ public class TrainerServiceImpl implements TrainerService {
 		return new TrainerUser();
 	}
 
-	@Override
 	public List<String> allTitles() {
 		log.trace("Method called to list all titles.");
 		List<String> titles = trainerRepository.findDistinctTitle();
 		return titles;
 	}
 
-	@Override
 	public List<TrainerUser> getAll() {
 		log.trace("Method called to get all trainers.");
 		List<Trainer> allTrainers = trainerRepository.findAll();
@@ -116,7 +108,6 @@ public class TrainerServiceImpl implements TrainerService {
 		return new ArrayList<>();
 	}
 
-	@Override
 	public TrainerUser findByName(String firstName, String lastName) {
 		log.trace("Method called to get findByName.");
 		User u = userService.findByName(firstName, lastName);

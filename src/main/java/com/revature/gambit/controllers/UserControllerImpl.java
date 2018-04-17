@@ -34,10 +34,6 @@ public class UserControllerImpl implements UserController {
 	@Autowired
 	private UserService userService;
 
-	/* (non-Javadoc)
-	 * @see com.revature.gambit.controllers.UserController#createUser(com.revature.gambit.entities.User)
-	 */
-	@Override
 	@PostMapping
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		log.info("User Controller received request: create User: " + user);
@@ -45,10 +41,6 @@ public class UserControllerImpl implements UserController {
 		return new ResponseEntity<>(persisted, HttpStatus.CREATED);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.revature.gambit.controllers.UserController#updateUser(com.revature.gambit.entities.User)
-	 */
-	@Override
 	@PutMapping
 	public ResponseEntity<Void> updateUser(@Valid @RequestBody User user) {
 		log.info("User Controller received request: Update user " + user);
@@ -57,10 +49,6 @@ public class UserControllerImpl implements UserController {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.revature.gambit.controllers.UserController#findUserByEmail(java.lang.String)
-	 */
-	@Override
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> findUserByEmail(@PathVariable String email) {
 		log.info(email);
@@ -69,10 +57,6 @@ public class UserControllerImpl implements UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.revature.gambit.controllers.UserController#makeInactive(com.revature.gambit.entities.User)
-	 */
-	@Override
 	@DeleteMapping
 	public ResponseEntity<Void> makeInactive(@RequestBody User user) {
 		log.info("User Controller received request: Updating user: " + user);
@@ -81,10 +65,6 @@ public class UserControllerImpl implements UserController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.revature.gambit.controllers.UserController#getAllUserRoles()
-	 */
-	@Override
 	@GetMapping("roles")
 	public ResponseEntity<List<String>> getAllUserRoles() {
 		log.info("User Controller received request: Fetching all user roles");
@@ -93,10 +73,6 @@ public class UserControllerImpl implements UserController {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.revature.gambit.controllers.UserController#getAllUsers()
-	 */
-	@Override
 	@GetMapping
 	public ResponseEntity<List<User>> getAllUsers() {
 		log.info("User Controller received request: get all users");
@@ -105,10 +81,6 @@ public class UserControllerImpl implements UserController {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.revature.gambit.controllers.UserController#findUserById(java.lang.Integer)
-	 */
-	@Override
 	@GetMapping("id/{id}")
 	public ResponseEntity<User> findUserById(@PathVariable Integer id) {
 		log.info("User Controller received request: find user by id.");
@@ -116,10 +88,6 @@ public class UserControllerImpl implements UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.revature.gambit.controllers.UserController#findByName(java.lang.String, java.lang.String)
-	 */
-	@Override
 	@GetMapping("name/{firstName}/{lastName}")
 	public ResponseEntity<User> findByName(@PathVariable("firstName") String firstName,
 			@PathVariable("lastName") String lastName) {

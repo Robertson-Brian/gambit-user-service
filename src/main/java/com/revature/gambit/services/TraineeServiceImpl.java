@@ -18,7 +18,6 @@ public class TraineeServiceImpl implements TraineeService {
 	@Autowired
 	private TraineeRepository traineeRepo;
 
-	@Override
 	@Transactional
 	public Trainee save(Trainee trainee) {
 		log.trace("save trainee: " + trainee);
@@ -40,14 +39,12 @@ public class TraineeServiceImpl implements TraineeService {
 		}
 	}
 
-	@Override
 	@Transactional
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status) {
 		log.trace("Find all by batch: " + batchId + " with status: " + status);
 		return traineeRepo.findAllByBatchesAndTrainingStatus(batchId, status);
 	}
-
-	@Override
+	
 	@Transactional
 	public void delete(int traineeId) {
 		Trainee trainee = traineeRepo.findOne(traineeId);
@@ -55,14 +52,12 @@ public class TraineeServiceImpl implements TraineeService {
 		traineeRepo.delete(trainee);
 	}
 
-	@Override
 	@Transactional
 	public List<Trainee> getAll() {
 		log.trace("findAll Trainees.");
 		return traineeRepo.findAll();
 	}
 	
-	@Override
 	@Transactional
 	public Trainee findByEmail(String email) {
 		log.trace("findByEmail: " + email);
