@@ -19,5 +19,7 @@ public interface TraineeRepository extends JpaRepository<Trainee, Integer> {
 	Trainee findOneByEmail(String email);
 	
 	Trainee findOneByResourceId(String resourceId);
+	
+	List<Trainee> findAll();
 
 }

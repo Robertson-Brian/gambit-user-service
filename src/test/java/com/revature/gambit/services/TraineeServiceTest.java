@@ -2,8 +2,10 @@ package com.revature.gambit.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -11,12 +13,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.entities.TrainingStatus;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class TraineeServiceTest {
 
@@ -61,5 +63,23 @@ public class TraineeServiceTest {
 		assertNotEquals(0, candidate.getUserId());
 		log.trace("Trainee saved! " + candidate);
 
+	}
+	
+	/**
+	 * Tests methods:
+	 * com.revature.gambit.services.TraineeServiceImpl.getAll()
+	 * 
+	 * Calling the getAll method, and storing the size of the returned trainee list.
+	 * Getting the size of the data-h2.sql table to compare
+	 * 
+	 * 
+	 * If the count sizes match then the test succeeds.
+	 * 
+	 */
+	@Test
+	public void getAll(){
+		log.trace("Testing trainee getAll.");
+		List<Trainee> allTrainees= traineeService.getAll();
+		assertNotNull(allTrainees);
 	}
 }

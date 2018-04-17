@@ -54,7 +54,7 @@ public class TraineeServiceImpl implements TraineeService {
 
 	@Transactional
 	public List<Trainee> getAll() {
-		log.trace("findAll Trainees.");
+		log.debug("findAll Trainees.");
 		return traineeRepository.findAll();
 	}
 	
