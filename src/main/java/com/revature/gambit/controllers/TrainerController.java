@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import com.revature.gambit.entities.TrainerUser;
+import com.revature.gambit.entities.Trainer;
 
 public interface TrainerController {
 
@@ -17,7 +17,7 @@ public interface TrainerController {
 	 *            user
 	 * @return the trainerUser object and http status 200
 	 */
-	ResponseEntity<TrainerUser> makeTrainer(TrainerUser tu);
+	ResponseEntity<Trainer> makeTrainer(Trainer tu);
 
 	/**
 	 * Promotes User to Trainer.
@@ -29,7 +29,7 @@ public interface TrainerController {
 	 *            - contains the user information
 	 * @return new TrainerUser created
 	 */
-	ResponseEntity<TrainerUser> promote(TrainerUser tu);
+	ResponseEntity<Trainer> promote(Trainer tu);
 
 	/**
 	 * Update Trainer information.
@@ -38,7 +38,7 @@ public interface TrainerController {
 	 *            to be updated
 	 * @return the updated TrainerUser
 	 */
-	ResponseEntity<TrainerUser> updateTrainer(TrainerUser tu);
+	ResponseEntity<Trainer> updateTrainer(Trainer tu);
 
 	/**
 	 * Finds Trainer by email.
@@ -47,7 +47,7 @@ public interface TrainerController {
 	 *            to find by
 	 * @return requested TrainerUser
 	 */
-	ResponseEntity<TrainerUser> findTrainerByEmail(String email);
+	ResponseEntity<Trainer> findTrainerByEmail(String email);
 
 	/**
 	 * Retrieve Trainer by Id
@@ -56,7 +56,7 @@ public interface TrainerController {
 	 *            of trainer
 	 * @return TrainerUser of requested trainer
 	 */
-	ResponseEntity<TrainerUser> findTrainerById(Integer id);
+	ResponseEntity<Trainer> findTrainerById(Integer id);
 
 	/**
 	 * Retrieve all titles.
@@ -70,7 +70,7 @@ public interface TrainerController {
 	 * 
 	 * @return List<TrainerUser> of all trainers
 	 */
-	ResponseEntity<List<TrainerUser>> getAll();
+	ResponseEntity<List<Trainer>> getAll();
 
 	/**
 	 * Finds a user by unique firstname/lastname combination. This needs further
@@ -80,7 +80,7 @@ public interface TrainerController {
 	 *            name and last name to search by
 	 * @return TrainerUser with the requested name
 	 */
-	ResponseEntity<TrainerUser> findByName(String firstName, String lastName);
+	ResponseEntity<Trainer> findByName(String firstName, String lastName);
 
 	/**
 	 * Deactivates the User account associated with the given TrainerId.

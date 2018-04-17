@@ -2,7 +2,7 @@ package com.revature.gambit.services;
 
 import java.util.List;
 
-import com.revature.gambit.entities.TrainerUser;
+import com.revature.gambit.entities.Trainer;
 
 public interface TrainerService {
 
@@ -21,7 +21,7 @@ public interface TrainerService {
 	 *            - to find by
 	 * @return TrainerUser - that was found
 	 */
-	TrainerUser findById(Integer trainerId);
+	Trainer findById(Integer trainerId);
 
 	/**
 	 * Creates a new User in the User database and a new Trainer in the trainer
@@ -31,7 +31,7 @@ public interface TrainerService {
 	 *            trainerUser which contains the user and trainer data
 	 * @return new TrainerUser - that was stored in the database.
 	 */
-	TrainerUser newTrainer(TrainerUser tu);
+	Trainer newTrainer(Trainer tu);
 
 	/**
 	 * 
@@ -41,7 +41,7 @@ public interface TrainerService {
 	 *            - which contains the pre-existing user information
 	 * @return new TrainerUser - that was created from given user and new trainer
 	 */
-	TrainerUser promoteToTrainer(TrainerUser tu);
+	Trainer promoteToTrainer(Trainer tu);
 
 	/**
 	 * 
@@ -51,7 +51,7 @@ public interface TrainerService {
 	 *            - which contains user and trainer information
 	 * @return TrainerUser - which contains updated user and trainer information
 	 */
-	TrainerUser update(TrainerUser tu);
+	Trainer update(Trainer tu);
 
 	/**
 	 * Find a single Trainer by email
@@ -62,7 +62,7 @@ public interface TrainerService {
 	 *            email - to search by
 	 * @return TrainerUser - combination of the user and trainer that were found
 	 */
-	TrainerUser findTrainerByEmail(String email);
+	Trainer findTrainerByEmail(String email);
 
 	List<String> allTitles();
 
@@ -72,8 +72,8 @@ public interface TrainerService {
 	 * 
 	 * @return
 	 */
-	List<TrainerUser> getAll();
+	List<Trainer> getAll();
 
-	TrainerUser findByName(String firstName, String lastName);
+	Trainer findByName(String firstName, String lastName);
 
 }

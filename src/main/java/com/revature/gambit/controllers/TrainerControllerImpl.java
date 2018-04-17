@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.gambit.entities.TrainerUser;
+import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.services.TrainerService;
 
 /**
@@ -33,38 +33,38 @@ public class TrainerControllerImpl implements TrainerController {
 	private TrainerService trainerService;
 
 	@PostMapping
-	public ResponseEntity<TrainerUser> makeTrainer(@RequestBody TrainerUser tu) {
+	public ResponseEntity<Trainer> makeTrainer(@RequestBody Trainer tu) {
 		log.info("Trainer Controller received request: create Trainer");
-		TrainerUser t = trainerService.newTrainer(tu);
+		Trainer t = trainerService.newTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "promote")
-	public ResponseEntity<TrainerUser> promote(@RequestBody TrainerUser tu) {
+	public ResponseEntity<Trainer> promote(@RequestBody Trainer tu) {
 		log.info("Trainer Controller received request: promote to Trainer");
-		TrainerUser t = trainerService.promoteToTrainer(tu);
+		Trainer t = trainerService.promoteToTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 
 	}
 
 	@PutMapping
-	public ResponseEntity<TrainerUser> updateTrainer(@RequestBody TrainerUser tu) {
+	public ResponseEntity<Trainer> updateTrainer(@RequestBody Trainer tu) {
 		log.info("Trainer Controller received request: update Trainer");
-		TrainerUser t = trainerService.update(tu);
+		Trainer t = trainerService.update(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TrainerUser> findTrainerByEmail(@PathVariable String email) {
+	public ResponseEntity<Trainer> findTrainerByEmail(@PathVariable String email) {
 		log.info("Trainer Controller received request: Finding trainer by email of " + email);
-		TrainerUser tUser = trainerService.findTrainerByEmail(email);
+		Trainer tUser = trainerService.findTrainerByEmail(email);
 		return new ResponseEntity<>(tUser, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TrainerUser> findTrainerById(@PathVariable("id") Integer id) {
+	public ResponseEntity<Trainer> findTrainerById(@PathVariable("id") Integer id) {
 		log.info("Trainer Controller received request: findTrainerById");
-		return new ResponseEntity<TrainerUser>(trainerService.findById(id), HttpStatus.OK);
+		return new ResponseEntity<Trainer>(trainerService.findById(id), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/titles")
@@ -75,25 +75,25 @@ public class TrainerControllerImpl implements TrainerController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<TrainerUser>> getAll() {
+	public ResponseEntity<List<Trainer>> getAll() {
 		log.info("Trainer Controller received request: getAll");
-		List<TrainerUser> allTrainers = trainerService.getAll();
-		return new ResponseEntity<List<TrainerUser>>(allTrainers, HttpStatus.OK);
+		List<Trainer> allTrainers = trainerService.getAll();
+		return new ResponseEntity<List<Trainer>>(allTrainers, HttpStatus.OK);
 	}
 
 	@GetMapping("name/{firstName}/{lastName}")
-	public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName") String firstName,
+	public ResponseEntity<Trainer> findByName(@PathVariable("firstName") String firstName,
 			@PathVariable("lastName") String lastName) {
 		log.info("Trainer Controller received request: findByName");
-		TrainerUser trainer = trainerService.findByName(firstName, lastName);
-		return new ResponseEntity<TrainerUser>(trainer, HttpStatus.OK);
+		Trainer trainer = trainerService.findByName(firstName, lastName);
+		return new ResponseEntity<Trainer>(trainer, HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id") Integer id) {
 		log.info("Trainer Controller received request: deleteByTrainerId");
 		trainerService.delete(id);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

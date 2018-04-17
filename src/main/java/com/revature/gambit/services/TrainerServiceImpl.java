@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.gambit.entities.Trainer;
-import com.revature.gambit.entities.TrainerUser;
 import com.revature.gambit.entities.User;
 import com.revature.gambit.repositories.TrainerRepository;
 import com.revature.gambit.repositories.UserRepository;
 
+/** Logic needs to be checked **/
 @Service("trainerService")
 public class TrainerServiceImpl implements TrainerService {
 
@@ -29,90 +29,83 @@ public class TrainerServiceImpl implements TrainerService {
 	private static final Logger log = Logger.getLogger(TrainerServiceImpl.class);
 
 	public void delete(Integer id) {
-		log.trace("Method called to delete a trainer.");
-		Trainer bt = trainerRepository.findByUserId(id);
-		userService.delete(bt.getUserId());
+		log.debug("Method called to delete a trainer.");
+		userService.delete(trainerRepository.findByUserId(id).getUserId());
 	}
 
-	public TrainerUser findById(Integer trainerId) {
-		log.trace("Method called to find Trainer by ID with id: " + trainerId);
-		Trainer bt = trainerRepository.findByUserId(trainerId);
-		User u = userRepository.findByUserId(bt.getUserId());
-		return new TrainerUser(u, bt);
+	public Trainer findById(Integer trainerId) {
+		log.debug("Method called to find Trainer by ID with id: " + trainerId);
+		return trainerRepository.findByUserId(trainerId);
 	}
 
-	public TrainerUser newTrainer(TrainerUser tu) {
-		log.trace("Method called to create a new trainer and user from TrainerUser object.");
+	public Trainer newTrainer(Trainer tu) {
+		log.debug("Method called to create a new trainer and user from TrainerUser object.");
 		User u = new User();
 		BeanUtils.copyProperties(tu, u);
 		u.setRole(tu.getRole());
-		log.info("Persisting user with the following credentials: " + u.toString());
+		log.trace("Persisting user with the following credentials: " + u.toString());
 		Trainer bt = new Trainer();
 		bt.setTitle(tu.getTitle());
-		log.info("Setting that user to be a trainer with title: " + bt.getTitle());
+		log.trace("Setting that user to be a trainer with title: " + bt.getTitle());
 		User persisted = userRepository.save(u);
 		bt.setUserId(persisted.getUserId());
 		bt.setUserId(0);
 		Trainer saved = trainerRepository.save(bt);
-		//Momentarily solving reds.
-		return new TrainerUser();
+
+		return saved;
 	}
 
-	public TrainerUser promoteToTrainer(TrainerUser tu) {
-		log.trace("Method called to promote a user to a trainer.");
+	public Trainer promoteToTrainer(Trainer tu) {
+		log.debug("Method called to promote a user to a trainer.");
 		User u = userRepository.findByUserId(tu.getUserId());
 		Trainer bt = new Trainer();
 		bt.setUserId(u.getUserId());
 		bt.setTitle(tu.getTitle());
 		bt.setUserId(0);
-		return new TrainerUser(u, bt);
+		return bt;
 	}
 
-	public TrainerUser update(TrainerUser tu) {
-		log.trace("Method called to update a trainer and associated user.");
-		log.info(("The trainer id passed in is " + tu.getTrainerId()));
-		Trainer bt = trainerRepository.findByUserId(tu.getTrainerId());
+	public Trainer update(Trainer tu) {
+		log.debug("Method called to update a trainer and associated user.");
+		Trainer bt = trainerRepository.findByUserId(tu.getUserId());
 		User u = userService.findUserById((bt.getUserId()));
 		BeanUtils.copyProperties(tu, u, "userId");
 		User persisted = userRepository.save(u);
 		bt.setTitle(tu.getTitle());
 		Trainer ret = trainerRepository.save(bt);
 		
-		//Momentarily solving reds.
-		return new TrainerUser();
+		return ret;
 	}
 
-	public TrainerUser findTrainerByEmail(String email) {
-		log.trace("Method called to findTrainerByEmail with email: " + email);
+	public Trainer findTrainerByEmail(String email) {
+		log.debug("Method called to findTrainerByEmail with email: " + email);
 		User u = userRepository.findByEmail(email);
 		Trainer bt = trainerRepository.findByUserId(u.getUserId());
-		
-		//Momentarily solving reds.
-		return new TrainerUser();
+
+		return bt;
 	}
 
 	public List<String> allTitles() {
-		log.trace("Method called to list all titles.");
+		log.debug("Method called to list all titles.");
 		List<String> titles = trainerRepository.findDistinctTitle();
 		return titles;
 	}
 
-	public List<TrainerUser> getAll() {
-		log.trace("Method called to get all trainers.");
+	public List<Trainer> getAll() {
+		log.debug("Method called to get all trainers.");
 		List<Trainer> allTrainers = trainerRepository.findAll();
-		List<TrainerUser> result = new ArrayList<TrainerUser>();
+		List<Trainer> result = new ArrayList<>();
 		for (Trainer b : allTrainers) {
 			//result.add(ClassUtil.merge(userRepo.findByUserId(b.getUserId()), b));
 		}
-		//Momentarily solving reds.
 		return new ArrayList<>();
 	}
 
-	public TrainerUser findByName(String firstName, String lastName) {
-		log.trace("Method called to get findByName.");
+	public Trainer findByName(String firstName, String lastName) {
+		log.debug("Method called to get findByName.");
 		User u = userService.findByName(firstName, lastName);
 		Trainer bt = trainerRepository.findByUserId(u.getUserId());
-		return new TrainerUser();
+		return bt;
 	}
 
 }
