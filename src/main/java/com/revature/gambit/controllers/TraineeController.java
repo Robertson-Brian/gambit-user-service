@@ -60,7 +60,7 @@ public interface TraineeController {
 	 *            - the id of the trainee to delete
 	 * @return A response entity signifying a successful deletion
 	 */
-	ResponseEntity<Void> deleteTrainee(Integer traineeId);
+	ResponseEntity<?> deleteTrainee(Trainee trainee);
 
 	ResponseEntity<Trainee> findByEmail(String email);
 

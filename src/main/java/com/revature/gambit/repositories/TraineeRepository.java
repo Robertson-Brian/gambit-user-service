@@ -20,4 +20,5 @@ public interface TraineeRepository extends JpaRepository<Trainee, Integer> {
 	
 	Trainee findOneByResourceId(String resourceId);
 
+	void delete(Trainee trainee);
 }

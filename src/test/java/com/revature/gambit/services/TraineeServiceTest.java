@@ -55,11 +55,26 @@ public class TraineeServiceTest {
 
 		log.trace("Testing trainee save (no batch)");
 		// candidate has been scheduled for the technical discussion
-		Trainee candidate = new Trainee("Howard", "Johnson", "howard.johnson@brooks.net", "ajsy1b173h29479w",
-				TrainingStatus.Scheduled, "Edward Jones");
+		Trainee candidate = new Trainee("TestTrainDelete", "TestTrainDelete", "TestTrainDelete@brooks.net", "ajsy1b173h29479w",
+				TrainingStatus.Scheduled, "TestTrainDelete");
 		candidate = traineeService.save(candidate);
 		assertNotEquals(0, candidate.getUserId());
 		log.trace("Trainee saved! " + candidate);
 
+	}
+	
+	/**
+	 * Tests the delete method of the Trainee Repository.
+	 */
+	@Test
+	public void delete() {
+		log.debug("Test delete Trainee");
+		Trainee test = new Trainee("TestTrainDelete", "TestTrainDelete", "TestTrainDelete@brooks.net", "ajsy1b173h29479w",
+				TrainingStatus.Scheduled, "TestTrainDelete");
+		traineeService.save(test);
+		int initialSize = traineeService.getAll().size();
+		traineeService.delete(test);
+		int currentSize = traineeService.getAll().size();
+		assertNotEquals(initialSize,currentSize);
 	}
 }

@@ -57,9 +57,9 @@ public class TraineeControllerImpl implements TraineeController {
 	}
 
 	@DeleteMapping("/{traineeId}")
-	public ResponseEntity<Void> deleteTrainee(@PathVariable Integer traineeId) {
-		log.debug("Trainee Controller received request: Deleting trainee: " + traineeId);		
-		traineeService.delete(traineeId);
+	public ResponseEntity<?> deleteTrainee(@PathVariable Trainee trainee) {
+		log.debug("TraineeControllerImpl.deleteTrainee " + trainee);		
+		traineeService.delete(trainee);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 

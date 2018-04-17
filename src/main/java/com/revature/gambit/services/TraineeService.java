@@ -35,7 +35,7 @@ public interface TraineeService {
 	 * Delete a trainee from the database entirely. 
 	 * @param trainee
 	 */
-	public void delete(int traineeId);
+	public void delete(Trainee trainee);
 
 	/**
 	 * Find all trainees given their batchId and their training status.
