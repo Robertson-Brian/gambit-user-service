@@ -61,7 +61,14 @@ public interface TraineeController {
 	 * @return A response entity signifying a successful deletion
 	 */
 	ResponseEntity<Void> deleteTrainee(Integer traineeId);
-
+	
+	/**
+	 * Finds a trainee given the trainee's email. If the email is null or does not exist 
+	 * a 404 error code is returned.
+	 * The old endpoint url was: "/{email}".
+	 * @param email
+	 * @return The trainee associated with the email or a 404.
+	 */
 	ResponseEntity<Trainee> findByEmail(String email);
 
 }

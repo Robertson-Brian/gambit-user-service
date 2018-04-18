@@ -52,7 +52,7 @@ public interface TraineeService {
 	public List<Trainee> getAll();
 
 	/**
-	 * Find a trainee given by their email
+	 * Find a trainee by providing their email. Will return a 404 if email is null or not found.
 	 * @param email
 	 * @return
 	 */
