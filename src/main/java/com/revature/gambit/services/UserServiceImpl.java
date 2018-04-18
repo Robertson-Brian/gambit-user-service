@@ -44,7 +44,8 @@ public class UserServiceImpl implements UserService {
 
 	public void delete(Integer id) {
 		User u = userRepository.getOne(id);
-		u.setRole("INACTIVE");
+		//Logic here should be getting the role from the DB.
+		//u.setRole("INACTIVE");		
 		userRepository.save(u);
 	}
 
