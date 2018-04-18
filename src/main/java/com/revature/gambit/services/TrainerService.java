@@ -63,14 +63,18 @@ public interface TrainerService {
 	 * @return TrainerUser - combination of the user and trainer that were found
 	 */
 	Trainer findTrainerByEmail(String email);
-
+    
+	/**
+	 * This method is used to get all trainer titles.
+	 * 
+	 * @return  a list of titles
+	 */
 	List<String> allTitles();
 
 	/**
-	 * Implementation should be improved. This many individual DB calls could take a
-	 * very long time to resolve.
+	 * This method is used to get all trainers.
 	 * 
-	 * @return
+	 * @return a list of trainers
 	 */
 	List<Trainer> getAll();
 

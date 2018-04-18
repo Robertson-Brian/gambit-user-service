@@ -70,15 +70,13 @@ public class TrainerControllerImpl implements TrainerController {
 	@GetMapping(value = "/titles")
 	public ResponseEntity<List<String>> getTitles() {
 		log.info("Trainer Controller received request: getTitles");
-		List<String> titles = trainerService.allTitles();
-		return new ResponseEntity<List<String>>(titles, HttpStatus.OK);
+		return new ResponseEntity<List<String>>(trainerService.allTitles(), HttpStatus.OK);
 	}
 
 	@GetMapping
 	public ResponseEntity<List<Trainer>> getAll() {
 		log.info("Trainer Controller received request: getAll");
-		List<Trainer> allTrainers = trainerService.getAll();
-		return new ResponseEntity<List<Trainer>>(allTrainers, HttpStatus.OK);
+		return new ResponseEntity<List<Trainer>>(trainerService.getAll(), HttpStatus.OK);
 	}
 
 	@GetMapping("name/{firstName}/{lastName}")

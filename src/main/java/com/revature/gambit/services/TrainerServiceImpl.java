@@ -87,18 +87,12 @@ public class TrainerServiceImpl implements TrainerService {
 
 	public List<String> allTitles() {
 		log.debug("Method called to list all titles.");
-		List<String> titles = trainerRepository.findDistinctTitle();
-		return titles;
+		return trainerRepository.findDistinctTitle();
 	}
 
 	public List<Trainer> getAll() {
 		log.debug("Method called to get all trainers.");
-		List<Trainer> allTrainers = trainerRepository.findAll();
-		List<Trainer> result = new ArrayList<>();
-		for (Trainer b : allTrainers) {
-			//result.add(ClassUtil.merge(userRepo.findByUserId(b.getUserId()), b));
-		}
-		return new ArrayList<>();
+		return trainerRepository.findAll();
 	}
 
 	public Trainer findByName(String firstName, String lastName) {
