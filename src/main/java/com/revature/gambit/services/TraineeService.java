@@ -32,7 +32,7 @@ public interface TraineeService {
 	public Trainee save(Trainee trainee);
 
 	/**
-	 * Delete a trainee from the database entirely. 
+	 * Removes a trainee from the database entirely. 
 	 * @param trainee
 	 */
 	public void delete(Trainee trainee);
