@@ -94,6 +94,20 @@ public class TraineeServiceTest {
 		log.debug("Testing table exists and the size of table is correct");
 		assertNotNull(traineeService.getAll());
 		assertEquals(3, traineeService.getAll().size());
-		
+	}	
+	/**
+	 * Tests the delete method of the Trainee Service Layer.
+	 * 
+	 */
+	@Test
+	public void delete() {
+		log.debug("Test delete Trainee");
+		Trainee test = new Trainee("TestTrainDelete", "TestTrainDelete", "TestTrainDelete@brooks.net", "ajsy1b173h29479w",
+				TrainingStatus.Scheduled, "TestTrainDelete");
+		traineeService.save(test);
+		int initialSize = traineeService.getAll().size();
+		traineeService.delete(test);
+		int currentSize = traineeService.getAll().size();
+		assertNotEquals(initialSize,currentSize);
 	}
 }

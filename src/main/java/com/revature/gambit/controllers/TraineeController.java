@@ -57,11 +57,11 @@ public interface TraineeController {
 	 * The old endpoint url was: "/all/trainee/delete/{id}" In Caliber the old url
 	 * was: "${context}all/trainee/delete/${traineeId}"
 	 *
-	 * @param traineeId
-	 *            - the id of the trainee to delete
-	 * @return A response entity signifying a successful deletion
+	 * @param trainee
+	 *            
+	 * @return A 204 status code: "No Content"
 	 */
-	ResponseEntity<Void> deleteTrainee(Integer traineeId);
+	ResponseEntity<?> deleteTrainee(Trainee trainee);
 
 	ResponseEntity<Trainee> findByEmail(String email);
 
