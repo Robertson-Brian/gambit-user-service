@@ -17,6 +17,7 @@ public class TraineeControllerTest {
 
 	@Autowired
 	private TraineeController traineeController;
+
 	
 	/**
 	 * Checks that getByBatchAndStatus returns a 200 status code.
@@ -28,4 +29,5 @@ public class TraineeControllerTest {
 		given().when().get("http://localhost:10000/trainees/batch/1/status/Training").then().assertThat().statusCode(200);
 	
 	}
+
 }
