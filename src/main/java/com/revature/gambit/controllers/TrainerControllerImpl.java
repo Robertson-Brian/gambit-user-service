@@ -32,7 +32,7 @@ public class TrainerControllerImpl implements TrainerController {
 	@Autowired
 	private TrainerService trainerService;
 
-	@PostMapping
+	@PostMapping(value = "register")
 	public ResponseEntity<Trainer> registerTrainer(@RequestBody Trainer trainer) {
 		log.info("Trainer Controller received request: create Trainer");
 		Trainer registeredTrainer = trainerService.newTrainer(trainer);

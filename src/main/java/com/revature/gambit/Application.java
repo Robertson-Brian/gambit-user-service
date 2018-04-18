@@ -18,9 +18,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableEurekaClient
 public class Application {
 	
-	@Autowired
-	ApplicationContext context;
-	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}

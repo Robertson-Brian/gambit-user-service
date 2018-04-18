@@ -22,7 +22,7 @@ public class TrainerServiceTest {
 	private TrainerService trainerService;
 	
 	@Test
-	public void save() {
+	public void testNewTrainer() {
 		log.debug("Testing trainerService.newTrainer(Trainer trainer)");
 		Trainer newTrainer = new Trainer("Mark","Fleres","mfleres@gmail.com","Dr.");
 		log.trace("newTrainer = " + newTrainer);
