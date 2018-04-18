@@ -15,16 +15,12 @@ public class TraineeControllerTest {
 
 	private static final Logger log = Logger.getLogger(TraineeControllerTest.class);
 	
-	private static final String BASE_URL = "http://localhost:10000/trainees";
-		
-	@Test
-	public void empty(){
-	}
+	private static final String URL = "http://localhost:10001";
 	
 	@Test
 	public void getAll(){
 		log.debug("Testing trainee getAll");
-		when().get(BASE_URL).then().assertThat().statusCode(HttpStatus.OK.value());
+		when().get(URL).then().assertThat().statusCode(HttpStatus.OK.value());
 		log.trace("All Trainees retrieved");
 	}
 }
