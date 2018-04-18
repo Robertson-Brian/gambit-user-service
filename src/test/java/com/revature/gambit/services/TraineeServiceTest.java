@@ -27,16 +27,16 @@ public class TraineeServiceTest {
 
 	@Test
 	public void save() {
-		log.warn("Testing trainee save");
+		log.debug("Testing trainee save");
 		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
 				TrainingStatus.Training, 1, "Extensure");
 		// trainee has a batch.
 		trainee.getBatches().add(1);
 		trainee = traineeService.save(trainee);
 		assertNotEquals(0, trainee.getUserId());
-		log.warn("Trainee saved! " + trainee);
+		log.trace("Trainee saved! " + trainee);
 
-		log.warn("Testing trainee update");
+		log.debug("Testing trainee update");
 		Trainee update = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "", TrainingStatus.Training, 1,
 				"Belotte");
 		// trainee has a different batch now
@@ -51,15 +51,15 @@ public class TraineeServiceTest {
 		assertEquals(expected, check.getBatches());
 		// be sure the fields actually changed
 		assertEquals("Belotte", check.getClient());
-		log.warn("Trainee updated!");
+		log.trace("Trainee updated!");
 
-		log.warn("Testing trainee save (no batch)");
+		log.debug("Testing trainee save (no batch)");
 		// candidate has been scheduled for the technical discussion
 		Trainee candidate = new Trainee("Howard", "Johnson", "howard.johnson@brooks.net", "ajsy1b173h29479w",
 				TrainingStatus.Scheduled, "Edward Jones");
 		candidate = traineeService.save(candidate);
 		assertNotEquals(0, candidate.getUserId());
-		log.warn("Trainee saved! " + candidate);
+		log.trace("Trainee saved! " + candidate);
 
 	}
 }

@@ -46,7 +46,7 @@ public class TraineeControllerImpl implements TraineeController {
 
 	@PostMapping("/create")
 	public ResponseEntity<Trainee> createTrainee(@RequestBody Trainee trainee) {
-		log.warn("Trainee Controller received request: Creating trainee: " + trainee);
+		log.debug("Trainee Controller received request: Creating trainee: " + trainee);
 		return new ResponseEntity<>(traineeService.save(trainee), HttpStatus.CREATED);
 	}
 

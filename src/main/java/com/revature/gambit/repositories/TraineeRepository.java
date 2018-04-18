@@ -13,7 +13,7 @@ import com.revature.gambit.entities.Trainee;
  * @author Charles Courtois
  */
 public interface TraineeRepository extends JpaRepository<Trainee, Integer> {
-	 
+
 	List<Trainee> findAllByBatchesAndTrainingStatus(Integer batchId, String traineeStatus);
 	
 	Trainee findOneByEmail(String email);
