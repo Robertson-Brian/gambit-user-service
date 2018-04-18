@@ -2,6 +2,7 @@ package com.revature.gambit.controllers;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.equalTo;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -51,7 +52,19 @@ public class TrainerControllerTest {
 		when().
 			post(REGISTER_TRAINER_URL).
 		then().
-			assertThat().
-				statusCode(HttpStatus.OK.value());
+			assertThat().statusCode(HttpStatus.OK.value()).
+		and().
+			contentType(ContentType.JSON).
+		and().
+			body("firstName", equalTo("Mark"));
+		
+		//Test that a repeat register fails
+		given().
+			contentType(ContentType.JSON).
+			body(newTrainer).
+		when().
+			post(REGISTER_TRAINER_URL).
+		then().
+			assertThat().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 	}
 }
