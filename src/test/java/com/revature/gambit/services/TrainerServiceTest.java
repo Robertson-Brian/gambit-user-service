@@ -37,11 +37,13 @@ public class TrainerServiceTest {
 		
 		log.debug("Testing trainerService.getAllTitles()");
 		assertEquals(1, trainerService.getAllTitles().size());
+		assertNotEquals(0, trainerService.getAllTitles().size());
 	}
 	
 	@Test
 	public void testGetAllTrainers(){
 		log.debug("Testing trainerService.getAll()");
 		assertEquals(1, trainerService.getAll().size());
+		assertNotEquals(0, trainerService.getAll().size());
 	}
 }
