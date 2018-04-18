@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.services.TraineeService;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 
 /**
  * Handles all Janus requests for Trainee resources.
