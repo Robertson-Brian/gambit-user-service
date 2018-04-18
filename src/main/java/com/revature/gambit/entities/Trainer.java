@@ -22,6 +22,12 @@ public class Trainer extends User {
 	public Trainer() {
 		super();
 	}
+	
+	public Trainer(String firstName, String lastName, String email, String title){
+		super( firstName,lastName,email);
+		this.title = title;
+		
+	}
 
 	public String getTitle() {
 		return title;

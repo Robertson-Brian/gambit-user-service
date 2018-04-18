@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -18,12 +20,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "REVATURE_USER")
-@Inheritance(strategy=InheritanceType.JOINED)
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @Cacheable
 public class User {
 	@Id
 	@SequenceGenerator(name = "USER_ID_SEQ", sequenceName = "USER_ID_SEQ")
-	@GeneratedValue(generator = "USER_ID_SEQ", strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "USER_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	@Column(name = "USER_ID")
 	private int userId;
 
@@ -60,8 +62,9 @@ public class User {
 	@Column(name = "BACKUP_PASSWORD")
 	private String backupPassword;
 
-	@Column(name = "ROLE")
-	private String role;
+	@OneToOne
+	@JoinColumn(name = "ROLE_ID")
+	private UserRole role;
 
 	@Column(name = "HOME_PHONE")
 	private String homePhone;
@@ -131,11 +134,11 @@ public class User {
 		this.backupPassword = backupPassword;
 	}
 
-	public String getRole() {
+	public UserRole getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(UserRole role) {
 		this.role = role;
 	}
 
