@@ -16,6 +16,8 @@ public class TraineeControllerTest {
 
 	private static final Logger log = Logger.getLogger(TraineeControllerTest.class);
 
+	private static final String URL = "http://localhost:10001";
+	
 	@Autowired
 	private TraineeController traineeController;
 
@@ -28,10 +30,12 @@ public class TraineeControllerTest {
 		given().header("Content-Type", "application/json")
 				.body(body)
 				.when()	
-				.post("http://localhost:10001/trainees/").then().assertThat().statusCode(201);
+				.post(URL).then().assertThat().statusCode(201);
 
 	}
 	
-
+	@Test
+	public void empty() {
+	}
 
 }
