@@ -17,7 +17,7 @@ public interface TrainerController {
 	 *            user
 	 * @return the trainerUser object and http status 200
 	 */
-	ResponseEntity<Trainer> makeTrainer(Trainer tu);
+	ResponseEntity<Trainer> registerTrainer(Trainer trainer);
 
 	/**
 	 * Promotes User to Trainer.

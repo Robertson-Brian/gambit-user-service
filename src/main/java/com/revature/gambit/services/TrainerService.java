@@ -31,7 +31,7 @@ public interface TrainerService {
 	 *            trainerUser which contains the user and trainer data
 	 * @return new TrainerUser - that was stored in the database.
 	 */
-	Trainer newTrainer(Trainer tu);
+	Trainer newTrainer(Trainer trainer);
 
 	/**
 	 * 

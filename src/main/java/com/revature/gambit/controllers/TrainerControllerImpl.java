@@ -33,10 +33,10 @@ public class TrainerControllerImpl implements TrainerController {
 	private TrainerService trainerService;
 
 	@PostMapping
-	public ResponseEntity<Trainer> makeTrainer(@RequestBody Trainer tu) {
+	public ResponseEntity<Trainer> registerTrainer(@RequestBody Trainer trainer) {
 		log.info("Trainer Controller received request: create Trainer");
-		Trainer t = trainerService.newTrainer(tu);
-		return new ResponseEntity<>(t, HttpStatus.OK);
+		Trainer registeredTrainer = trainerService.newTrainer(trainer);
+		return new ResponseEntity<>(registeredTrainer, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "promote")
