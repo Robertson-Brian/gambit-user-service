@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.services.TraineeService;
-
 /**
  * Handles all Janus requests for Trainee resources.
  *
@@ -56,10 +55,10 @@ public class TraineeControllerImpl implements TraineeController {
 		return new ResponseEntity<>(traineeService.save(trainee), HttpStatus.NO_CONTENT);
 	}
 
-	@DeleteMapping("/{traineeId}")
-	public ResponseEntity<Void> deleteTrainee(@PathVariable Integer traineeId) {
-		log.debug("Trainee Controller received request: Deleting trainee: " + traineeId);		
-		traineeService.delete(traineeId);
+	@DeleteMapping
+	public ResponseEntity<?> deleteTrainee(@RequestBody Trainee trainee) {
+		log.debug("TraineeControllerImpl.deleteTrainee: " + trainee);		
+		traineeService.delete(trainee);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 

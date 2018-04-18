@@ -46,9 +46,8 @@ public class TraineeServiceImpl implements TraineeService {
 	}
 	
 	@Transactional
-	public void delete(int traineeId) {
-		Trainee trainee = traineeRepository.findOne(traineeId);
-		log.trace("Deleting trainee: " + trainee);
+	public void delete(Trainee trainee) {
+		log.debug("TraineeServiceImpl.delete" + trainee);
 		traineeRepository.delete(trainee);
 	}
 
