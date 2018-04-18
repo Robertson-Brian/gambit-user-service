@@ -33,10 +33,10 @@ public class TrainerControllerImpl implements TrainerController {
 	private TrainerService trainerService;
 
 	@PostMapping
-	public ResponseEntity<Trainer> makeTrainer(@RequestBody Trainer tu) {
+	public ResponseEntity<Trainer> registerTrainer(@RequestBody Trainer trainer) {
 		log.info("Trainer Controller received request: create Trainer");
-		Trainer t = trainerService.newTrainer(tu);
-		return new ResponseEntity<>(t, HttpStatus.OK);
+		Trainer registeredTrainer = trainerService.newTrainer(trainer);
+		return new ResponseEntity<>(registeredTrainer, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "promote")
@@ -68,17 +68,15 @@ public class TrainerControllerImpl implements TrainerController {
 	}
 
 	@GetMapping(value = "/titles")
-	public ResponseEntity<List<String>> getTitles() {
+	public ResponseEntity<List<String>> getAllTitles() {
 		log.info("Trainer Controller received request: getTitles");
-		List<String> titles = trainerService.allTitles();
-		return new ResponseEntity<List<String>>(titles, HttpStatus.OK);
+		return new ResponseEntity<List<String>>(trainerService.getAllTitles(), HttpStatus.OK);
 	}
 
 	@GetMapping
 	public ResponseEntity<List<Trainer>> getAll() {
 		log.info("Trainer Controller received request: getAll");
-		List<Trainer> allTrainers = trainerService.getAll();
-		return new ResponseEntity<List<Trainer>>(allTrainers, HttpStatus.OK);
+		return new ResponseEntity<List<Trainer>>(trainerService.getAll(), HttpStatus.OK);
 	}
 
 	@GetMapping("name/{firstName}/{lastName}")

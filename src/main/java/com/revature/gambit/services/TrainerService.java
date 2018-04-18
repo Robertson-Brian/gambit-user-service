@@ -31,7 +31,7 @@ public interface TrainerService {
 	 *            trainerUser which contains the user and trainer data
 	 * @return new TrainerUser - that was stored in the database.
 	 */
-	Trainer newTrainer(Trainer tu);
+	Trainer newTrainer(Trainer trainer);
 
 	/**
 	 * 
@@ -63,14 +63,18 @@ public interface TrainerService {
 	 * @return TrainerUser - combination of the user and trainer that were found
 	 */
 	Trainer findTrainerByEmail(String email);
-
-	List<String> allTitles();
+    
+	/**
+	 * This method is used to get all trainer titles.
+	 * 
+	 * @return  a list of titles
+	 */
+	List<String> getAllTitles();
 
 	/**
-	 * Implementation should be improved. This many individual DB calls could take a
-	 * very long time to resolve.
+	 * This method is used to get all trainers.
 	 * 
-	 * @return
+	 * @return a list of trainers
 	 */
 	List<Trainer> getAll();
 
