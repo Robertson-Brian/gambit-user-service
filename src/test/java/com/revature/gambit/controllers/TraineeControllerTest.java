@@ -20,10 +20,6 @@ public class TraineeControllerTest {
 	
 	private static final String URL = "http://localhost:10001";
 	
-	@Test
-	public void empty() {
-		
-	}
 	/**
 	 * Tests connection is OK with getAll
 	 */
