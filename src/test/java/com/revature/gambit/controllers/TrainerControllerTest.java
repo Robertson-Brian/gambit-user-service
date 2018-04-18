@@ -46,12 +46,14 @@ public class TrainerControllerTest {
 	@Test
 	public void testFindAllTitles() {
 		log.info("Find all trainers titles at : "+FIND_ALL_TRAINER_TITLES_URL);
-		when().get(FIND_ALL_TRAINER_TITLES_URL)
-		      .then().assertThat().statusCode(200)
-		      .body("$", hasItems("Lead Trainer","Vice President of Technology",
-		    		              "Technology Manager","Senior Java Developer",
-		    		              "Trainer","Senior Trainer")); 
-		     
+		
+		 when()
+		.get(FIND_ALL_TRAINER_TITLES_URL)
+		.then().assertThat().statusCode(HttpStatus.OK.value())
+		.body("$", hasItems("Lead Trainer","Vice President of Technology",
+	   		                "Technology Manager","Senior Java Developer",
+		    		        "Trainer","Senior Trainer")); 
+		 
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -62,7 +64,7 @@ public class TrainerControllerTest {
 		List<Trainer> trainers = new ArrayList<>();
 		
 		trainers = when().get(FIND_ALL_TRAINERS_URL)
-		                 .then().assertThat().statusCode(200)
+		                 .then().assertThat().statusCode(HttpStatus.OK.value())
 		                 .extract().body()
 		  				 .as(trainers.getClass());
 																						

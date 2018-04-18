@@ -31,4 +31,17 @@ public class TrainerServiceTest {
 		assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
 		assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
 	}
+	
+	@Test
+	public void testGetAllTitles(){
+		
+		log.debug("Testing trainerService.getAllTitles()");
+		assertEquals(1, trainerService.getAllTitles().size());
+	}
+	
+	@Test
+	public void testGetAllTrainers(){
+		log.debug("Testing trainerService.getAll()");
+		assertEquals(1, trainerService.getAll().size());
+	}
 }
