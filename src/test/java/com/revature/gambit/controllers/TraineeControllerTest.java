@@ -12,6 +12,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.entities.TrainingStatus;
@@ -25,7 +27,19 @@ public class TraineeControllerTest {
 	@Autowired
 	private TraineeController traineeController;
 
+	
+	/**
+	 * Checks that getByBatchAndStatus returns a 200 status code.
+	 *  
+	 */
 	@Test
+	public void getByBatchAndStatus() {
+		log.debug("getByBatchAndStatus unit test starts here.");
+		given().when().get("http://localhost:10000/trainees/batch/1/status/Training").then().assertThat().statusCode(200);
+	
+	}
+
+  @Test
 	public void empty() {
 	}
 
@@ -43,4 +57,5 @@ public class TraineeControllerTest {
 		.put("http://localhost:10001/trainees/").then().assertThat().statusCode(204);
 		log.debug("Trainee Controller test: Updating trainee");
 	}
+
 }

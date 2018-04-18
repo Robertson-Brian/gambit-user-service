@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.gambit.entities.Trainee;
+import com.revature.gambit.entities.TrainingStatus;
 import com.revature.gambit.repositories.TraineeRepository;
 
 @Service("traineeService")
@@ -62,8 +63,8 @@ public class TraineeServiceImpl implements TraineeService {
 
 	@Transactional
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status) {
-		log.trace("Find all by batch: " + batchId + " with status: " + status);
-		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId, status);
+		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId + " with status: " + status);
+		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,TrainingStatus.valueOf(status));
 	}
 	
 	@Transactional
