@@ -64,7 +64,8 @@ public class TraineeServiceTest {
 	}
 	
 	/**
-	 * Tests the delete method of the Trainee Repository.
+	 * Tests the delete method of the Trainee Service Layer.
+	 * 
 	 */
 	@Test
 	public void delete() {
