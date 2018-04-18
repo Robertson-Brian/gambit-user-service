@@ -19,9 +19,14 @@ public class TraineeControllerTest {
 	private static final Logger logger = Logger.getLogger(TraineeControllerTest.class);
 	private static final String BASE_URL = "http://localhost:10001";
 	private static final String DELETE_TRAINEE = BASE_URL + "/trainees";
+	
 	@Autowired
 	private TraineeController traineeController;
 	
+	/**
+	 * Tests deletion of a trainee.
+	 * Asserts that a 204 - No Content status is returned.
+	 */
 	@Test
 	public void deleteTest() {
 		String trainee = "{\"userId\":36,\"firstName\":\"Gir\",\"middleName\":null,\"lastName\":\"Chandradat\",\"email\":\"chandradatgir@yahoo.com\",\"password\":null,\"backupPassword\":null,\"role\":null,\"homePhone\":null,\"mobilePhone\":null,\"token\":null,\"resourceId\":null,\"trainingStatus\":\"Dropped\",\"profileUrl\":null,\"recruiterName\":null,\"college\":null,\"degree\":null,\"major\":null,\"techScreenerName\":null,\"projectCompletion\":null,\"flagStatus\":null,\"flagNotes\":null,\"marketingStatus\":null,\"client\":null,\"endClient\":null}";
