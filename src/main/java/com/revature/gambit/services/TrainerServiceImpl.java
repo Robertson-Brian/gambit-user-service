@@ -33,9 +33,9 @@ public class TrainerServiceImpl implements TrainerService {
 		userService.delete(trainerRepository.findByUserId(id).getUserId());
 	}
 
-	public Trainer findById(Integer trainerId) {
-		log.debug("Method called to find Trainer by ID with id: " + trainerId);
-		return trainerRepository.findByUserId(trainerId);
+	public Trainer findById(Integer userId) {
+		log.debug("Method called to find Trainer by ID with id: " + userId);
+		return trainerRepository.findByUserId(userId);
 	}
 
 	public Trainer newTrainer(Trainer tu) {

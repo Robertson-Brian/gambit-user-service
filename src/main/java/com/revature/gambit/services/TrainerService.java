@@ -21,7 +21,7 @@ public interface TrainerService {
 	 *            - to find by
 	 * @return TrainerUser - that was found
 	 */
-	Trainer findById(Integer trainerId);
+	Trainer findById(Integer userId);
 
 	/**
 	 * Creates a new User in the User database and a new Trainer in the trainer
