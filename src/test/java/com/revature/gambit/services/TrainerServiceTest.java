@@ -16,18 +16,18 @@ import com.revature.gambit.entities.Trainer;
 @SpringBootTest
 public class TrainerServiceTest {
 
-	private static final Logger logger = Logger.getLogger(TrainerServiceTest.class);
+	private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
 
 	@Autowired
 	private TrainerService trainerService;
 	
 	@Test
 	public void save() {
-		logger.debug("Testing trainerService.newTrainer(Trainer trainer)");
+		log.debug("Testing trainerService.newTrainer(Trainer trainer)");
 		Trainer newTrainer = new Trainer("Mark","Fleres","mfleres@gmail.com","Dr.");
-		logger.trace("newTrainer = " + newTrainer);
+		log.trace("newTrainer = " + newTrainer);
 		Trainer savedTrainer = trainerService.newTrainer(newTrainer);
-		logger.trace("savedTrainer = " + savedTrainer);
+		log.trace("savedTrainer = " + savedTrainer);
 		assertNotEquals(0, savedTrainer.getUserId());
 		assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
 		assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());

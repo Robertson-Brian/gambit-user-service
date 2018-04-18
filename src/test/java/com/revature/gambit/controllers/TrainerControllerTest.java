@@ -1,6 +1,7 @@
 package com.revature.gambit.controllers;
 
 import org.apache.log4j.Logger;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,5 +15,10 @@ public class TrainerControllerTest {
 
 	@Autowired
 	private TrainerController trainerController;
+	
+	@Test
+	public void testRegisterTrainer() {
+		
+	}
 	
 }
