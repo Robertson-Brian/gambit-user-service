@@ -12,9 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class TraineeControllerTest {
 
 	private static final Logger log = Logger.getLogger(TraineeControllerTest.class);
-
-	@Autowired
-	private TraineeController traineeController;
 	
 	@Test
 	public void empty() {
