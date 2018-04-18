@@ -15,7 +15,12 @@ import com.revature.gambit.entities.TrainingStatus;
  */
 public interface TraineeRepository extends JpaRepository<Trainee, Integer> {
 
-	
+	/**
+	 * 
+	 * @param batchId - number of which batch to search
+	 * @param trainingStatus - status of trainee to search
+	 * @return List of all trainees in batchId with trainingstatus
+	 */
 	List<Trainee> findAllByBatchesAndTrainingStatus(Integer batchId, TrainingStatus trainingStatus);
 	
 	Trainee findOneByEmail(String email);
