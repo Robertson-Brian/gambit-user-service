@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class User {
 	@Id
 	@SequenceGenerator(name = "USER_ID_SEQ", sequenceName = "USER_ID_SEQ")
-	@GeneratedValue(generator = "USER_ID_SEQ", strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "USER_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	@Column(name = "USER_ID")
 	private int userId;
 
