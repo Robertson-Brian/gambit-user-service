@@ -65,6 +65,12 @@ public class TraineeServiceTest {
 
 	}
 	
+	
+	/**
+	 * Adds 5 trainees to DB
+	 * Checks for trainees in Batch 3 with a trainingStatus of 'training'
+	 * compares to 2 of the 5 trainees that were expected
+	 */
 	@Test
 	public void findAllTraineeByBatchAndStatus(){
 		Trainee trainee1 = new Trainee("John", "Smith", "John.smith@gogomail.com", "ayasn161hs9aes1",
