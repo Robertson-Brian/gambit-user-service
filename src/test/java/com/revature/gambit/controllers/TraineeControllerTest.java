@@ -15,7 +15,7 @@ public class TraineeControllerTest {
 
 	private static final Logger log = Logger.getLogger(TraineeControllerTest.class);
 	
-	private static final String URL = "http://localhost:10001/trainees";
+	private static final String URL = "http://localhost:10001";
 	
 	@Test
 	public void empty() {
