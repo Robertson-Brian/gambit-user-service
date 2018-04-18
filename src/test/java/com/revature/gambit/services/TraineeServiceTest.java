@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -69,13 +70,32 @@ public class TraineeServiceTest {
 	 * Tests methods:
 	 * com.revature.gambit.services.TraineeServiceImpl.getAll()
 	 * 
-	 * Calling the getAll method, and checking that list is returned.
+	 * After creating three trainees and calling getAll method returns all three.
+	 * The check is done by comparing the expected size and the size of the table.
 	 * 
 	 */
 	@Test
 	public void getAll(){
-		log.trace("Testing trainee getAll.");
-		List<Trainee> allTrainees= traineeService.getAll();
-		assertNotNull(allTrainees);
+		log.debug("Testing trainee getAll");
+		//creating 3 trainees 
+		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
+				TrainingStatus.Training, 1, "Extensure");
+		trainee.getBatches().add(1);
+		traineeService.save(trainee);
+		
+		Trainee trainee1 = new Trainee("Daniel", "Pick", "dan.pick@gogomail.com", "ayasn161hs9aes",
+				TrainingStatus.Training, 1, "Extensure");
+		trainee1.getBatches().add(2);
+		traineeService.save(trainee1);
+		
+		Trainee trainee2 = new Trainee("Daniel", "Les", "dan.les@gogomail.com", "ayasn161hs9aes",
+				TrainingStatus.Training, 1, "Extensure");
+		trainee2.getBatches().add(3);
+		traineeService.save(trainee2);
+		
+		log.debug("Testing table exists and the size of table is correct");
+		assertNotNull(traineeService.getAll());
+		assertEquals(3, traineeService.getAll().size());
+		
 	}
 }

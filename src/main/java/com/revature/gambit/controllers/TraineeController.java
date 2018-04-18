@@ -23,6 +23,7 @@ public interface TraineeController {
 	ResponseEntity<List<Trainee>> findAllByBatchAndStatus(Integer id, String status);
 
 	/**
+	 * Find all of the trainees without restriction.
 	 * 
 	 * @return a List of all trainees
 	 */
