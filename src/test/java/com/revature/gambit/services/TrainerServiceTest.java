@@ -2,7 +2,6 @@ package com.revature.gambit.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,5 +30,18 @@ public class TrainerServiceTest {
 		assertNotEquals(0, savedTrainer.getUserId());
 		assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
 		assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
+	}
+	
+	@Test
+	public void testGetAllTitles(){
+		
+		log.debug("Testing trainerService.getAllTitles()");
+		assertEquals(1, trainerService.getAllTitles().size());
+	}
+	
+	@Test
+	public void testGetAllTrainers(){
+		log.debug("Testing trainerService.getAll()");
+		assertEquals(1, trainerService.getAll().size());
 	}
 }
