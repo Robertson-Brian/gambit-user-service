@@ -1,16 +1,10 @@
+#Server Configuration
 server:
-  port: 8909
+  port: 10001
 security:
   basic:
     enabled: false
-eureka:
-  instance:
-    preferIpAddress: true
-    leaseRenewalIntervalInSeconds: 1
-    leaseExpirationDurationInSeconds: 2
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+
 # H2 during development
 spring:
   h2:
@@ -33,9 +27,14 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: none
-  #rabbitmq:
-    #host: 35.183.27.227
-    #port: 5672
-    #username: guest
-    #password: guest
+
+#Eureka Client Configuration
+eureka:
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 2
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_HOME}
  
