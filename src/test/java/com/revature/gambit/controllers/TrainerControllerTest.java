@@ -7,13 +7,10 @@ import static org.hamcrest.Matchers.equalTo;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.gambit.entities.Trainer;
 
 import io.restassured.http.ContentType;
@@ -30,9 +27,6 @@ public class TrainerControllerTest {
 	private static final String FIND_TRAINER_BY_EMAIL_URL = BASE_URL + "/email/{email:.+}/";
 
 	private static final String REGISTER_TRAINER_URL = BASE_URL;
-	
-	@Autowired
-	private TrainerController trainerController;
 	
 	@Test
 	public void findTrainerByEmail() {
