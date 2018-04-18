@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainee;
@@ -56,9 +57,9 @@ public class TraineeControllerImpl implements TraineeController {
 		return new ResponseEntity<>(traineeService.save(trainee), HttpStatus.NO_CONTENT);
 	}
 
-	@DeleteMapping("/{traineeId}")
-	public ResponseEntity<?> deleteTrainee(@PathVariable Trainee trainee) {
-		log.debug("TraineeControllerImpl.deleteTrainee " + trainee);		
+	@DeleteMapping
+	public ResponseEntity<?> deleteTrainee(@RequestBody Trainee trainee) {
+		log.debug("TraineeControllerImpl.deleteTrainee: " + trainee);		
 		traineeService.delete(trainee);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
