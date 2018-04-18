@@ -58,4 +58,6 @@ public interface TraineeService {
 	 */
 	public Trainee findByEmail(String email);
 
+	public Trainee update(Trainee trainee);
+
 }
