@@ -85,7 +85,7 @@ public class TrainerServiceImpl implements TrainerService {
 		return bt;
 	}
 
-	public List<String> allTitles() {
+	public List<String> getAllTitles() {
 		log.debug("Method called to list all titles.");
 		return trainerRepository.findDistinctTitle();
 	}

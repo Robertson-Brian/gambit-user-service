@@ -63,7 +63,7 @@ public interface TrainerController {
 	 * 
 	 * @return List<String> of the titles
 	 */
-	ResponseEntity<List<String>> getTitles();
+	ResponseEntity<List<String>> getAllTitles();
 
 	/**
 	 * Retrieve all trainers.

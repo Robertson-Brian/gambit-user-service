@@ -68,9 +68,9 @@ public class TrainerControllerImpl implements TrainerController {
 	}
 
 	@GetMapping(value = "/titles")
-	public ResponseEntity<List<String>> getTitles() {
+	public ResponseEntity<List<String>> getAllTitles() {
 		log.info("Trainer Controller received request: getTitles");
-		return new ResponseEntity<List<String>>(trainerService.allTitles(), HttpStatus.OK);
+		return new ResponseEntity<List<String>>(trainerService.getAllTitles(), HttpStatus.OK);
 	}
 
 	@GetMapping

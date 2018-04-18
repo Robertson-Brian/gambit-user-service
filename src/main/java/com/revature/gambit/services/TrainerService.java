@@ -69,7 +69,7 @@ public interface TrainerService {
 	 * 
 	 * @return  a list of titles
 	 */
-	List<String> allTitles();
+	List<String> getAllTitles();
 
 	/**
 	 * This method is used to get all trainers.
