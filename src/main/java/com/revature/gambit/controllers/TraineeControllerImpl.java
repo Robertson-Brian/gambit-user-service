@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainee;
@@ -64,7 +65,7 @@ public class TraineeControllerImpl implements TraineeController {
 	}
 
 	@GetMapping("/{email}")
-	public ResponseEntity<Trainee> findByEmail(@PathVariable String email) {
+	public ResponseEntity<Trainee> findByEmail(@RequestParam(value="email") String email) {
 		log.debug("Finding trainees by email: " + email);
 		return new ResponseEntity<>(traineeService.findByEmail(email), HttpStatus.OK);
 	}
