@@ -69,11 +69,7 @@ public class TraineeServiceTest {
 	 * Tests methods:
 	 * com.revature.gambit.services.TraineeServiceImpl.getAll()
 	 * 
-	 * Calling the getAll method, and storing the size of the returned trainee list.
-	 * Getting the size of the data-h2.sql table to compare
-	 * 
-	 * 
-	 * If the count sizes match then the test succeeds.
+	 * Calling the getAll method, and checking that list is returned.
 	 * 
 	 */
 	@Test
