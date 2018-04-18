@@ -1,5 +1,6 @@
 package com.revature.gambit.services;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
@@ -46,6 +47,13 @@ public class TrainerServiceTest {
 	Trainer savedTrainer = trainerService.newTrainer(trainer1);
 	trainerService.delete(savedTrainer.getUserId());
 	assertNull(trainerService.findById(savedTrainer.getUserId()));
+    }
+
+    @Test
+    public void testDeleteNonexistentTrainer() {
+	assertThatThrownBy(() -> {
+	    trainerService.delete(-1);
+	});
     }
 
 }
