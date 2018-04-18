@@ -1,105 +1,81 @@
 --------------------------------------------------------
 --  DDL for Sequence USER_ID_SEQ
 --------------------------------------------------------
-   CREATE SEQUENCE  "USER_ID_SEQ" INCREMENT BY 1 START WITH 1;
+
+   CREATE SEQUENCE "USER_ID_SEQ" INCREMENT BY 1 START WITH 1;
 --------------------------------------------------------
---  DDL for Table TRAINEE
+--  DDL for Table REVATURE_USER
 --------------------------------------------------------
-  CREATE TABLE "TRAINEE"(	
-	"RESOURCE_ID" VARCHAR2(40), 
-	"TRAINING_STATUS" VARCHAR2(40),  
-	"SKYPE_ID" VARCHAR2(256), 
-	"RECRUITER_NAME" VARCHAR2(256), 
-	"PROFILE_URL" VARCHAR2(256), 
-	"COLLEGE" VARCHAR2(200), 
-	"DEGREE" VARCHAR2(200), 
-	"MAJOR" VARCHAR2(100), 
-	"TECH_SCREENER" VARCHAR2(256), 
-	"PROJECT_COMPLETION" VARCHAR2(30), 
-	"FLAG_STATUS" VARCHAR2(30), 
-	"FLAG_NOTES" VARCHAR2(256), 
-	"MARKETING_STATUS" VARCHAR2(50), 
-	"CLIENT" VARCHAR2(200), 
-	"END_CLIENT" VARCHAR2(200),
-	"USER_ID" NUMBER(10) NOT NULL
+
+  CREATE TABLE "REVATURE_USER" 
+   (	"DTYPE" VARCHAR2(31 CHAR) NOT NULL, 
+	"USER_ID" NUMBER(10,0) NOT NULL, 
+	"BACKUP_PASSWORD" VARCHAR2(255 CHAR), 
+	"EMAIL" VARCHAR2(255 CHAR) NOT NULL, 
+	"FIRST_NAME" VARCHAR2(255 CHAR) NOT NULL, 
+	"HOME_PHONE" VARCHAR2(255 CHAR), 
+	"LAST_NAME" VARCHAR2(255 CHAR) NOT NULL, 
+	"MIDDLE_NAME" VARCHAR2(255 CHAR), 
+	"MOBILE_PHONE" VARCHAR2(255 CHAR), 
+	"PASSWORD" VARCHAR2(255 CHAR), 
+	"TOKEN" VARCHAR2(255 CHAR), 
+	"TITLE" VARCHAR2(255 CHAR), 
+	"CLIENT" VARCHAR2(255 CHAR), 
+	"COLLEGE" VARCHAR2(255 CHAR), 
+	"DEGREE" VARCHAR2(255 CHAR), 
+	"END_CLIENT" VARCHAR2(255 CHAR), 
+	"FLAG_NOTES" VARCHAR2(4000 CHAR), 
+	"FLAG_STATUS" VARCHAR2(255 CHAR), 
+	"MAJOR" VARCHAR2(255 CHAR), 
+	"MARKETING_STATUS" NUMBER(10,0), 
+	"PROFILE_URL" VARCHAR2(255 CHAR), 
+	"PROJECT_COMPLETION" VARCHAR2(255 CHAR), 
+	"RECRUITER_NAME" VARCHAR2(255 CHAR), 
+	"RESOURCE_ID" VARCHAR2(255 CHAR), 
+	"TECH_SCREENER" VARCHAR2(255 CHAR), 
+	"TRAINING_STATUS" VARCHAR2(255 CHAR), 
+	"ROLE_ID" NUMBER(10,0)
    );
 --------------------------------------------------------
---  DDL for Table _USER
+--  DDL for Table TRAINEE_BATCHES
 --------------------------------------------------------
 
-  CREATE TABLE "REVATURE_USER"(	
-    "USER_ID" NUMBER(10) NOT NULL, 
-	"PASSWORD" VARCHAR2(30), 
-	"BACKUP_PASSWORD" VARCHAR2(30), 
-	"EMAIL" VARCHAR2(30) NOT NULL, 
-	"FIRST_NAME" VARCHAR2(30), 
-	"MIDDLE_NAME" VARCHAR2(30), 
-	"LAST_NAME" VARCHAR2(30), 
-	"ROLE" VARCHAR2(30), 
-	"HOME_PHONE" VARCHAR2(30), 
-	"MOBILE_PHONE" VARCHAR2(30), 
-	"TOKEN" VARCHAR2(260)
+  CREATE TABLE "TRAINEE_BATCHES" 
+   (	"TRAINEE_USER_ID" NUMBER(10,0) NOT NULL, 
+	"BATCHES" NUMBER(10,0)
    );
 --------------------------------------------------------
---  DDL for Table ROLES
+--  DDL for Table USER_ROLE
 --------------------------------------------------------
 
-  CREATE TABLE "USER_ROLE" (	
-    "ROLE_ID" NUMBER(10) NOT NULL, 
-	"ROLE" VARCHAR2(30)
+  CREATE TABLE "USER_ROLE" 
+   (	"ROLE_ID" NUMBER(10,0) NOT NULL, 
+	"ROLE" VARCHAR2(255 CHAR)
    );
---------------------------------------------------------
---  DDL for Table TRAINER
---------------------------------------------------------
-
-  CREATE TABLE "TRAINER"(	
-	"TITLE" VARCHAR2(30) NOT NULL, 
-	"USER_ID" NUMBER(10) NOT NULL
-   );
-   --------------------------------------------------------
---  DDL for Table TRAINER
---------------------------------------------------------
-
-  CREATE TABLE "TRAINEE_BATCHES"(	
-    "BATCH_ID" NUMBER(10) NOT NULL,  
-	"USER_ID" NUMBER(10) NOT NULL
-   );
---------------------------------------------------------
---  Constraints for Table TRAINEE_BATCH
---------------------------------------------------------
-
-  ALTER TABLE "TRAINEE_BATCHES" ADD PRIMARY KEY ("BATCH_ID", "USER_ID");
---------------------------------------------------------
---  Constraints for Table TRAINER
---------------------------------------------------------
-
-  ALTER TABLE "TRAINER" ADD PRIMARY KEY ("USER_ID");
---------------------------------------------------------
---  Constraints for Table _USER
---------------------------------------------------------
-
-  ALTER TABLE "REVATURE_USER" ADD UNIQUE ("EMAIL");
-  ALTER TABLE "REVATURE_USER" ADD PRIMARY KEY ("USER_ID");
---------------------------------------------------------
---  Constraints for Table ROLES
---------------------------------------------------------
-
-  ALTER TABLE "USER_ROLE" ADD PRIMARY KEY ("ROLE_ID");
---------------------------------------------------------
---  Constraints for Table _TRAINEE
---------------------------------------------------------
-
-  ALTER TABLE "TRAINEE" ADD PRIMARY KEY ("USER_ID");
---------------------------------------------------------
---  Ref Constraints for Table _TRAINEE
---------------------------------------------------------
-
-  ALTER TABLE "TRAINEE" ADD FOREIGN KEY ("USER_ID")
-	  REFERENCES "REVATURE_USER" ("USER_ID");
 
 --------------------------------------------------------
---  Ref Constraints for Table TRAINER
+--  Constraints for Table REVATURE_USER
 --------------------------------------------------------
 
-  ALTER TABLE "TRAINER" ADD FOREIGN KEY ("USER_ID")
+  ALTER TABLE "REVATURE_USER" ADD CONSTRAINT "EMAIL_UNQ" UNIQUE ("EMAIL");
+  
+  ALTER TABLE "REVATURE_USER" ADD CONSTRAINT "PK_USER" PRIMARY KEY ("USER_ID");
+
+--------------------------------------------------------
+--  Constraints for Table USER_ROLE
+--------------------------------------------------------
+
+  ALTER TABLE "USER_ROLE" ADD CONSTRAINT "PK_ROLE" PRIMARY KEY ("ROLE_ID");
+  
+--------------------------------------------------------
+--  Ref Constraints for Table REVATURE_USER
+--------------------------------------------------------
+
+  ALTER TABLE "REVATURE_USER" ADD CONSTRAINT "FK_ROLE" FOREIGN KEY ("ROLE_ID")
+	  REFERENCES "USER_ROLE" ("ROLE_ID");
+--------------------------------------------------------
+--  Ref Constraints for Table TRAINEE_BATCHES
+--------------------------------------------------------
+
+  ALTER TABLE "TRAINEE_BATCHES" ADD CONSTRAINT "FK_TRAINEE" FOREIGN KEY ("TRAINEE_USER_ID")
 	  REFERENCES "REVATURE_USER" ("USER_ID");

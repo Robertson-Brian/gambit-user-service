@@ -60,7 +60,8 @@ public class UserControllerImpl implements UserController {
 	@DeleteMapping
 	public ResponseEntity<Void> makeInactive(@RequestBody User user) {
 		log.info("User Controller received request: Updating user: " + user);
-		user.setRole("INACTIVE");
+		//Logic here should be getting the role from the DB.
+		//user.setRole("INACTIVE");
 		userService.update(user);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
