@@ -44,7 +44,7 @@ public class TraineeControllerImpl implements TraineeController {
 		return new ResponseEntity<List<Trainee>>(traineeService.getAll(), HttpStatus.OK);
 	}
 
-	@PostMapping("/create")
+	@PostMapping
 	public ResponseEntity<Trainee> createTrainee(@RequestBody Trainee trainee) {
 		log.debug("Trainee Controller received request: Creating trainee: " + trainee);
 		return new ResponseEntity<>(traineeService.save(trainee), HttpStatus.CREATED);
