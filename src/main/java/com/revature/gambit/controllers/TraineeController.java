@@ -23,6 +23,7 @@ public interface TraineeController {
 	ResponseEntity<List<Trainee>> findAllByBatchAndStatus(Integer id, String status);
 
 	/**
+	 * Find all of the trainees without restriction.
 	 * 
 	 * @return a List of all trainees
 	 */
@@ -60,9 +61,6 @@ public interface TraineeController {
 	 *            
 	 * @return A 204 status code: "No Content"
 	 */
-
-	ResponseEntity<Void> deleteTrainee(Integer traineeId);
-	
 	ResponseEntity<?> deleteTrainee(Trainee trainee);
  
 	/**

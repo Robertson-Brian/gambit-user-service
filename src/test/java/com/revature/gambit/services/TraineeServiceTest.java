@@ -2,6 +2,7 @@ package com.revature.gambit.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -79,7 +80,39 @@ public class TraineeServiceTest {
 		traineeService.save(trainee);
 		
 		assertNotEquals(trainee, traineeService.findByEmail("this.email.does.not@exist.com"));
+	}
 	
+	/**
+	 * Tests methods:
+	 * com.revature.gambit.services.TraineeServiceImpl.getAll()
+	 * 
+	 * After creating three trainees and calling getAll method returns all three.
+	 * The check is done by comparing the expected size and the size of the table.
+	 * 
+	 */
+	@Test
+	public void getAll(){
+		log.debug("Testing trainee getAll");
+		//creating 3 trainees 
+		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
+				TrainingStatus.Training, 1, "Extensure");
+		trainee.getBatches().add(1);
+		traineeService.save(trainee);
+		
+		Trainee trainee1 = new Trainee("Daniel", "Pick", "dan.pick@gogomail.com", "ayasn161hs9aes",
+				TrainingStatus.Training, 1, "Extensure");
+		trainee1.getBatches().add(2);
+		traineeService.save(trainee1);
+		
+		Trainee trainee2 = new Trainee("Daniel", "Les", "dan.les@gogomail.com", "ayasn161hs9aes",
+				TrainingStatus.Training, 1, "Extensure");
+		trainee2.getBatches().add(3);
+		traineeService.save(trainee2);
+		
+		log.debug("Testing table exists and the size of table is correct");
+		assertNotNull(traineeService.getAll());
+		assertEquals(3, traineeService.getAll().size());
+	}	
 	/**
 	 * Tests the delete method of the Trainee Service Layer.
 	 * 

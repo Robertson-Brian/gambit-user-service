@@ -47,7 +47,8 @@ public interface TraineeService {
 
 	/**
 	 * Find all of the trainees without restriction.
-	 * @return
+	 * 
+	 * @return a List of all trainees
 	 */
 	public List<Trainee> getAll();
 
