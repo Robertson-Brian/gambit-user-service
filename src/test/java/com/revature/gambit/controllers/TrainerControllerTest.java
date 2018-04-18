@@ -4,6 +4,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +25,46 @@ public class TrainerControllerTest {
     @Autowired
     private TrainerController trainerController;
 
-    private static final String BASE_URL = "http://localhost:10001/trainers";
+    private static final String BASE_URL = "http://localhost:10001/trainers/";
     private static final String REGISTER_TRAINER_URL = BASE_URL;
+    private static final String DELETE_TRAINER_URL = BASE_URL + "{id}";
+
+    Trainer trainer1;
+    Trainer trainer2;
+
+    @Before
+    public void testCreateTrainer() {
+	trainer1 = new Trainer("John", "Doe", "JohnDoe@gmail.com", "Trainer");
+	trainer2 = new Trainer("Mark", "Fleres", "mfleres@gmail.com", "Doctor");
+    }
+
+    @Test
+    public void testDeleteTrainer() {
+	log.info("Deleting a Trainer");
+	int trainerId = trainerController.registerTrainer(trainer1).getBody().getUserId();
+
+	given().expect().when().delete(DELETE_TRAINER_URL, trainerId).then().assertThat()
+		.statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    public void testDeleteNonexistentTrainer() {
+	log.info("Deleting a Trainer");
+	int trainerId = -1;
+
+	given().expect().when().delete(DELETE_TRAINER_URL, trainerId).then().assertThat()
+		.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+    }
 
     @Test
     public void testRegisterTrainer() {
-	Trainer newTrainer = new Trainer("Mark", "Fleres", "mfleres@gmail.com", "Doctor");
 
-	given().contentType(ContentType.JSON).body(newTrainer).when().post(REGISTER_TRAINER_URL).then().assertThat()
+	given().contentType(ContentType.JSON).body(trainer2).when().post(REGISTER_TRAINER_URL).then().assertThat()
 		.statusCode(HttpStatus.OK.value()).and().contentType(ContentType.JSON).and()
 		.body("firstName", equalTo("Mark"));
 
 	// Test that a repeat register fails (email must be unique)
-	given().contentType(ContentType.JSON).body(newTrainer).when().post(REGISTER_TRAINER_URL).then().assertThat()
+	given().contentType(ContentType.JSON).body(trainer2).when().post(REGISTER_TRAINER_URL).then().assertThat()
 		.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 }
