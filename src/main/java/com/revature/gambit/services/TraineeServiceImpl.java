@@ -22,7 +22,7 @@ public class TraineeServiceImpl implements TraineeService {
 	public Trainee save(Trainee trainee) {
 		log.trace("save trainee: " + trainee);
 		// check if trainee already exists
-		Trainee preexisting = traineeRepository.findOneByEmail(trainee.getEmail());
+		Trainee preexisting = traineeRepository.findByEmail(trainee.getEmail());
 		log.trace("Trainee exists: " + preexisting);
 		if (preexisting != null && preexisting.getBatches() != null) {
 			// if so, add the trainee's batch assignments
@@ -60,10 +60,10 @@ public class TraineeServiceImpl implements TraineeService {
 	@Transactional
 	public Trainee findByEmail(String email) {
 		log.trace("findByEmail: " + email);
-		if (email == null) {
+		if(traineeRepository.findByEmail(email)!=null)
+		return traineeRepository.findByEmail(email);
+		else
 			return null;
-		}
-		return traineeRepository.findOneByEmail(email);
 	}
 
 }

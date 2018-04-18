@@ -63,6 +63,24 @@ public class TraineeServiceTest {
 		log.trace("Trainee saved! " + candidate);
 
 	}
+	@Test
+	public void findByEmail() {
+		log.trace("Testing trainee save");
+		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
+				TrainingStatus.Training, 1, "Extensure");
+		traineeService.save(trainee);
+		
+		assertEquals(trainee, traineeService.findByEmail("dan.pickles@gogomail.com"));
+	}
+	@Test
+	public void findByInvalidEmail() {
+		log.trace("Testing trainee save");
+		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
+				TrainingStatus.Training, 1, "Extensure");
+		traineeService.save(trainee);
+		
+		assertNotEquals(trainee, traineeService.findByEmail("this.email.does.not@exist.com"));
+	}
 	
 	/**
 	 * Tests methods:
