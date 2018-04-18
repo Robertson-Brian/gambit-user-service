@@ -12,14 +12,14 @@ spring:
       enabled: true
       path: /h2-console
   application:
-    name: user-service
-  #datasource:
-    #driver-class-name: oracle.jdbc.driver.OracleDriver
-    #url: jdbc:oracle:thin:@localhost:1521:xe
-    #username: HydraTrainee
-    #password: momonga
+    name: gambit-user-service
+#  datasource:
+#    driver-class-name: oracle.jdbc.driver.OracleDriver
+#    url: jdbc:oracle:thin:@localhost:1521:xe
+#    username: GAMBIT
+#    password: p4ssw0rd
   jpa:
-    #database-platform: org.hibernate.dialect.Oracle10gDialect
+#    database-platform: org.hibernate.dialect.Oracle10gDialect
     properties:
       hibernate:
         show_sql: false
