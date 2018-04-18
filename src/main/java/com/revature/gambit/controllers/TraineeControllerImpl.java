@@ -53,7 +53,7 @@ public class TraineeControllerImpl implements TraineeController {
 	@PutMapping
 	public ResponseEntity<Trainee> updateTrainee(@RequestBody Trainee trainee) {
 		log.debug("Trainee Controller received request: Updating trainee: " + trainee);
-		return new ResponseEntity<>(traineeService.save(trainee), HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(traineeService.update(trainee), HttpStatus.NO_CONTENT);
 	}
 
 	@DeleteMapping("/{traineeId}")
