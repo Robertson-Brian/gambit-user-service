@@ -39,20 +39,8 @@ public class TrainerServiceImpl implements TrainerService {
 	}
 
 	public Trainer newTrainer(Trainer trainer) {
-		log.debug("Method called to create a new trainer and user from Trainer object.");
-		User user = new User();
-		BeanUtils.copyProperties(trainer, user);
-		user.setRole(trainer.getRole());
-		log.trace("Persisting user with the following credentials: " + user.toString());
-		Trainer bt = new Trainer();
-		bt.setTitle(trainer.getTitle());
-		log.trace("Setting that user to be a trainer with title: " + bt.getTitle());
-		User persisted = userRepository.save(user);
-		bt.setUserId(persisted.getUserId());
-		bt.setUserId(0);
-		Trainer saved = trainerRepository.save(bt);
-
-		return saved;
+		log.debug("Method called to create a new trainer from Trainer object.");
+		return trainerRepository.save(trainer);
 	}
 
 	public Trainer promoteToTrainer(Trainer tu) {
