@@ -58,7 +58,7 @@ public class TrainerControllerTest {
 		and().
 			body("firstName", equalTo("Mark"));
 		
-		//Test that a repeat register fails
+		//Test that a repeat register fails (email must be unique)
 		given().
 			contentType(ContentType.JSON).
 			body(newTrainer).
