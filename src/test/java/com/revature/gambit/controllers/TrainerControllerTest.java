@@ -29,11 +29,11 @@ public class TrainerControllerTest {
     private static final String REGISTER_TRAINER_URL = BASE_URL;
     private static final String DELETE_TRAINER_URL = BASE_URL + "{id}";
 
-    Trainer trainer1;
-    Trainer trainer2;
+    private Trainer trainer1;
+    private Trainer trainer2;
 
     @Before
-    public void testCreateTrainer() {
+    public void testCreateTrainers() {
 	trainer1 = new Trainer("John", "Doe", "JohnDoe@gmail.com", "Trainer");
 	trainer2 = new Trainer("Mark", "Fleres", "mfleres@gmail.com", "Doctor");
     }
