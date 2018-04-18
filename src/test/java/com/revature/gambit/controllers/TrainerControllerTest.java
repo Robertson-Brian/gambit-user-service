@@ -71,7 +71,7 @@ public class TrainerControllerTest {
 		assertTrue(!trainers.isEmpty());
 	}
 	
-
+    @Test
 	public void testRegisterTrainer() {
 		Trainer newTrainer = new Trainer("Mark","Fleres","mfleres@gmail.com","Doctor");
 		
