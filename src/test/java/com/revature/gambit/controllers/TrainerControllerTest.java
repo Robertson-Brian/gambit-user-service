@@ -29,7 +29,7 @@ public class TrainerControllerTest {
 	
 	private static final String FIND_TRAINER_BY_EMAIL_URL = BASE_URL + "/email/{email:.+}/";
 
-	private static final String REGISTER_TRAINER_URL = BASE_URL + "/register/";
+	private static final String REGISTER_TRAINER_URL = BASE_URL;
 	
 	@Autowired
 	private TrainerController trainerController;
