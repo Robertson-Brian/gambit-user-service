@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainee;
@@ -26,10 +27,10 @@ import com.revature.gambit.services.TraineeService;
 @RequestMapping(value = "trainees", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TraineeControllerImpl implements TraineeController {
 	private static final Logger log = Logger.getLogger(TraineeControllerImpl.class);
-	
+
 	@Autowired
 	private TraineeService traineeService;
-	
+
 	@GetMapping("batch/{id}/status/{status}")
 	public ResponseEntity<List<Trainee>> findAllByBatchAndStatus(@PathVariable Integer id,
 			@PathVariable String status) {
@@ -62,10 +63,16 @@ public class TraineeControllerImpl implements TraineeController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@GetMapping("/{email}")
-	public ResponseEntity<Trainee> findByEmail(@PathVariable String email) {
+	@GetMapping("/email{email}")
+	public ResponseEntity<Trainee> findByEmail(@RequestParam(value="email") String email) {
 		log.debug("Finding trainees by email: " + email);
-		return new ResponseEntity<>(traineeService.findByEmail(email), HttpStatus.OK);
+		Trainee trainee = traineeService.findByEmail(email);
+		if (trainee != null) {
+			return new ResponseEntity<>(trainee,HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 }
