@@ -2,18 +2,15 @@ package com.revature.gambit.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
-public class TrainerServiceTest {
+public class TrainerServiceTest extends GambitTest {
 
 	private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
 
@@ -30,6 +27,11 @@ public class TrainerServiceTest {
 		assertNotEquals(0, savedTrainer.getUserId());
 		assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
 		assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
+		
+		//Test Empty Trainer
+		Trainer emptyTrainer = new Trainer("","","","");
+		Trainer savedEmptyTrainer = trainerService.newTrainer(emptyTrainer);
+		assertEquals(null,savedEmptyTrainer);
 	}
 	
 	@Test

@@ -1,35 +1,33 @@
 package com.revature.gambit.controllers;
 
 
+import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit4.SpringRunner;
 
+import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
 
 import io.restassured.http.ContentType;
 
+public class TrainerControllerTest extends GambitTest {
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class TrainerControllerTest {
-
+	@LocalServerPort
+	private int port;
+	
 	private static final Logger log = Logger.getLogger(TrainerControllerTest.class);
 	
-	private static final String BASE_URL = "http://localhost:10001/trainers";
+	private static final String BASE_URL = "/trainers";
 	private static final String FIND_TRAINER_BY_EMAIL_URL = BASE_URL + "/email/{email:.+}/";
 	private static final String FIND_ALL_TRAINER_TITLES_URL = BASE_URL + "/titles";
 	private static final String FIND_ALL_TRAINERS_URL = BASE_URL;
@@ -73,13 +71,13 @@ public class TrainerControllerTest {
 	
     @Test
 	public void testRegisterTrainer() {
-		Trainer newTrainer = new Trainer("Mark","Fleres","mfleres@gmail.com","Doctor");
+		Trainer newTrainer = new Trainer("Mark","Fleres","mfleres@gmail.com","Trainer");
 		
 		given().
 			contentType(ContentType.JSON).
 			body(newTrainer).
 		when().
-			post(REGISTER_TRAINER_URL).
+			port(port).post(REGISTER_TRAINER_URL).
 		then().
 			assertThat().statusCode(HttpStatus.OK.value()).
 		and().
@@ -92,9 +90,18 @@ public class TrainerControllerTest {
 			contentType(ContentType.JSON).
 			body(newTrainer).
 		when().
-			post(REGISTER_TRAINER_URL).
+			port(port).post(REGISTER_TRAINER_URL).
 		then().
 			assertThat().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		
+		Trainer emptyTrainer = new Trainer("","","","");
+		given().
+			contentType(ContentType.JSON).
+			body(emptyTrainer).
+		when().
+			port(port).post(REGISTER_TRAINER_URL).
+		then().
+			assertThat().statusCode(HttpStatus.BAD_REQUEST.value());
 	}
 }
 
