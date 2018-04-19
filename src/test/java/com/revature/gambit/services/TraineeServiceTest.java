@@ -93,7 +93,7 @@ public class TraineeServiceTest extends GambitTest {
 	 */
 	@Test
 	public void delete() {
-		log.debug("Test delete Trainee");
+		log.debug("TraineeServiceTest.delete()");
 		Trainee test = new Trainee("TestTrainDelete", "TestTrainDelete", "TestTrainDelete@brooks.net", "ajsy1b173h29479w",
 				TrainingStatus.Scheduled, "TestTrainDelete");
 		traineeService.save(test);
