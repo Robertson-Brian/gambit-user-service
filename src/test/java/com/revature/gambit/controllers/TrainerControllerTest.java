@@ -1,10 +1,11 @@
 package com.revature.gambit.controllers;
 
-
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -13,10 +14,14 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
+
 
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
+import com.revature.gambit.services.TrainerService;
 
 import io.restassured.http.ContentType;
 
@@ -24,27 +29,45 @@ public class TrainerControllerTest extends GambitTest {
 
 	@LocalServerPort
 	private int port;
-	
+
 	private static final Logger log = Logger.getLogger(TrainerControllerTest.class);
-	
+
 	private static final String BASE_URI = "/trainers";
 	private static final String FIND_TRAINER_BY_EMAIL_URI = BASE_URI + "/email/{email:.+}/";
 	private static final String FIND_ALL_TRAINER_TITLES_URI = BASE_URI + "/titles";
 	private static final String FIND_ALL_TRAINERS_URI = BASE_URI;
 	private static final String REGISTER_TRAINER_URI = BASE_URI;
-	
+
 	@Test
-	public void findTrainerByEmail() {
-		when().
-			get(FIND_TRAINER_BY_EMAIL_URI, "steven.kelsey@revature.com").
+	public void findTrainerByEmail200() {
+		String email = "steven.kelsey@revature.com";
+
+		log.info("test findTrainerByEmail with bad input");
+
+		given().when().port(port).
+			get(FIND_TRAINER_BY_EMAIL_URI, email).
 		then().assertThat().
-			statusCode(HttpStatus.OK_200);
+			statusCode(HttpStatus.OK_200).body("email", equalTo(email));
+
 	}
 	
 	@Test
+	public void findTrainerByEmail500() {
+		String email = "sdjkssx@gmail.com";
+
+		log.info("test findTrainerByEmail with bad input");
+
+		String body = given().when().port(port).
+			  	get(FIND_TRAINER_BY_EMAIL_URI, email).
+			      then().assertThat().
+				statusCode(HttpStatus.OK_200).extract().body().asString();
+
+		assertEquals(body, "");
+	}
+
 	public void testFindAllTitles() {
 		log.debug("Find all trainers titles at : "+FIND_ALL_TRAINER_TITLES_URI);
-		
+
 		 given()
 		.port(port)
 		.basePath(FIND_ALL_TRAINER_TITLES_URI)
@@ -55,17 +78,29 @@ public class TrainerControllerTest extends GambitTest {
 		.statusCode(HttpStatus.OK_200)
 		.body("$", hasItems("Lead Trainer","Vice President of Technology",
 	   		                "Technology Manager","Senior Java Developer",
-		    		        "Trainer","Senior Trainer")); 
-		 
+		    		        "Trainer","Senior Trainer"));
+
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	@Test
+	public void findTrainerByEmailNonTrainer() {
+		String email = "ychenq001@gmail.com";
+
+		log.info("test findTrainerByEmail with non trainer email.");
+
+		String body = given().when().port(port).
+				get(FIND_TRAINER_BY_EMAIL_URI, email).
+		      	      then().assertThat().
+				statusCode(HttpStatus.OK_200).extract().body().asString();
+
+		assertEquals(body, "");
+	}
+
 	public void testFindAllTrainers(){
 		log.debug("Find all trainers titles at : "+FIND_ALL_TRAINERS_URI);
-		
+
 		List<Trainer> trainers = new ArrayList<>();
-		
+
 		trainers = given()
 				       .port(port)
 				       .basePath(FIND_ALL_TRAINERS_URI)
@@ -76,14 +111,14 @@ public class TrainerControllerTest extends GambitTest {
 		               .statusCode(HttpStatus.OK_200)
 		               .extract().body()
 		  			   .as(trainers.getClass());
-																						
+
 		assertTrue(!trainers.isEmpty());
 	}
-	
+
     @Test
 	public void testRegisterTrainer() {
 		Trainer newTrainer = new Trainer("Mark","Fleres","mfleres@gmail.com","Trainer");
-		
+
 		given().
 			contentType(ContentType.JSON).
 			body(newTrainer).
@@ -95,7 +130,7 @@ public class TrainerControllerTest extends GambitTest {
 			contentType(ContentType.JSON).
 		and().
 			body("firstName", equalTo("Mark"));
-		
+
 		//Test that a repeat register fails (email must be unique)
 		given().
 			contentType(ContentType.JSON).
@@ -104,7 +139,7 @@ public class TrainerControllerTest extends GambitTest {
 			port(port).post(REGISTER_TRAINER_URI).
 		then().
 			assertThat().statusCode(HttpStatus.BAD_REQUEST_400);
-		
+
 		Trainer emptyTrainer = new Trainer("","","","");
 		given().
 			contentType(ContentType.JSON).
@@ -115,4 +150,3 @@ public class TrainerControllerTest extends GambitTest {
 			assertThat().statusCode(HttpStatus.BAD_REQUEST_400);
 	}
 }
-
