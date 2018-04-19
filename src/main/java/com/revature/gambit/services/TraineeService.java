@@ -39,9 +39,9 @@ public interface TraineeService {
 
 	/**
 	 * Find all trainees given their batchId and their training status.
-	 * @param batchId
-	 * @param status
-	 * @return
+	 * @param batchId -recieved ID number of batch for search.
+	 * @param status - recieved training status of trainee for search.
+	 * @return - list of all trainees in that batch number with the specified status.
 	 */
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status);
 

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.revature.gambit.entities.Trainee;
+import com.revature.gambit.entities.TrainingStatus;
 
 /**
  * Our Spring Data repository that provides the needed custom queries for our
@@ -14,7 +15,13 @@ import com.revature.gambit.entities.Trainee;
  */
 public interface TraineeRepository extends JpaRepository<Trainee, Integer> {
 
-	List<Trainee> findAllByBatchesAndTrainingStatus(Integer batchId, String traineeStatus);
+	/**
+	 * 
+	 * @param batchId - number of which batch to search
+	 * @param trainingStatus - status of trainee to search
+	 * @return List of all trainees in batchId with trainingstatus
+	 */
+	List<Trainee> findAllByBatchesAndTrainingStatus(Integer batchId, TrainingStatus trainingStatus);
 	
 	Trainee findByEmail(String trainee);
 	

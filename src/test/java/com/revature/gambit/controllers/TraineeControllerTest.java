@@ -8,6 +8,15 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+import com.revature.gambit.entities.Trainee;
+import com.revature.gambit.entities.TrainingStatus;
 
 import com.revature.gambit.GambitTest;
 
@@ -133,6 +142,11 @@ public class TraineeControllerTest extends GambitTest {
 			.statusCode(HttpStatus.NOT_FOUND.value());
 	}
 
+	
+	/**
+	 * Checks that getByBatchAndStatus returns a 200 status code.
+	 *  
+	 */
 	@Test
 	public void getAllTrainees() {
 		log.debug("Testing getting all trainees.");
@@ -144,6 +158,13 @@ public class TraineeControllerTest extends GambitTest {
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.OK.value());
+	}
+
+	@Test
+	public void getByBatchAndStatus() {
+		log.debug("getByBatchAndStatus unit test starts here.");
+		given().when().get("http://localhost:10000/trainees/batch/1/status/Training").then().assertThat().statusCode(200);
+	
 	}
 
 	/**
@@ -160,4 +181,5 @@ public class TraineeControllerTest extends GambitTest {
 		.put("http://localhost:10001/trainees/").then().assertThat().statusCode(204);
 		log.debug("Trainee Controller test: Updating trainee");
 	}
+
 }
