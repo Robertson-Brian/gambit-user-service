@@ -57,8 +57,8 @@ public class TrainerControllerImpl implements TrainerController {
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Trainer> findTrainerByEmail(@PathVariable String email) {
 		log.info("Trainer Controller received request: Finding trainer by email of " + email);
-		Trainer tUser = trainerService.findTrainerByEmail(email);
-		return new ResponseEntity<>(tUser, HttpStatus.OK);
+		Trainer trainer = trainerService.findTrainerByEmail(email);
+		return new ResponseEntity<>(trainer, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

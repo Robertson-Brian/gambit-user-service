@@ -67,13 +67,13 @@ public class TrainerServiceImpl implements TrainerService {
 
 	public Trainer findTrainerByEmail(String email) {
 		log.debug("Method called to findTrainerByEmail with email: " + email);
-		User u = userRepository.findByEmail(email);
-		if (u == null) {
+		User user = userRepository.findByEmail(email);
+		if (user == null) {
 			return null;
 		}
-		Trainer bt = trainerRepository.findByUserId(u.getUserId());
+		Trainer trainer = trainerRepository.findByUserId(user.getUserId());
 
-		return bt;
+		return trainer;
 	}
 
 	public List<String> getAllTitles() {

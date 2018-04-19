@@ -13,8 +13,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.embedded.LocalServerPort;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
@@ -28,14 +32,12 @@ import io.restassured.http.ContentType;
 public class TrainerControllerTest extends GambitTest {
 
 	private static final Logger log = Logger.getLogger(TrainerControllerTest.class);
+	
+	@LocalServerPort
+	private int port;
 
-	private static final String BASE_URL = "http://localhost:10001/trainers";
-
-	private static final String FIND_TRAINER_BY_EMAIL_URL = BASE_URL + "/email/{email:.+}/";
-	private static final String FIND_TRAINER_BY_NAME_URL = BASE_URL + "/name/{firstName}/{lastName}";
-	private static final String FIND_ALL_TRAINER_TITLES_URL = BASE_URL + "/titles";
-	private static final String FIND_ALL_TRAINERS_URL = BASE_URL;
-	private static final String REGISTER_TRAINER_URL = BASE_URL;
+	private static final String BASE_URI = "/trainers";
+	private static final String FIND_TRAINER_BY_EMAIL = BASE_URI + "/email/{email:.+}/";
 
 	@Autowired
 	private TrainerService trainerService;
@@ -46,12 +48,12 @@ public class TrainerControllerTest extends GambitTest {
 
 		String email = "steven.kelsey@revature.com";
 		Trainer expected = trainerService.findTrainerByEmail(email);
-
-		when().
-			get(FIND_TRAINER_BY_EMAIL_URL, email).
+		
+		given().when().port(port).
+			get(FIND_TRAINER_BY_EMAIL, email).
 		then().assertThat().
 			statusCode(HttpStatus.OK.value()).
-			body("email", is(expected.getEmail()));
+			body("email", equalTo(expected.getEmail()));
 	}
 
 	@Test
@@ -59,11 +61,13 @@ public class TrainerControllerTest extends GambitTest {
 		String email = "sdjkssx@gmail.com";
 
 		log.info("test findTrainerByEmail with bad input");
-
-		when().
-			get(FIND_TRAINER_BY_EMAIL_URL, email).
-		then().assertThat().
-			statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		
+		String body = given().when().port(port).
+						get(FIND_TRAINER_BY_EMAIL, email).
+					  then().assertThat().
+					  	statusCode(HttpStatus.OK.value()).extract().body().asString();
+		
+		assertEquals(body, "");
 	}
 
 	@Test
@@ -72,65 +76,11 @@ public class TrainerControllerTest extends GambitTest {
 
 		log.info("test findTrainerByEmail with non trainer email.");
 
-		String body = when().
-						get(FIND_TRAINER_BY_EMAIL_URL, email).
+		String body = given().when().port(port).
+						get(FIND_TRAINER_BY_EMAIL, email).
 					  then().assertThat().
 					  	statusCode(HttpStatus.OK.value()).extract().body().asString();
 
 		assertEquals(body, "");
-	}
-
-	@Test
-	public void testFindAllTitles() {
-		log.info("Find all trainers titles at : "+FIND_ALL_TRAINER_TITLES_URL);
-
-		 when()
-		.get(FIND_ALL_TRAINER_TITLES_URL)
-		.then().assertThat().statusCode(HttpStatus.OK.value())
-		.body("$", hasItems("Lead Trainer","Vice President of Technology",
-	   		                "Technology Manager","Senior Java Developer",
-		    		        "Trainer","Senior Trainer"));
-
-	}
-
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testFindAllTrainers(){
-		log.info("Find all trainers titles at : "+FIND_ALL_TRAINERS_URL);
-
-		List<Trainer> trainers = new ArrayList<>();
-
-		trainers = when().get(FIND_ALL_TRAINERS_URL)
-		                 .then().assertThat().statusCode(HttpStatus.OK.value())
-		                 .extract().body()
-		  				 .as(trainers.getClass());
-
-		assertTrue(!trainers.isEmpty());
-	}
-
-    @Test
-	public void testRegisterTrainer() {
-		Trainer newTrainer = new Trainer("Mark","Fleres","mfleres@gmail.com","Doctor");
-
-		given().
-			contentType(ContentType.JSON).
-			body(newTrainer).
-		when().
-			post(REGISTER_TRAINER_URL).
-		then().
-			assertThat().statusCode(HttpStatus.OK.value()).
-		and().
-			contentType(ContentType.JSON).
-		and().
-			body("firstName", equalTo("Mark"));
-
-		//Test that a repeat register fails (email must be unique)
-		given().
-			contentType(ContentType.JSON).
-			body(newTrainer).
-		when().
-			post(REGISTER_TRAINER_URL).
-		then().
-			assertThat().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 	}
 }
