@@ -11,44 +11,35 @@ import static org.hamcrest.Matchers.*;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class TraineeControllerTest {
 
+
+import com.revature.gambit.GambitTest;
+
+public class TraineeControllerTest extends GambitTest {
+
+	@LocalServerPort
+	private int port;
 
 	private static final Logger log = Logger.getLogger(TraineeControllerTest.class);
 
-
-	private static final String URL = "http://localhost:10001";
-	
-	@Autowired
-	private TraineeController traineeController;
-	
-	/**
-	 * Checks that getByBatchAndStatus returns a 200 status code.
-	 *  
-	 */
-	@Test
-	public void getByBatchAndStatus() {
-		log.debug("getByBatchAndStatus unit test starts here.");
-		given().when().get("http://localhost:10000/trainees/batch/1/status/Training").then().assertThat().statusCode(200);
-	}
-	
+	private static final String BASE_URL = "http://localhost:10001//trainees";
 	/**
 	 * Tests connection is OK with getAll
 	 */
 	@Test
 	public void getAll(){
 		log.debug("Testing trainee getAll");
-		when().get(URL).then().assertThat().statusCode(HttpStatus.OK.value());
+		when()
+			.get(BASE_URL)
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.OK.value());
 		log.trace("All Trainees retrieved");
 	}
-	
+
 	/**
 	 * Tests deletion of a trainee.
 	 * Asserts that a 204 - No Content status is returned.
@@ -58,11 +49,13 @@ public class TraineeControllerTest {
 		given()
 			.header("Content-Type", "application/json")
 			.body(trainee)
-		 		.when()
-		 			.delete("http://localhost:10001/trainees")
-					.then().assertThat().statusCode(204);
+			.when()
+			.delete(BASE_URL)
+			.then()
+			.assertThat()
+			.statusCode(204);
 	}
-	
+
 	/**Test methods:
 	 * 
 	 * @see com.revature.gambit.services.TraineeServiceTest
@@ -72,27 +65,83 @@ public class TraineeControllerTest {
 		log.trace("Test find Howard by email.");
 		String email = "howard.johnson@hotmail.com";
 		String firstName= "Howard";
-		given().param("email",email).when().get("http://localhost:10000/trainees/email").then().assertThat().statusCode(200).and().body("firstName",equalTo(firstName));
+		given()
+			.param("email",email)
+			.when()
+			.get(BASE_URL + "/email")
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.OK.value())
+			.and()
+			.body("firstName",equalTo(firstName));
 	}
+
 	@Test
 	public void findTraineeByEmailLaut() {
 		log.trace("Test find Howard by email.");
 		String email = "dlaut1@hotmail.com";
 		String firstName= "Laut";
-		given().param("email",email).when().get("http://localhost:10000/trainees/email").then().assertThat().statusCode(200).and().body("firstName",equalTo(firstName));
+		given()
+			.param("email",email)
+			.when()
+			.get(BASE_URL + "/email")
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.OK.value())
+			.and()
+			.body("firstName",equalTo(firstName));
 	}
+
 	@Test
 	public void findTraineeByEmailChang() {
 		log.trace("Test find Chang by email.");
 		String email = "kchangfatt@gmail.com";
 		String firstName= "Chang Fatt";
-		given().param("email",email).when().get("http://localhost:10000/trainees/email").then().assertThat().statusCode(200).and().body("firstName",equalTo(firstName));
+		given()
+			.param("email",email)
+			.when()
+			.get(BASE_URL + "/email")
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.OK.value())
+			.and()
+			.body("firstName",equalTo(firstName));
 	}
+
 	@Test
 	public void findTraineeByEmailFalse() {
 		log.trace("Test null email.");
 		String email = "dsgdgsdg";
-		given().param("email",email).when().get("http://localhost:10000/trainees/email").then().assertThat().statusCode(404);
+		given()
+			.param("email",email)
+			.when()
+			.get(BASE_URL + "/email")
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.NOT_FOUND.value());
+	}
+		
+	@Test
+	public void getAllTrainees() {
+		log.debug("Testing getting all trainees.");
+		given()
+			.port(port)
+			.basePath(BASE_URL)
+			.when()
+			.get()
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.OK.value());
 
+	}
+	
+	/**
+	 * Checks that getByBatchAndStatus returns a 200 status code.
+	 *  
+	 */
+	@Test
+	public void getByBatchAndStatus() {
+		log.debug("getByBatchAndStatus unit test starts here.");
+		given().when().get(BASE_URL + "/batch/1/status/Training").then().assertThat().statusCode(200);
 	}
 }
