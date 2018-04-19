@@ -41,7 +41,7 @@ public interface TrainerService {
 	 *            - which contains the pre-existing user information
 	 * @return new TrainerUser - that was created from given user and new trainer
 	 */
-	Trainer promoteToTrainer(Trainer tu);
+	Trainer promoteToTrainer(Trainer trainer);
 
 	/**
 	 * 

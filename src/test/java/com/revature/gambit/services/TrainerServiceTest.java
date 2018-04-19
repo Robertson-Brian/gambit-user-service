@@ -28,14 +28,12 @@ public class TrainerServiceTest {
 
 	@Test																																																																																																		
 	public void findTrainerById(){
-		Trainer trainer = new Trainer();
-		trainer.setFirstName("Genesis");
-		trainer.setLastName("Bonds");
-		trainer.setEmail("genesis.bonds@revature.com");
-		System.out.println(trainer);
-		Trainer findById = trainerService.findById(6);
-		System.out.println(findById);
-		assertEquals(trainer,findById);
+		Trainer newTrainer = new Trainer("Mark","Fleres","mfleres@gmail.com","Dr.");
+		Trainer findById = trainerService.findById(50);
+		log.warn("FinD Id "+findById.getUserId());
+		assertEquals(newTrainer,findById);
+		assertNotEquals(0, findById.getUserId());
+		
 
 	}
 	@Test

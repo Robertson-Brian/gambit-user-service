@@ -43,12 +43,12 @@ public class TrainerServiceImpl implements TrainerService {
 		return trainerRepository.save(trainer);
 	}
 
-	public Trainer promoteToTrainer(Trainer tu) {
+	public Trainer promoteToTrainer(Trainer trainer) {
 		log.debug("Method called to promote a user to a trainer.");
-		User u = userRepository.findByUserId(tu.getUserId());
+		User u = userRepository.findByUserId(trainer.getUserId());
 		Trainer bt = new Trainer();
 		bt.setUserId(u.getUserId());
-		bt.setTitle(tu.getTitle());
+		bt.setTitle(trainer.getTitle());
 		bt.setUserId(0);
 		return bt;
 	}
