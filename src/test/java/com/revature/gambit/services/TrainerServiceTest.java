@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 
 import org.apache.log4j.Logger;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,18 +18,6 @@ public class TrainerServiceTest extends GambitTest {
 
     @Autowired
     private TrainerService trainerService;
-
-    private Trainer trainer1;
-    private Trainer trainer2;
-
-    @Before
-    public void testCreateTrainers() {
-	trainer1 = new Trainer("John", "Doe", "JohnDoe@gmail.com", "Trainer");
-	trainer2 = new Trainer("Peter", "Alagna", "peter.alagna@revature.com", "Wizard");
-
-	trainerService.newTrainer(trainer1);
-	trainerService.newTrainer(trainer2);
-    }
 
     @Test
     public void testNewTrainer() {
@@ -55,8 +42,9 @@ public class TrainerServiceTest extends GambitTest {
 
     @Test
     public void testDeleteTrainer() {
-	trainerService.delete(trainer1.getUserId());
-	assertNull(trainerService.findById(trainer1.getUserId()));
+	int patrickId = trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId();
+	trainerService.delete(patrickId);
+	assertNull(trainerService.findById(patrickId));
     }
 
     @Test
@@ -79,28 +67,28 @@ public class TrainerServiceTest extends GambitTest {
 	log.debug("Testing trainerService.getAll()");
 	assertEquals(12, trainerService.getAll().size());
 	assertNotEquals(0, trainerService.getAll().size());
-	}
+    }
 
-	@Test
-	public void testFindTrainerByEmail() {
-		log.debug("Testing trainerService.findTrainerByEmail with correct email address");
-		String expected = "steven.kelsey@revature.com";
-		Trainer trainer = trainerService.findTrainerByEmail("steven.kelsey@revature.com");
-		assertEquals(trainer.getEmail(), expected);
-	}
+    @Test
+    public void testFindTrainerByEmail() {
+	log.debug("Testing trainerService.findTrainerByEmail with correct email address");
+	String expected = "steven.kelsey@revature.com";
+	Trainer trainer = trainerService.findTrainerByEmail("steven.kelsey@revature.com");
+	assertEquals(trainer.getEmail(), expected);
+    }
 
-	@Test
-	public void testFindTrainerByEmailInvalid() {
-		log.debug("Testing trainerService.findTrainerByEmail with invalid email address");
-		Trainer trainer = trainerService.findTrainerByEmail("fdjnfjdd@revature.com");
-		assertEquals(trainer, null);
-	}
+    @Test
+    public void testFindTrainerByEmailInvalid() {
+	log.debug("Testing trainerService.findTrainerByEmail with invalid email address");
+	Trainer trainer = trainerService.findTrainerByEmail("fdjnfjdd@revature.com");
+	assertEquals(trainer, null);
+    }
 
-	@Test
-	public void testFindTrainerByEmailNonTrainer() {
-		log.debug("Testing trainerService.findTrainerByEmail with non-trainer email address");
-		Trainer trainer = trainerService.findTrainerByEmail("ychenq001@gmail.com");
-		assertEquals(trainer, null);
+    @Test
+    public void testFindTrainerByEmailNonTrainer() {
+	log.debug("Testing trainerService.findTrainerByEmail with non-trainer email address");
+	Trainer trainer = trainerService.findTrainerByEmail("ychenq001@gmail.com");
+	assertEquals(trainer, null);
     }
 
 }
