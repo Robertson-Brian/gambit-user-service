@@ -1,10 +1,8 @@
 package com.revature.gambit.controllers;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -14,14 +12,10 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
-
 
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
-import com.revature.gambit.services.TrainerService;
 
 import io.restassured.http.ContentType;
 
@@ -40,10 +34,8 @@ public class TrainerControllerTest extends GambitTest {
 
 	@Test
 	public void findTrainerByEmail200() {
+		log.debug("test findTrainerByEmail with bad input");
 		String email = "steven.kelsey@revature.com";
-
-		log.info("test findTrainerByEmail with bad input");
-
 		given().when().port(port).
 			get(FIND_TRAINER_BY_EMAIL_URI, email).
 		then().assertThat().
@@ -53,10 +45,8 @@ public class TrainerControllerTest extends GambitTest {
 	
 	@Test
 	public void findTrainerByEmail500() {
+		log.debug("test findTrainerByEmail with bad input");
 		String email = "sdjkssx@gmail.com";
-
-		log.info("test findTrainerByEmail with bad input");
-
 		String body = given().when().port(port).
 			  	get(FIND_TRAINER_BY_EMAIL_URI, email).
 			      then().assertThat().
@@ -64,7 +54,8 @@ public class TrainerControllerTest extends GambitTest {
 
 		assertEquals(body, "");
 	}
-
+    
+	@Test
 	public void testFindAllTitles() {
 		log.debug("Find all trainers titles at : "+FIND_ALL_TRAINER_TITLES_URI);
 
@@ -84,10 +75,8 @@ public class TrainerControllerTest extends GambitTest {
 
 	@Test
 	public void findTrainerByEmailNonTrainer() {
+		log.debug("test findTrainerByEmail with non trainer email.");
 		String email = "ychenq001@gmail.com";
-
-		log.info("test findTrainerByEmail with non trainer email.");
-
 		String body = given().when().port(port).
 				get(FIND_TRAINER_BY_EMAIL_URI, email).
 		      	      then().assertThat().
@@ -96,6 +85,8 @@ public class TrainerControllerTest extends GambitTest {
 		assertEquals(body, "");
 	}
 
+	@SuppressWarnings("unchecked")
+	@Test
 	public void testFindAllTrainers(){
 		log.debug("Find all trainers titles at : "+FIND_ALL_TRAINERS_URI);
 

@@ -55,6 +55,7 @@ public class TrainerServiceTest extends GambitTest {
 
 	@Test
 	public void testFindTrainerByEmail() {
+		log.debug("Testing trainerService.findTrainerByEmail with correct email address");
 		String expected = "steven.kelsey@revature.com";
 		Trainer trainer = trainerService.findTrainerByEmail("steven.kelsey@revature.com");
 		assertEquals(trainer.getEmail(), expected);
@@ -62,12 +63,14 @@ public class TrainerServiceTest extends GambitTest {
 
 	@Test
 	public void testFindTrainerByEmailInvalid() {
+		log.debug("Testing trainerService.findTrainerByEmail with invalid email address");
 		Trainer trainer = trainerService.findTrainerByEmail("fdjnfjdd@revature.com");
 		assertEquals(trainer, null);
 	}
 
 	@Test
 	public void testFindTrainerByEmailNonTrainer() {
+		log.debug("Testing trainerService.findTrainerByEmail with non-trainer email address");
 		Trainer trainer = trainerService.findTrainerByEmail("ychenq001@gmail.com");
 		assertEquals(trainer, null);
 	}
