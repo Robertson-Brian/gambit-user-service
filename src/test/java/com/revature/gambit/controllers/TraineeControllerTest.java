@@ -12,13 +12,27 @@ import org.springframework.http.HttpStatus;
 import com.revature.gambit.GambitTest;
 
 public class TraineeControllerTest extends GambitTest {
-
+	
 	@LocalServerPort
 	private int port;
-
+	
 	private static final Logger log = Logger.getLogger(TraineeControllerTest.class);
 
 	private static final String BASE_URL = "http://localhost:10001/trainees";
+	
+	/**
+	 * Tests that trainee is created and status code is 201
+	 */
+	@Test
+	public void save() {
+		String body = "{\"userId\" : 0,\"firstName\": \"Shaleen\",\"lastName\": \"Anwar\",\"email\": \"shaleen.anwar@gmail.com\"}";
+		given()
+			.header("Content-Type", "application/json")
+			.body(body)
+			.when()	
+			.post(BASE_URL).then().assertThat().statusCode(201);
+
+	}
 
 	/**
 	 * Tests connection is OK with getAll
@@ -39,7 +53,11 @@ public class TraineeControllerTest extends GambitTest {
 	 * Asserts that a 204 - No Content status is returned.
 	 */
 	public void deleteTest() {
-		String trainee = "{\"userId\":36,\"firstName\":\"Gir\",\"middleName\":null,\"lastName\":\"Chandradat\",\"email\":\"chandradatgir@yahoo.com\",\"password\":null,\"backupPassword\":null,\"role\":null,\"homePhone\":null,\"mobilePhone\":null,\"token\":null,\"resourceId\":null,\"trainingStatus\":\"Dropped\",\"profileUrl\":null,\"recruiterName\":null,\"college\":null,\"degree\":null,\"major\":null,\"techScreenerName\":null,\"projectCompletion\":null,\"flagStatus\":null,\"flagNotes\":null,\"marketingStatus\":null,\"client\":null,\"endClient\":null}";
+		String trainee = "{\"userId\":36,"
+				+ "\"firstName\":\"Gir\","
+				+ "\"lastName\":\"Chandradat\","
+				+ "\"email\":\"chandradatgir@yahoo.com\","
+				+ "\"trainingStatus\":\"Dropped\"}";
 		given()
 			.header("Content-Type", "application/json")
 			.body(trainee)
@@ -114,7 +132,7 @@ public class TraineeControllerTest extends GambitTest {
 			.assertThat()
 			.statusCode(HttpStatus.NOT_FOUND.value());
 	}
-		
+
 	@Test
 	public void getAllTrainees() {
 		log.debug("Testing getting all trainees.");
