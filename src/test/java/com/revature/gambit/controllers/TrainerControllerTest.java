@@ -39,14 +39,14 @@ public class TrainerControllerTest extends GambitTest {
 
     @Test
     public void testDeleteTrainer() {
-    	log.info("Deleting a Trainer");
+    	log.debug("Deleting a Trainer");
     	int trainerId = trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId();
     	given().port(port).delete(BASE_URI + "/{id}", trainerId).then().assertThat().statusCode(HttpStatus.OK_200);
     }
 
     @Test
     public void testDeleteNonexistentTrainer() {
-    	log.info("Deleting a Trainer");
+    	log.debug("Deleting a Trainer");
     	int trainerId = -1;
     	given().port(port).delete(BASE_URI + "/{id}", trainerId).then().assertThat()
     		.statusCode(HttpStatus.INTERNAL_SERVER_ERROR_500);
