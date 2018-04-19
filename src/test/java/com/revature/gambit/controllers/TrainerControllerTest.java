@@ -1,27 +1,28 @@
 package com.revature.gambit.controllers;
 
 
+import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.services.TrainerService;
+
 import io.restassured.http.ContentType;
 
 
@@ -35,7 +36,6 @@ public class TrainerControllerTest {
 
 	private static final String FIND_TRAINER_BY_EMAIL_URL = BASE_URL + "/email/{email:.+}/";
 	private static final String FIND_TRAINER_BY_NAME_URL = BASE_URL + "/name/{firstName}/{lastName}";
-	private static final String FIND_TRAINER_BY_EMAIL_URL = BASE_URL + "/email/{email:.+}/";
 	private static final String FIND_ALL_TRAINER_TITLES_URL = BASE_URL + "/titles";
 	private static final String FIND_ALL_TRAINERS_URL = BASE_URL;
 	private static final String REGISTER_TRAINER_URL = BASE_URL;
