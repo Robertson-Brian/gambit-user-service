@@ -49,10 +49,22 @@ public class TraineeServiceTest extends GambitTest {
 		candidate = traineeService.save(candidate);
 		assertNotEquals(0, candidate.getUserId());
 		log.trace("Trainee saved! " + candidate);
+	
+	}
+	
+	/**
+	 * Tests that null is returned for new trainee with email that already exists. 
+	 */
+	@Test
+	public void saveDuplicate() {
+		log.debug("Testing that Trainee cannot register if email already exists");
+		Trainee trainee = new Trainee("Howard","Johnson","howard.johnson@hotmail.com");
 		
 		// Checks that if email exists, it returns null
 		assertEquals(null, traineeService.save(trainee));
+		log.trace("Trainee could not register because of existing email");
 	}
+	
 	/**
 	 * Tests that find a user by their email.
 	 */
