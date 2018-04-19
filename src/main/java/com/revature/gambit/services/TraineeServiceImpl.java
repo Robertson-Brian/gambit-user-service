@@ -39,7 +39,7 @@ public class TraineeServiceImpl implements TraineeService {
 		
 		Trainee preexisting = traineeRepository.findByEmail(trainee.getEmail());
 		log.trace("Trainee exists: " + preexisting);
-		if (preexisting != null && preexisting.getBatches() != null) {
+		if (preexisting != null) {
 			// if so, add the trainee's batch assignments
 			log.trace("adding prexisting batches: " + preexisting.getBatches() + " to new batches: "
 					+ trainee.getBatches());

@@ -152,22 +152,16 @@ public class TraineeServiceTest extends GambitTest {
 		// trainee has a batch.
 		trainee.getBatches().add(1);
 		trainee = traineeService.save(trainee);
-		assertNotEquals(0, trainee.getUserId());
-		log.trace("Trainee saved! " + trainee);
 		log.trace("Testing trainee update");
-		Trainee update = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "", TrainingStatus.Training, 1,
-				"Belotte");
 		// trainee has a different batch now
-		update.getBatches().add(2);
-		Trainee check = traineeService.save(update);
+		trainee.getBatches().add(2);
+		trainee = traineeService.update(trainee);
 		// resourceIds must be same when updating
-		assertEquals(check.getResourceId(), trainee.getResourceId());
+		assertEquals(trainee.getResourceId(), trainee.getResourceId());
 		// batches must be loaded from database and added to list
 		Set<Integer> expected = new HashSet<>();
 		expected.add(1);
 		expected.add(2);
-		assertEquals(expected, check.getBatches());
+		assertEquals(expected, trainee.getBatches());
 	}
 }
-
-
