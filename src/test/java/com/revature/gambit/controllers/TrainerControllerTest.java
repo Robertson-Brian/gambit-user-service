@@ -92,7 +92,7 @@ public class TrainerControllerTest extends GambitTest {
 		when().
 			port(port).post(REGISTER_TRAINER_URL).
 		then().
-			assertThat().statusCode(HttpStatus.INTERNAL_SERVER_ERROR_500);
+			assertThat().statusCode(HttpStatus.BAD_REQUEST_400);
 		
 		Trainer emptyTrainer = new Trainer("","","","");
 		given().
