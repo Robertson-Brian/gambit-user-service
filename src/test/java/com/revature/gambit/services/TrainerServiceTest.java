@@ -33,18 +33,18 @@ public class TrainerServiceTest extends GambitTest {
     
     @Test
     public void testNewTrainerRepeat() {
-		// Test Repeat Trainer
+    	// Test Repeat Trainer
     	Trainer repeatTrainer = new Trainer("Patrick","Walsh","patrick.walsh@revature.com","Trainer");
-		Trainer savedRepeatTrainer = trainerService.newTrainer(repeatTrainer);
-		assertEquals(null, savedRepeatTrainer);
+    	Trainer savedRepeatTrainer = trainerService.newTrainer(repeatTrainer);
+    	assertEquals(null, savedRepeatTrainer);
     }
     
     @Test
     public void testNewTrainerEmpty() {
-		// Test Empty Trainer
-		Trainer emptyTrainer = new Trainer("", "", "", "");
-		Trainer savedEmptyTrainer = trainerService.newTrainer(emptyTrainer);
-		assertEquals(null, savedEmptyTrainer);
+    	// Test Empty Trainer
+    	Trainer emptyTrainer = new Trainer("", "", "", "");
+    	Trainer savedEmptyTrainer = trainerService.newTrainer(emptyTrainer);
+    	assertEquals(null, savedEmptyTrainer);
     }
 
     @Test
@@ -57,24 +57,23 @@ public class TrainerServiceTest extends GambitTest {
 
     @Test
     public void testDeleteNonexistentTrainer() {
-		assertThatThrownBy(() -> {
-		    trainerService.delete(-1);
-		});
+    	assertThatThrownBy(() -> {
+    		trainerService.delete(-1);
+    	});
     }
 
     @Test
     public void testGetAllTitles() {
-
-		log.debug("Testing trainerService.getAllTitles()");
-		assertEquals(6, trainerService.getAllTitles().size());
-		assertNotEquals(0, trainerService.getAllTitles().size());
+    	log.debug("Testing trainerService.getAllTitles()");
+    	assertEquals(6, trainerService.getAllTitles().size());
+    	assertNotEquals(0, trainerService.getAllTitles().size());
     }
 
     @Test
     public void testGetAllTrainers() {
-		log.debug("Testing trainerService.getAll()");
-		assertEquals(12, trainerService.getAll().size());
-		assertNotEquals(0, trainerService.getAll().size());
+    	log.debug("Testing trainerService.getAll()");
+    	assertEquals(12, trainerService.getAll().size());
+    	assertNotEquals(0, trainerService.getAll().size());
 	}
 
 	@Test
