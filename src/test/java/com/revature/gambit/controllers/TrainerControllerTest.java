@@ -36,6 +36,7 @@ public class TrainerControllerTest extends GambitTest {
     private static final String FIND_ALL_TRAINER_TITLES_URI = BASE_URI + "/titles";
     private static final String FIND_ALL_TRAINERS_URI = BASE_URI;
     private static final String REGISTER_TRAINER_URI = BASE_URI;
+    private static final String FIND_TRAINER_BY_ID_URI = BASE_URI + "/{id}";
 
     @Test
     public void testDeleteTrainer() {
@@ -125,5 +126,25 @@ public class TrainerControllerTest extends GambitTest {
 		Trainer emptyTrainer = new Trainer("", "", "", "");
 		given().contentType(ContentType.JSON).body(emptyTrainer).when().port(port).post(REGISTER_TRAINER_URI).then()
 			.assertThat().statusCode(HttpStatus.BAD_REQUEST_400);
+    }
+    
+    @Test
+    public void testFindTrainerById(){
+        log.debug("Testing findTrainerById ");
+       int userId = trainerService.findTrainerByEmail("pjw6193@hotmail.com").getUserId();
+        given().
+        port(port).
+        contentType(ContentType.JSON).
+        when().
+        get(FIND_TRAINER_BY_ID_URI,userId)
+        .then()
+        .assertThat()
+        .statusCode(HttpStatus.OK_200)
+        .body("firstName", equalTo("Dan"),
+              "lastName" ,equalTo("Pickles"),
+              "email", equalTo("pjw6193@hotmail.com"),
+              "role.role",equalTo("ROLE_VP"),
+              "title", equalTo("Lead Trainer"));
+
     }
 }
