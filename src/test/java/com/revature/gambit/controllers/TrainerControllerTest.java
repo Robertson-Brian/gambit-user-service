@@ -27,12 +27,6 @@ import io.restassured.http.ContentType;
 
 public class TrainerControllerTest extends GambitTest {
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
-public class TrainerControllerTest extends GambitTest {
-
-	private static final Logger log = Logger.getLogger(TrainerControllerTest.class);
-
 	@LocalServerPort
 	private int port;
 
@@ -45,6 +39,18 @@ public class TrainerControllerTest extends GambitTest {
 	private static final String REGISTER_TRAINER_URI = BASE_URI;
 
 	@Test
+	public void findTrainerByEmail200() {
+		String email = "steven.kelsey@revature.com";
+
+		log.info("test findTrainerByEmail with bad input");
+
+		given().when().port(port).
+			get(FIND_TRAINER_BY_EMAIL_URI, email).
+		then().assertThat().
+			statusCode(HttpStatus.OK.value()).body("email", equalTo(email));
+	}
+	
+	@Test
 	public void findTrainerByEmail500() {
 		String email = "sdjkssx@gmail.com";
 
@@ -56,6 +62,7 @@ public class TrainerControllerTest extends GambitTest {
 				statusCode(HttpStatus.OK.value()).extract().body().asString();
 
 		assertEquals(body, "");
+	}
 
 	public void testFindAllTitles() {
 		log.debug("Find all trainers titles at : "+FIND_ALL_TRAINER_TITLES_URI);
@@ -81,11 +88,12 @@ public class TrainerControllerTest extends GambitTest {
 		log.info("test findTrainerByEmail with non trainer email.");
 
 		String body = given().when().port(port).
-				get(FIND_TRAINER_BY_EMAIL, email).
+				get(FIND_TRAINER_BY_EMAIL_URI, email).
 		      	      then().assertThat().
 				statusCode(HttpStatus.OK.value()).extract().body().asString();
 
 		assertEquals(body, "");
+	}
 
 	public void testFindAllTrainers(){
 		log.debug("Find all trainers titles at : "+FIND_ALL_TRAINERS_URI);
