@@ -29,7 +29,7 @@ public class TraineeControllerTest extends GambitTest {
 	
 	private static final Logger log = Logger.getLogger(TraineeControllerTest.class);
 
-	private static final String BASE_URL = "http://localhost:10001//trainees";
+	private static final String BASE_URL = "http://localhost:10001/trainees";
 
 	
 	/**
