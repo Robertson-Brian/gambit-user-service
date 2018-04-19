@@ -1,7 +1,6 @@
 package com.revature.gambit.controllers;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.equalTo;
 
 import org.apache.log4j.Logger;
@@ -10,6 +9,7 @@ import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
 import com.revature.gambit.GambitTest;
+import com.revature.gambit.entities.Trainee;
 
 public class TraineeControllerTest extends GambitTest {
 	
@@ -41,6 +41,23 @@ public class TraineeControllerTest extends GambitTest {
 			.assertThat()
 			.statusCode(HttpStatus.CREATED.value());
 		log.trace("New trainee created");
+	}
+	
+	@Test
+	public void saveDuplicate() {
+		log.debug("Testing that Trainee cannot register if email already exists");
+		Trainee trainee = new Trainee("Howard","Johnson","howard.johnson@hotmail.com");
+		given()
+			.port(port)
+			.basePath(BASE_URI)
+			.header("Content-Type", "application/json")
+			.body(trainee)
+			.when()	
+			.post()
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.CREATED.value());
+		log.trace("Trainee could not register because of existing email");
 	}
 
 	/**
