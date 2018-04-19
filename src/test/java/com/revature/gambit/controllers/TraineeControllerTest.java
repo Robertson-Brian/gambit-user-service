@@ -205,7 +205,7 @@ public class TraineeControllerTest extends GambitTest {
 	/**
 	 * This method tests updating a trainee.
 	 * It asserts that a 204 request will be received, as a PUT method.
-	 * @Author: Ismael Khalil
+	 * 
 	 */
 	@Test
 	public void update() {
@@ -224,5 +224,25 @@ public class TraineeControllerTest extends GambitTest {
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.NO_CONTENT_204);
+	}
+
+	/**
+	 * This method will attempt to return a nonexistent employee,
+	 * and return 
+	 * 
+	 */
+	@Test
+	public void updateNull() {
+		log.debug("Trainee Controller test: Update a nonexistent employee");
+		Trainee trainee = new Trainee("Howard", "Stern", "filler@hmail.com");
+		given()
+			.port(port)
+			.basePath(BASE_URI)
+			.header("Content-Type", "application/json")
+			.when()
+			.put()
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.BAD_REQUEST_400);
 	}
 }

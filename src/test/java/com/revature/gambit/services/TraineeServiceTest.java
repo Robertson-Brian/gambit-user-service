@@ -1,5 +1,6 @@
 package com.revature.gambit.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -182,5 +183,15 @@ public class TraineeServiceTest extends GambitTest {
 		expected.add(1);
 		expected.add(2);
 		assertEquals(expected, trainee.getBatches());
+	}
+
+	@Test
+	public void updateNull() {
+		log.trace("Testing trainee update");
+		Trainee trainee = new Trainee("Test", "ing", "testing123@hmail.com", "ayasn161hs9aes",
+				TrainingStatus.Training, 1, "Extensure");
+		trainee = traineeService.update(trainee);
+		// userId must not exist
+		assertThat(trainee == null);
 	}
 }
