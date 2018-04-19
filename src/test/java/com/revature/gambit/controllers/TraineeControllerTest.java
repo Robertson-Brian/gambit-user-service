@@ -185,7 +185,10 @@ public class TraineeControllerTest extends GambitTest {
 			.statusCode(HttpStatus.OK.value());
 	}
 	
-	
+	/**
+	 * Checks that when you send an invalid training status
+	 * bad request gets returned.
+	 */
 	@Test
 	public void getByBatchAndBadStatus() {
 		log.debug("getByBatchAndStatus unit test starts here.");

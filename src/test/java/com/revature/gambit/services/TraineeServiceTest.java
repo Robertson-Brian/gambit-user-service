@@ -106,9 +106,9 @@ public class TraineeServiceTest extends GambitTest {
 		assertNotEquals(initialSize,currentSize);
 	}
 	/**
-	 * Adds 5 trainees to DB
-	 * Checks for trainees in Batch 3 with a trainingStatus of 'training'
-	 * compares to 2 of the 5 trainees that were expected
+	 * 
+	 * Checks for trainees in Batch  with a trainingStatus of 'training'
+	 * current database only has one trainee that matches those specifications.
 	 */
 	@Test
 	public void findAllTraineeByBatchAndStatus(){
@@ -117,12 +117,20 @@ public class TraineeServiceTest extends GambitTest {
 		assertEquals(1, result.size());	
 	}
 	
+	/**
+	 * Check for trainees in a batch that doesn't contain any trainees
+	 * This should return a list of length 0.
+	 */
 	@Test
 	public void findAllTraineeByBadBatchAndStatus(){
 		log.debug("Testing find all by batch and status using unused batch number");
 		assertEquals(0,traineeService.findAllByBatchAndStatus(3, "Training").size());
 	}
 	
+	/**
+	 * Checks for trainees with an invalid training status
+	 * checks that the returned list is null.
+	 */
 	@Test
 	public void findAllTraineeByBatchAndBadStatus(){
 		log.debug("Testing find all by batch and status using wrong status.");
