@@ -83,6 +83,7 @@ public class TraineeControllerTest extends GambitTest {
 	/**Test methods:
 	 * 
 	 * @see com.revature.gambit.services.TraineeServiceTest
+	 * Tests to see if the correct user is given with certain emails that correspond to said user
 	 */
 	@Test
 	public void findTraineeByEmail() {

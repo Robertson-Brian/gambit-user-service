@@ -52,7 +52,9 @@ public class TraineeServiceTest extends GambitTest {
 		// Checks that if email exists, it returns null
 		assertEquals(null, traineeService.save(trainee));
 	}
-
+	/**
+	 * Tests that find a user by their email.
+	 */
 	@Test
 	public void findByEmail() {
 		log.debug("Testing trainee save");
