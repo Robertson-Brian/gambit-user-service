@@ -5,23 +5,18 @@ import static org.junit.Assert.assertNotEquals;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@SpringBootTest
-public class TrainerServiceTest extends GambitTest{
+public class TrainerServiceTest extends GambitTest {
 
 	private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
 
 	@Autowired
 	private TrainerService trainerService;
-	
+
 	@Test
 	public void testNewTrainer() {
 		log.debug("Testing trainerService.newTrainer(Trainer trainer)");
@@ -32,36 +27,41 @@ public class TrainerServiceTest extends GambitTest{
 		assertNotEquals(0, savedTrainer.getUserId());
 		assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
 		assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
+
+		//Test Empty Trainer
+		Trainer emptyTrainer = new Trainer("","","","");
+		Trainer savedEmptyTrainer = trainerService.newTrainer(emptyTrainer);
+		assertEquals(null,savedEmptyTrainer);
 	}
-	
+
 	@Test
 	public void testGetAllTitles(){
-		
+
 		log.debug("Testing trainerService.getAllTitles()");
 		assertEquals(1, trainerService.getAllTitles().size());
 		assertNotEquals(0, trainerService.getAllTitles().size());
 	}
-	
+
 	@Test
 	public void testGetAllTrainers(){
 		log.debug("Testing trainerService.getAll()");
 		assertEquals(1, trainerService.getAll().size());
 		assertNotEquals(0, trainerService.getAll().size());
 	}
-	
+
 	@Test
 	public void testFindTrainerByEmail() {
 		String expected = "steven.kelsey@revature.com";
 		Trainer trainer = trainerService.findTrainerByEmail("steven.kelsey@revature.com");
 		assertEquals(trainer.getEmail(), expected);
 	}
-	
+
 	@Test
 	public void testFindTrainerByEmailInvalid() {
 		Trainer trainer = trainerService.findTrainerByEmail("fdjnfjdd@revature.com");
 		assertEquals(trainer, null);
 	}
-	
+
 	@Test
 	public void testFindTrainerByEmailNonTrainer() {
 		Trainer trainer = trainerService.findTrainerByEmail("ychenq001@gmail.com");
