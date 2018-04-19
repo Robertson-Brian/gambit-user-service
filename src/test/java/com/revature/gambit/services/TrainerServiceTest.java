@@ -38,14 +38,14 @@ public class TrainerServiceTest extends GambitTest {
 	public void testGetAllTitles(){
 
 		log.debug("Testing trainerService.getAllTitles()");
-		assertEquals(1, trainerService.getAllTitles().size());
+		assertEquals(6, trainerService.getAllTitles().size());
 		assertNotEquals(0, trainerService.getAllTitles().size());
 	}
 
 	@Test
 	public void testGetAllTrainers(){
 		log.debug("Testing trainerService.getAll()");
-		assertEquals(1, trainerService.getAll().size());
+		assertEquals(12, trainerService.getAll().size());
 		assertNotEquals(0, trainerService.getAll().size());
 	}
 
