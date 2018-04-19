@@ -4,9 +4,9 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
 import org.springframework.boot.context.embedded.LocalServerPort;
-import org.springframework.http.HttpStatus;
 
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainee;
@@ -35,7 +35,7 @@ public class TraineeControllerTest extends GambitTest {
 			.post()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.CREATED.value());
+			.statusCode(HttpStatus.CREATED_201);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class TraineeControllerTest extends GambitTest {
 			.get()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.OK.value());
+			.statusCode(HttpStatus.OK_200);
 		log.trace("All Trainees retrieved");
 	}
 
@@ -72,7 +72,7 @@ public class TraineeControllerTest extends GambitTest {
 			.delete()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.NO_CONTENT.value());
+			.statusCode(HttpStatus.NO_CONTENT_204);
 	}
 
 	/**Test methods:
@@ -93,7 +93,7 @@ public class TraineeControllerTest extends GambitTest {
 			.get()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.OK.value())
+			.statusCode(HttpStatus.OK_200)
 			.and()
 			.body("firstName",equalTo(firstName));
 	}
@@ -111,7 +111,7 @@ public class TraineeControllerTest extends GambitTest {
 			.get()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.OK.value())
+			.statusCode(HttpStatus.OK_200)
 			.and()
 			.body("firstName",equalTo(firstName));
 	}
@@ -129,7 +129,7 @@ public class TraineeControllerTest extends GambitTest {
 			.get()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.OK.value())
+			.statusCode(HttpStatus.OK_200)
 			.and()
 			.body("firstName",equalTo(firstName));
 	}
@@ -146,7 +146,7 @@ public class TraineeControllerTest extends GambitTest {
 			.get()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.NOT_FOUND.value());
+			.statusCode(HttpStatus.NOT_FOUND_404);
 	}
 
 	@Test
@@ -159,7 +159,7 @@ public class TraineeControllerTest extends GambitTest {
 			.get()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.OK.value());
+			.statusCode(HttpStatus.OK_200);
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class TraineeControllerTest extends GambitTest {
 			.get()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.OK.value());
+			.statusCode(HttpStatus.OK_200);
 	}
 
 	/**
@@ -200,6 +200,6 @@ public class TraineeControllerTest extends GambitTest {
 			.put()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.NO_CONTENT.value());
+			.statusCode(HttpStatus.NO_CONTENT_204);
 	}
 }
