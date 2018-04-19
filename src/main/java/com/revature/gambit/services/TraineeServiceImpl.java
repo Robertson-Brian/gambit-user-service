@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.gambit.entities.Trainee;
+import com.revature.gambit.entities.TrainingStatus;
 import com.revature.gambit.repositories.TraineeRepository;
 
 @Service("traineeService")
@@ -30,11 +31,32 @@ public class TraineeServiceImpl implements TraineeService {
 			return traineeRepository.save(trainee);
 		}
 	}
+	
+
+	@Transactional
+	public Trainee update(Trainee trainee) {
+		log.trace("Testing update method for " + trainee);
+		
+		Trainee preexisting = traineeRepository.findOneByEmail(trainee.getEmail());
+		log.trace("Trainee exists: " + preexisting);
+		if (preexisting != null && preexisting.getBatches() != null) {
+			// if so, add the trainee's batch assignments
+			log.trace("adding prexisting batches: " + preexisting.getBatches() + " to new batches: "
+					+ trainee.getBatches());
+			trainee.getBatches().addAll(preexisting.getBatches());
+			// maintain their Salesforce resourceId
+			log.trace("setting resourceId for trainee as: " + preexisting.getResourceId());
+			trainee.setResourceId(preexisting.getResourceId());
+			trainee.setUserId(preexisting.getUserId());
+			return traineeRepository.save(trainee);
+		}
+		return null;
+	}
 
 	@Transactional
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status) {
-		log.trace("Find all by batch: " + batchId + " with status: " + status);
-		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId, status);
+		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId + " with status: " + status);
+		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,TrainingStatus.valueOf(status));
 	}
 	
 	@Transactional
