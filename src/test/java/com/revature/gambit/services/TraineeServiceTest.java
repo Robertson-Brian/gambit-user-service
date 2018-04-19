@@ -109,6 +109,7 @@ public class TraineeServiceTest extends GambitTest {
 	 */
 	@Test
 	public void findAllTraineeByBatchAndStatus(){
+		log.debug("Testing find all by batch and status.");
 		Trainee trainee1 = new Trainee("John", "Smith", "John.smith@gogomail.com", "ayasn161hs9aes1",
 				TrainingStatus.Training, 2, "Extensure");
 		trainee1.getBatches().add(3);
