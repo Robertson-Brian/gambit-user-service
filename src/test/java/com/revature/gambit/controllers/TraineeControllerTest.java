@@ -176,7 +176,7 @@ public class TraineeControllerTest extends GambitTest {
 			.get()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.BAD_REQUEST.value());
+			.statusCode(HttpStatus.BAD_REQUEST_400);
 	}
 
 	/**
