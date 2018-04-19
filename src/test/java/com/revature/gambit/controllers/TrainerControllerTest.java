@@ -32,7 +32,7 @@ public class TrainerControllerTest {
 	private static final String BASE_URL = "http://localhost:10001/trainers";
 	private static final String FIND_TRAINER_BY_EMAIL_URL = BASE_URL + "/email/{email:.+}/";
 	private static final String FIND_ALL_TRAINER_TITLES_URL = BASE_URL + "/titles";
-	private static final String FIND_ALL_TRAINERS_URL = BASE_URL + "/";
+	private static final String FIND_ALL_TRAINERS_URL = BASE_URL;
 	private static final String REGISTER_TRAINER_URL = BASE_URL;
 	
 	@Test
