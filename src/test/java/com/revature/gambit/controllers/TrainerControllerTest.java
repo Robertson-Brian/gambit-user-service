@@ -12,10 +12,12 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
+import com.revature.gambit.services.TrainerService;
 
 import io.restassured.http.ContentType;
 
@@ -26,6 +28,9 @@ public class TrainerControllerTest extends GambitTest {
     @LocalServerPort
     private int port;
 
+    @Autowired
+    private TrainerService trainerService;
+
     private static final String BASE_URI = "/trainers";
     private static final String FIND_TRAINER_BY_EMAIL_URI = BASE_URI + "/email/{email:.+}/";
     private static final String FIND_ALL_TRAINER_TITLES_URI = BASE_URI + "/titles";
@@ -35,14 +40,14 @@ public class TrainerControllerTest extends GambitTest {
     @Test
     public void testDeleteTrainer() {
     	log.info("Deleting a Trainer");
-    	short trainerId = 1;
+    	int trainerId = trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId();
     	given().port(port).delete(BASE_URI + "/{id}", trainerId).then().assertThat().statusCode(HttpStatus.OK_200);
     }
 
     @Test
     public void testDeleteNonexistentTrainer() {
     	log.info("Deleting a Trainer");
-    	short trainerId = -1;
+    	int trainerId = -1;
     	given().port(port).delete(BASE_URI + "/{id}", trainerId).then().assertThat()
     		.statusCode(HttpStatus.INTERNAL_SERVER_ERROR_500);
     }

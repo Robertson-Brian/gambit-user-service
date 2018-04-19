@@ -49,10 +49,9 @@ public class TrainerServiceTest extends GambitTest {
 
     @Test
     public void testDeleteTrainer() {
-    	Trainer trainer1 = new Trainer("John", "Doe", "JohnDoe@gmail.com", "Trainer");
-    	trainer1 = trainerService.newTrainer(trainer1);
-		trainerService.delete(trainer1.getUserId());
-		assertNull(trainerService.findById(trainer1.getUserId()));
+    	int patrickId = trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId();
+    	trainerService.delete(patrickId);
+    	assertNull(trainerService.findById(patrickId));
     }
 
     @Test
