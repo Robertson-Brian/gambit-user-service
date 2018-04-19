@@ -38,21 +38,9 @@ public class TrainerServiceImpl implements TrainerService {
 		return trainerRepository.findByUserId(trainerId);
 	}
 
-	public Trainer newTrainer(Trainer tu) {
-		log.debug("Method called to create a new trainer and user from TrainerUser object.");
-		User u = new User();
-		BeanUtils.copyProperties(tu, u);
-		u.setRole(tu.getRole());
-		log.trace("Persisting user with the following credentials: " + u.toString());
-		Trainer bt = new Trainer();
-		bt.setTitle(tu.getTitle());
-		log.trace("Setting that user to be a trainer with title: " + bt.getTitle());
-		User persisted = userRepository.save(u);
-		bt.setUserId(persisted.getUserId());
-		bt.setUserId(0);
-		Trainer saved = trainerRepository.save(bt);
-
-		return saved;
+	public Trainer newTrainer(Trainer trainer) {
+		log.debug("Method called to create a new trainer from Trainer object.");
+		return trainerRepository.save(trainer);
 	}
 
 	public Trainer promoteToTrainer(Trainer tu) {
@@ -85,20 +73,14 @@ public class TrainerServiceImpl implements TrainerService {
 		return bt;
 	}
 
-	public List<String> allTitles() {
+	public List<String> getAllTitles() {
 		log.debug("Method called to list all titles.");
-		List<String> titles = trainerRepository.findDistinctTitle();
-		return titles;
+		return trainerRepository.findDistinctTitle();
 	}
 
 	public List<Trainer> getAll() {
 		log.debug("Method called to get all trainers.");
-		List<Trainer> allTrainers = trainerRepository.findAll();
-		List<Trainer> result = new ArrayList<>();
-		for (Trainer b : allTrainers) {
-			//result.add(ClassUtil.merge(userRepo.findByUserId(b.getUserId()), b));
-		}
-		return new ArrayList<>();
+		return trainerRepository.findAll();
 	}
 
 	public Trainer findByName(String firstName, String lastName) {
