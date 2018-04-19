@@ -13,12 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
-public class TrainerServiceTest {
+
+public class TrainerServiceTest extends GambitTest {
 
 	private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
 
@@ -28,11 +28,16 @@ public class TrainerServiceTest {
 
 	@Test																																																																																																		
 	public void findTrainerById(){
-		Trainer newTrainer = new Trainer("Mark","Fleres","mfleres@gmail.com","Dr.");
-		Trainer findById = trainerService.findById(50);
-		log.warn("FinD Id "+findById.getUserId());
-		assertEquals(newTrainer,findById);
-		assertNotEquals(0, findById.getUserId());
+		log.debug("Find trainer by id");
+		Trainer newTrainer = new Trainer("Patrick","Walsh","patrick.walsh@revature.com","Lead Trainer");
+		Trainer findById = trainerService.findById(39);
+		log.info("Trainer Title "+findById.getTitle()+" "+ " "+findById.getFirstName()+" "+findById.getLastName());
+		assertEquals(newTrainer.getFirstName(), findById.getFirstName());
+		assertEquals(newTrainer.getLastName(), findById.getLastName());
+		assertEquals(newTrainer.getEmail(), findById.getEmail());
+		assertEquals(newTrainer.getTitle(), findById.getTitle());
+
+
 		
 
 	}
@@ -52,13 +57,15 @@ public class TrainerServiceTest {
 	public void testGetAllTitles(){
 
 		log.debug("Testing trainerService.getAllTitles()");
-		assertEquals(1, trainerService.getAllTitles().size());
+		assertEquals(6, trainerService.getAllTitles().size());
+		assertNotEquals(0, trainerService.getAllTitles().size());
 	}
 
 	@Test
 	public void testGetAllTrainers(){
 		log.debug("Testing trainerService.getAll()");
-		assertEquals(1, trainerService.getAll().size());
+		assertEquals(12, trainerService.getAll().size());
+		assertNotEquals(0, trainerService.getAll().size());
 	}
 }
 
