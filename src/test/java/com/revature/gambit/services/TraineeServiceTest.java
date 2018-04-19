@@ -56,11 +56,12 @@ public class TraineeServiceTest extends GambitTest {
 	 */
 	@Test
 	public void saveDuplicate() {
-		log.trace("Testing trainee save");
+		log.debug("Testing that Trainee cannot register if email already exists");
 		Trainee trainee = new Trainee("Howard","Johnson","howard.johnson@hotmail.com");
 		
 		// Checks that if email exists, it returns null
 		assertEquals(null, traineeService.save(trainee));
+		log.trace("Trainee could not register because of existing email");
 	}
 	
 	/**
