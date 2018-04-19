@@ -1,5 +1,6 @@
 package com.revature.gambit.services;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -56,6 +57,11 @@ public class TraineeServiceImpl implements TraineeService {
 	@Transactional
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status) {
 		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId + " with status: " + status);
+		try {
+			TrainingStatus trainingStatus = TrainingStatus.valueOf(status);
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
 		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,TrainingStatus.valueOf(status));
 	}
 	

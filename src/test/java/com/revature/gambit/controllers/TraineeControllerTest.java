@@ -161,6 +161,23 @@ public class TraineeControllerTest extends GambitTest {
 			.assertThat()
 			.statusCode(HttpStatus.OK_200);
 	}
+	
+	/**
+	 * Checks that when you send an invalid training status
+	 * bad request gets returned.
+	 */
+	@Test
+	public void getByBatchAndBadStatus() {
+		log.debug("getByBatchAndStatus unit test starts here.");
+		given()
+			.port(port)
+			.basePath(BASE_URI + "/batch/1/status/Train")
+			.when()
+			.get()
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.BAD_REQUEST_400);
+	}
 
 	/**
 	 * This method tests updating a trainee.
