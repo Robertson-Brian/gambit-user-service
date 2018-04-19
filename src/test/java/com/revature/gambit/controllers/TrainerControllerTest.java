@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
 import org.springframework.boot.context.embedded.LocalServerPort;
-import org.springframework.http.HttpStatus;
 
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
@@ -38,7 +38,7 @@ public class TrainerControllerTest extends GambitTest {
 		when().
 			get(FIND_TRAINER_BY_EMAIL_URI, "steven.kelsey@revature.com").
 		then().assertThat().
-			statusCode(HttpStatus.OK.value());
+			statusCode(HttpStatus.OK_200);
 	}
 	
 	@Test
@@ -52,7 +52,7 @@ public class TrainerControllerTest extends GambitTest {
 		.get()
 		.then()
 		.assertThat()
-		.statusCode(HttpStatus.OK.value())
+		.statusCode(HttpStatus.OK_200)
 		.body("$", hasItems("Lead Trainer","Vice President of Technology",
 	   		                "Technology Manager","Senior Java Developer",
 		    		        "Trainer","Senior Trainer")); 
@@ -73,7 +73,7 @@ public class TrainerControllerTest extends GambitTest {
 				       .get()
 		               .then()
 		               .assertThat()
-		               .statusCode(HttpStatus.OK.value())
+		               .statusCode(HttpStatus.OK_200)
 		               .extract().body()
 		  			   .as(trainers.getClass());
 																						
@@ -90,7 +90,7 @@ public class TrainerControllerTest extends GambitTest {
 		when().
 			port(port).post(REGISTER_TRAINER_URI).
 		then().
-			assertThat().statusCode(HttpStatus.OK.value()).
+			assertThat().statusCode(HttpStatus.OK_200).
 		and().
 			contentType(ContentType.JSON).
 		and().
@@ -103,7 +103,7 @@ public class TrainerControllerTest extends GambitTest {
 		when().
 			port(port).post(REGISTER_TRAINER_URI).
 		then().
-			assertThat().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			assertThat().statusCode(HttpStatus.BAD_REQUEST_400);
 		
 		Trainer emptyTrainer = new Trainer("","","","");
 		given().
@@ -112,7 +112,7 @@ public class TrainerControllerTest extends GambitTest {
 		when().
 			port(port).post(REGISTER_TRAINER_URI).
 		then().
-			assertThat().statusCode(HttpStatus.BAD_REQUEST.value());
+			assertThat().statusCode(HttpStatus.BAD_REQUEST_400);
 	}
 }
 
