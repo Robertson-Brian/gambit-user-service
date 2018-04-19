@@ -2,15 +2,12 @@ package com.revature.gambit.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-<<<<<<< HEAD
 import static org.junit.Assert.assertNotNull;
-=======
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
->>>>>>> 1ad242fc22be8eabff73d2a88d3e7684a7a0e6fa
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -85,26 +82,10 @@ public class TraineeServiceTest extends GambitTest {
 	 */
 	@Test
 	public void getAll(){
-		log.debug("Testing trainee getAll");
-		//creating 3 trainees 
-		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
-				TrainingStatus.Training, 1, "Extensure");
-		trainee.getBatches().add(1);
-		traineeService.save(trainee);
-		
-		Trainee trainee1 = new Trainee("Daniel", "Pick", "dan.pick@gogomail.com", "ayasn161hs9aes",
-				TrainingStatus.Training, 1, "Extensure");
-		trainee1.getBatches().add(2);
-		traineeService.save(trainee1);
-		
-		Trainee trainee2 = new Trainee("Daniel", "Les", "dan.les@gogomail.com", "ayasn161hs9aes",
-				TrainingStatus.Training, 1, "Extensure");
-		trainee2.getBatches().add(3);
-		traineeService.save(trainee2);
-		
+		log.debug("Testing trainee getAll");		
 		log.debug("Testing table exists and the size of table is correct");
 		assertNotNull(traineeService.getAll());
-		assertEquals(3, traineeService.getAll().size());
+		assertEquals(25, traineeService.getAll().size());
 	}	
 	/**
 	 * Tests the delete method of the Trainee Service Layer.
@@ -121,7 +102,6 @@ public class TraineeServiceTest extends GambitTest {
 		int currentSize = traineeService.getAll().size();
 		assertNotEquals(initialSize,currentSize);
 	}
-	
 	/**
 	 * Adds 5 trainees to DB
 	 * Checks for trainees in Batch 3 with a trainingStatus of 'training'
@@ -163,7 +143,6 @@ public class TraineeServiceTest extends GambitTest {
 		List<Trainee> result = traineeService.findAllByBatchAndStatus(3, "Training");
 		assertEquals(expected, result);	
 	}
-}
 
 	@Test
 	public void update() {
@@ -173,21 +152,16 @@ public class TraineeServiceTest extends GambitTest {
 		// trainee has a batch.
 		trainee.getBatches().add(1);
 		trainee = traineeService.save(trainee);
-		assertNotEquals(0, trainee.getUserId());
-		log.trace("Trainee saved! " + trainee);
 		log.trace("Testing trainee update");
-		Trainee update = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "", TrainingStatus.Training, 1,
-				"Belotte");
 		// trainee has a different batch now
-		update.getBatches().add(2);
-		Trainee check = traineeService.save(update);
+		trainee.getBatches().add(2);
+		trainee = traineeService.update(trainee);
 		// resourceIds must be same when updating
-		assertEquals(check.getResourceId(), trainee.getResourceId());
+		assertEquals(trainee.getResourceId(), trainee.getResourceId());
 		// batches must be loaded from database and added to list
 		Set<Integer> expected = new HashSet<>();
 		expected.add(1);
 		expected.add(2);
-		assertEquals(expected, check.getBatches());
+		assertEquals(expected, trainee.getBatches());
 	}
 }
-
