@@ -63,6 +63,7 @@ public class TraineeControllerTest extends GambitTest {
 	 * Asserts that a 204 - No Content status is returned.
 	 */
 	public void deleteTest() {
+		log.debug("TraineeControllerTest.deleteTest()");
 		String trainee = "{\"userId\":36,"
 				+ "\"firstName\":\"Gir\","
 				+ "\"lastName\":\"Chandradat\","
@@ -83,10 +84,11 @@ public class TraineeControllerTest extends GambitTest {
 	/**Test methods:
 	 * 
 	 * @see com.revature.gambit.services.TraineeServiceTest
+	 * Tests to see if the correct user is given with certain emails that correspond to said user
 	 */
 	@Test
 	public void findTraineeByEmail() {
-		log.trace("Test find Howard by email.");
+		log.debug("Test find Howard by email.");
 		String email = "howard.johnson@hotmail.com";
 		String firstName= "Howard";
 		given()
@@ -104,7 +106,7 @@ public class TraineeControllerTest extends GambitTest {
 
 	@Test
 	public void findTraineeByEmailLaut() {
-		log.trace("Test find Howard by email.");
+		log.debug("Test find Howard by email.");
 		String email = "dlaut1@hotmail.com";
 		String firstName= "Laut";
 		given()
@@ -122,7 +124,7 @@ public class TraineeControllerTest extends GambitTest {
 
 	@Test
 	public void findTraineeByEmailChang() {
-		log.trace("Test find Chang by email.");
+		log.debug("Test find Chang by email.");
 		String email = "kchangfatt@gmail.com";
 		String firstName= "Chang Fatt";
 		given()
@@ -140,7 +142,7 @@ public class TraineeControllerTest extends GambitTest {
 
 	@Test
 	public void findTraineeByEmailFalse() {
-		log.trace("Test null email.");
+		log.debug("Test null email.");
 		String email = "dsgdgsdg";
 		given()
 			.port(port)
