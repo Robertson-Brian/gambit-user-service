@@ -21,14 +21,14 @@ public class TrainerServiceTest extends GambitTest {
 
     @Test
     public void testNewTrainer() {
-		log.debug("Testing trainerService.newTrainer(Trainer trainer)");
-		Trainer newTrainer = new Trainer("Mark", "Fleres", "mfleres@gmail.com", "Dr.");
-		log.trace("newTrainer = " + newTrainer);
-		Trainer savedTrainer = trainerService.newTrainer(newTrainer);
-		log.trace("savedTrainer = " + savedTrainer);
-		assertNotEquals(0, savedTrainer.getUserId());
-		assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
-		assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
+    	log.debug("Testing trainerService.newTrainer(Trainer trainer)");
+    	Trainer newTrainer = new Trainer("Mark", "Fleres", "mfleres@gmail.com", "Dr.");
+    	log.trace("newTrainer = " + newTrainer);
+    	Trainer savedTrainer = trainerService.newTrainer(newTrainer);
+    	log.trace("savedTrainer = " + savedTrainer);
+    	assertNotEquals(0, savedTrainer.getUserId());
+    	assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
+    	assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
     }
     
     @Test
