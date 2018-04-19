@@ -20,20 +20,12 @@ public class TraineeServiceImpl implements TraineeService {
 
 	@Transactional
 	public Trainee save(Trainee trainee) {
-		log.trace("save trainee: " + trainee);
+		log.debug("save trainee: " + trainee);
 		// check if trainee already exists
-		Trainee preexisting = traineeRepository.findOneByEmail(trainee.getEmail());
-		log.trace("Trainee exists: " + preexisting);
-		if (preexisting != null && preexisting.getBatches() != null) {
-			// if so, add the trainee's batch assignments
-			log.trace("adding prexisting batches: " + preexisting.getBatches() + " to new batches: "
-					+ trainee.getBatches());
-			trainee.getBatches().addAll(preexisting.getBatches());
-			// maintain their Salesforce resourceId
-			log.trace("setting resourceId for trainee as: " + preexisting.getResourceId());
-			trainee.setResourceId(preexisting.getResourceId());
-			trainee.setUserId(preexisting.getUserId());
-			return traineeRepository.save(trainee);
+		Trainee preexisting = traineeRepository.findByEmail(trainee.getEmail());
+		log.debug("Trainee exists: " + preexisting);
+		if (preexisting != null) {
+			return null;
 		} else {
 			return traineeRepository.save(trainee);
 		}
@@ -67,25 +59,24 @@ public class TraineeServiceImpl implements TraineeService {
 	}
 	
 	@Transactional
-	public void delete(int traineeId) {
-		Trainee trainee = traineeRepository.findOne(traineeId);
-		log.trace("Deleting trainee: " + trainee);
+	public void delete(Trainee trainee) {
+		log.debug("TraineeServiceImpl.delete" + trainee);
 		traineeRepository.delete(trainee);
 	}
 
 	@Transactional
 	public List<Trainee> getAll() {
-		log.trace("findAll Trainees.");
+		log.debug("findAll Trainees.");
 		return traineeRepository.findAll();
 	}
 	
 	@Transactional
 	public Trainee findByEmail(String email) {
 		log.trace("findByEmail: " + email);
-		if (email == null) {
+		if(traineeRepository.findByEmail(email)!=null)
+		return traineeRepository.findByEmail(email);
+		else
 			return null;
-		}
-		return traineeRepository.findOneByEmail(email);
 	}
 
 }

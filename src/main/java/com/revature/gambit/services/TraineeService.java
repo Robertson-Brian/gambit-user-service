@@ -32,10 +32,10 @@ public interface TraineeService {
 	public Trainee save(Trainee trainee);
 
 	/**
-	 * Delete a trainee from the database entirely. 
+	 * Removes a trainee from the database entirely. 
 	 * @param trainee
 	 */
-	public void delete(int traineeId);
+	public void delete(Trainee trainee);
 
 	/**
 	 * Find all trainees given their batchId and their training status.
@@ -47,12 +47,13 @@ public interface TraineeService {
 
 	/**
 	 * Find all of the trainees without restriction.
-	 * @return
+	 * 
+	 * @return a List of all trainees
 	 */
 	public List<Trainee> getAll();
 
 	/**
-	 * Find a trainee given by their email
+	 * Find a trainee by providing their email. Will return a 404 if email is null or not found.
 	 * @param email
 	 * @return
 	 */
