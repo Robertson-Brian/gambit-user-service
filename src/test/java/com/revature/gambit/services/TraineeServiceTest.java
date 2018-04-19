@@ -3,6 +3,7 @@ package com.revature.gambit.services;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -112,39 +113,20 @@ public class TraineeServiceTest extends GambitTest {
 	@Test
 	public void findAllTraineeByBatchAndStatus(){
 		log.debug("Testing find all by batch and status.");
-		Trainee trainee1 = new Trainee("John", "Smith", "John.smith@gogomail.com", "ayasn161hs9aes1",
-				TrainingStatus.Training, 2, "Extensure");
-		trainee1.getBatches().add(3);
-		trainee1 = traineeService.save(trainee1);
-		assertNotEquals(0, trainee1.getUserId());
-		Trainee trainee2 = new Trainee("John2", "Smith", "John2.smith@gogomail.com", "ayasn161hs9aes2",
-				TrainingStatus.Training, 2, "Extensure");
-		trainee2.getBatches().add(3);
-		trainee2 = traineeService.save(trainee2);
-		assertNotEquals(0, trainee2.getUserId());
-		Trainee trainee3 = new Trainee("John3", "Smith", "John3.pickles@gogomail.com", "ayasn161hs9aes3",
-				TrainingStatus.Marketing, 1, "Extensure");
-		trainee3.getBatches().add(3);
-		trainee3 = traineeService.save(trainee3);
-		assertNotEquals(0, trainee3.getUserId());
-		Trainee trainee4 = new Trainee("John4", "Smith", "John4.pickles@gogomail.com", "ayasn161hs9aes4",
-				TrainingStatus.Employed, 1, "Extensure");
-		trainee4.getBatches().add(4);
-		trainee4 = traineeService.save(trainee4);
-		assertNotEquals(0, trainee4.getUserId());
-		Trainee trainee5 = new Trainee("John5", "Smith", "John5.smith@gogomail.com", "ayasn161hs9aes5",
-				TrainingStatus.Dropped, 1, "Extensure");
-		trainee5.getBatches().add(4);
-		trainee5 = traineeService.save(trainee5);
-		assertNotEquals(0, trainee5.getUserId());
-		
-		log.trace("5 trainee's made. proceeding to test.");
-		
-		List<Trainee> expected = new ArrayList<>();
-		expected.add(trainee1);
-		expected.add(trainee2);
-		List<Trainee> result = traineeService.findAllByBatchAndStatus(3, "Training");
-		assertEquals(expected, result);	
+		List<Trainee> result = traineeService.findAllByBatchAndStatus(1, "Training");
+		assertEquals(1, result.size());	
+	}
+	
+	@Test
+	public void findAllTraineeByBadBatchAndStatus(){
+		log.debug("Testing find all by batch and status using unused batch number");
+		assertEquals(0,traineeService.findAllByBatchAndStatus(3, "Training").size());
+	}
+	
+	@Test
+	public void findAllTraineeByBatchAndBadStatus(){
+		log.debug("Testing find all by batch and status using wrong status.");
+		assertNull(traineeService.findAllByBatchAndStatus(1, "invalid"));
 	}
 
 	@Test

@@ -184,6 +184,20 @@ public class TraineeControllerTest extends GambitTest {
 			.assertThat()
 			.statusCode(HttpStatus.OK.value());
 	}
+	
+	
+	@Test
+	public void getByBatchAndBadStatus() {
+		log.debug("getByBatchAndStatus unit test starts here.");
+		given()
+			.port(port)
+			.basePath(BASE_URI + "/batch/1/status/Train")
+			.when()
+			.get()
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.BAD_REQUEST.value());
+	}
 
 	/**
 	 * This method tests updating a trainee.
