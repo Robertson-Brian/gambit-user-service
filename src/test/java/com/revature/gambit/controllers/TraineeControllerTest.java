@@ -21,7 +21,7 @@ public class TraineeControllerTest extends GambitTest {
 	private static final String BASE_URI = "/trainees";
 	
 	/**
-	 * Tests that trainee is created and status code is 201
+	 * Tests that trainee is created and status code returned is 201.
 	 */
 	@Test
 	public void save() {
@@ -40,6 +40,10 @@ public class TraineeControllerTest extends GambitTest {
 		log.trace("New trainee created");
 	}
 	
+	/**
+	 * Tests that a new trainee cannot be created if email already exists
+	 * and that status code returned is 400.
+	 */
 	@Test
 	public void saveDuplicate() {
 		log.debug("Testing that Trainee cannot register if email already exists");
@@ -53,7 +57,7 @@ public class TraineeControllerTest extends GambitTest {
 			.post()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.NO_CONTENT_204);
+			.statusCode(HttpStatus.BAD_REQUEST_400);
 		log.trace("Trainee could not register because of existing email");
 	}
 

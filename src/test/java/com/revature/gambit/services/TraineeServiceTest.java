@@ -51,6 +51,9 @@ public class TraineeServiceTest extends GambitTest {
 	
 	}
 	
+	/**
+	 * Tests that null is returned for new trainee with email that already exists. 
+	 */
 	@Test
 	public void saveDuplicate() {
 		log.trace("Testing trainee save");
