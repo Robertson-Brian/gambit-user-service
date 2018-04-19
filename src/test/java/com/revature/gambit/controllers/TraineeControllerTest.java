@@ -39,23 +39,6 @@ public class TraineeControllerTest extends GambitTest {
 	}
 
 	/**
-	 * Tests connection is OK with getAll
-	 */
-	@Test
-	public void getAll(){
-		log.debug("Testing trainee getAll");
-		given()
-			.port(port)
-			.basePath(BASE_URI)
-			.when()
-			.get()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.OK_200);
-		log.trace("All Trainees retrieved");
-	}
-
-	/**
 	 * Tests deletion of a trainee.
 	 * Asserts that a 204 - No Content status is returned.
 	 */

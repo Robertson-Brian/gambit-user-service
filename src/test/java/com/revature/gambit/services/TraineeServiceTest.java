@@ -85,7 +85,7 @@ public class TraineeServiceTest extends GambitTest {
 	@Test
 	public void getAll(){
 		log.debug("Testing trainee getAll");		
-		log.debug("Testing table exists and the size of table is correct");
+		log.trace("Testing table exists and the size of table is correct");
 		assertNotNull(traineeService.getAll());
 		assertEquals(25, traineeService.getAll().size());
 	}	
