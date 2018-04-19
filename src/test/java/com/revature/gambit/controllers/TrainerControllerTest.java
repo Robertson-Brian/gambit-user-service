@@ -3,6 +3,9 @@ package com.revature.gambit.controllers;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -36,7 +39,11 @@ public class TrainerControllerTest extends GambitTest {
     private static final String FIND_ALL_TRAINER_TITLES_URI = BASE_URI + "/titles";
     private static final String FIND_ALL_TRAINERS_URI = BASE_URI;
     private static final String REGISTER_TRAINER_URI = BASE_URI;
+
+    private static final String UPDATE_TRAINER_URI = BASE_URI;
+
     private static final String FIND_TRAINER_BY_ID_URI = BASE_URI + "/{id}";
+
 
     @Test
     public void testDeleteTrainer() {
@@ -147,4 +154,62 @@ public class TrainerControllerTest extends GambitTest {
               "title", equalTo("Lead Trainer"));
 
     }
+    
+   /**
+    * @author Nikhil
+    * 
+    * First test case: Testing with invalid trainer id
+    * result:HTTP Status code=500
+    * Second test case: Testing with trainer id, and updating first name,last name,email,and title
+    * result:HTTP Status code=200, firstName is not null, and title is given title
+    * Third test case: Updating only title
+    * result:HTTP Status code=200,title has changed
+    */
+   
+   @Test
+   public void testUpdateTrainer() {
+   	log.debug("Test for updating a trainer");
+		Trainer targetTrainer = new Trainer("Nikhil","Pious","nikii@gmail.com","Technology Manager");
+		
+		targetTrainer.setUserId(37);
+		given().
+			contentType(ContentType.JSON).
+			body(targetTrainer).
+		when().
+			port(port).put(UPDATE_TRAINER_URI).
+		then().
+			assertThat().statusCode(HttpStatus.INTERNAL_SERVER_ERROR_500);
+		
+		targetTrainer.setUserId(trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId());
+		given().
+		contentType(ContentType.JSON).
+		body(targetTrainer).
+		when().
+		port(port).put(UPDATE_TRAINER_URI).
+		then().
+		assertThat().statusCode(HttpStatus.OK_200).
+		and().
+		contentType(ContentType.JSON).
+		and().
+		body("firstName",is(notNullValue())).
+		and().
+		body("title", equalTo("Technology Manager"));
+		
+		targetTrainer.setTitle("Senior Java Developer");
+		given().
+		contentType(ContentType.JSON).
+		body(targetTrainer).
+		when().
+		port(port).put(UPDATE_TRAINER_URI).
+		then().
+		assertThat().statusCode(HttpStatus.OK_200).
+		and().
+		contentType(ContentType.JSON).
+		and().
+		body("firstName", equalTo("Nikhil")).
+		and().
+		body("title", is(not("Technology Manager")));
+			
+	}
+
 }

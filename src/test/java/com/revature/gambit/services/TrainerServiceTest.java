@@ -4,8 +4,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hamcrest.CoreMatchers;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,7 +25,7 @@ public class TrainerServiceTest extends GambitTest {
     @Autowired
     private TrainerService trainerService;
 
-    @Test
+    @Test 
     public void testNewTrainer() {
     	log.debug("Testing trainerService.newTrainer(Trainer trainer)");
     	Trainer newTrainer = new Trainer("Mark", "Fleres", "mfleres@gmail.com", "Dr.");
@@ -47,28 +53,28 @@ public class TrainerServiceTest extends GambitTest {
     	assertEquals(null, savedEmptyTrainer);
     }
 
-    @Test
+    @Test 
     public void testDeleteTrainer() {
     	int patrickId = trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId();
     	trainerService.delete(patrickId);
     	assertNull(trainerService.findById(patrickId));
     }
 
-    @Test
+    @Test 
     public void testDeleteNonexistentTrainer() {
     	assertThatThrownBy(() -> {
     		trainerService.delete(-1);
     	});
     }
 
-    @Test
+    @Test 
     public void testGetAllTitles() {
     	log.debug("Testing trainerService.getAllTitles()");
     	assertEquals(6, trainerService.getAllTitles().size());
     	assertNotEquals(0, trainerService.getAllTitles().size());
     }
 
-    @Test
+    @Test 
     public void testGetAllTrainers() {
     	log.debug("Testing trainerService.getAll()");
     	assertEquals(12, trainerService.getAll().size());
@@ -103,13 +109,48 @@ public class TrainerServiceTest extends GambitTest {
         Trainer newTrainer = new Trainer("Patrick","Walsh","patrick.walsh@revature.com","Lead Trainer");
          int userId = trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId();
             Trainer findById = trainerService.findById(userId);
-
+      
         assertEquals(newTrainer.getFirstName(), findById.getFirstName());
         assertEquals(newTrainer.getLastName(), findById.getLastName());
         assertEquals(newTrainer.getEmail(), findById.getEmail());
         assertEquals(newTrainer.getTitle(), findById.getTitle());
+ }
 
+    @Test 
+    public void testFindTrainerByEmailInvalid() {
+	log.debug("Testing trainerService.findTrainerByEmail with invalid email address");
+	Trainer trainer = trainerService.findTrainerByEmail("fdjnfjdd@revature.com");
+	assertEquals(trainer, null);
+    }
 
-}
+    @Test
+    public void testFindTrainerByEmailNonTrainer() {
+	log.debug("Testing trainerService.findTrainerByEmail with non-trainer email address");
+	Trainer trainer = trainerService.findTrainerByEmail("ychenq001@gmail.com");
+	assertEquals(trainer, null);
+    }
+    
+    @Test 
+	public void testUpdate(){
+		log.debug("Testing trainer update)");
+		Trainer targetTrainer = trainerService.findById(trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId());
+		log.trace("targetTrainer ="+targetTrainer);
+		assertEquals("Patrick",targetTrainer.getFirstName());
+		
+		targetTrainer.setEmail("np4@hotmail.com");
+		targetTrainer.setTitle("Technology Manager");
+		Trainer updateTargetTrainer =trainerService.update(targetTrainer);
+		log.trace("updateTargetTrainer = " + updateTargetTrainer);
+		List<String> updatedList = Arrays.asList("Patrick","Walsh","np4@hotmail.com","Technology Manager");
+		assertThat(updatedList,CoreMatchers.hasItems(updateTargetTrainer.getFirstName(),updateTargetTrainer.getLastName(),updateTargetTrainer.getEmail(),updateTargetTrainer.getTitle()));
+	
+		updateTargetTrainer.setFirstName("Steve");
+		updateTargetTrainer.setLastName("Johns");
+		trainerService.update(updateTargetTrainer);
+		log.trace("updateTargetTrainer second time = " + updateTargetTrainer);
+		List<String> newUpdatedList = Arrays.asList("Steve","Johns","np4@hotmail.com","Technology Manager");
+		assertThat(newUpdatedList,CoreMatchers.hasItems(updateTargetTrainer.getFirstName(),updateTargetTrainer.getLastName(),updateTargetTrainer.getEmail(),updateTargetTrainer.getTitle()));
+		assertNotEquals("steves",updateTargetTrainer.getFirstName());
+	}
 
 }

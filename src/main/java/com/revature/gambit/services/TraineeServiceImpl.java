@@ -66,5 +66,7 @@ public class TraineeServiceImpl implements TraineeService {
 		}
 		return traineeRepository.findOneByEmail(email);
 	}
+	
+	
 
 }
