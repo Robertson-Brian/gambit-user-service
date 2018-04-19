@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +46,21 @@ public class TrainerServiceTest {
 	Trainer savedTrainer = trainerService.newTrainer(trainer1);
 	trainerService.delete(savedTrainer.getUserId());
 	assertNull(trainerService.findById(savedTrainer.getUserId()));
+	}
+	
+	@Test
+	public void testGetAllTitles(){
+		
+		log.debug("Testing trainerService.getAllTitles()");
+		assertEquals(1, trainerService.getAllTitles().size());
+		assertNotEquals(0, trainerService.getAllTitles().size());
+	}
+	
+	@Test
+	public void testGetAllTrainers(){
+		log.debug("Testing trainerService.getAll()");
+		assertEquals(1, trainerService.getAll().size());
+		assertNotEquals(0, trainerService.getAll().size());
     }
 
     @Test

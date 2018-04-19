@@ -15,5 +15,6 @@ public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
 
     @Query("SELECT DISTINCT title FROM Trainer")
     public List<String> findDistinctTitle();
+	
 
 }
