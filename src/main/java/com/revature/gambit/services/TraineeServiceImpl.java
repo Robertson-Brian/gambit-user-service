@@ -22,7 +22,7 @@ public class TraineeServiceImpl implements TraineeService {
 	public Trainee save(Trainee trainee) {
 		log.debug("save trainee: " + trainee);
 		// check if trainee already exists
-		Trainee preexisting = traineeRepository.findOneByEmail(trainee.getEmail());
+		Trainee preexisting = traineeRepository.findByEmail(trainee.getEmail());
 		log.debug("Trainee exists: " + preexisting);
 		if (preexisting != null) {
 			return null;
@@ -38,25 +38,24 @@ public class TraineeServiceImpl implements TraineeService {
 	}
 	
 	@Transactional
-	public void delete(int traineeId) {
-		Trainee trainee = traineeRepository.findOne(traineeId);
-		log.trace("Deleting trainee: " + trainee);
+	public void delete(Trainee trainee) {
+		log.debug("TraineeServiceImpl.delete" + trainee);
 		traineeRepository.delete(trainee);
 	}
 
 	@Transactional
 	public List<Trainee> getAll() {
-		log.trace("findAll Trainees.");
+		log.debug("findAll Trainees.");
 		return traineeRepository.findAll();
 	}
 	
 	@Transactional
 	public Trainee findByEmail(String email) {
 		log.trace("findByEmail: " + email);
-		if (email == null) {
+		if(traineeRepository.findByEmail(email)!=null)
+		return traineeRepository.findByEmail(email);
+		else
 			return null;
-		}
-		return traineeRepository.findOneByEmail(email);
 	}
 
 }
