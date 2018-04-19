@@ -86,7 +86,7 @@ public class TraineeControllerTest extends GambitTest {
 	 */
 	@Test
 	public void findTraineeByEmail() {
-		log.trace("Test find Howard by email.");
+		log.debug("Test find Howard by email.");
 		String email = "howard.johnson@hotmail.com";
 		String firstName= "Howard";
 		given()
@@ -104,7 +104,7 @@ public class TraineeControllerTest extends GambitTest {
 
 	@Test
 	public void findTraineeByEmailLaut() {
-		log.trace("Test find Howard by email.");
+		log.debug("Test find Howard by email.");
 		String email = "dlaut1@hotmail.com";
 		String firstName= "Laut";
 		given()
@@ -122,7 +122,7 @@ public class TraineeControllerTest extends GambitTest {
 
 	@Test
 	public void findTraineeByEmailChang() {
-		log.trace("Test find Chang by email.");
+		log.debug("Test find Chang by email.");
 		String email = "kchangfatt@gmail.com";
 		String firstName= "Chang Fatt";
 		given()
@@ -140,7 +140,7 @@ public class TraineeControllerTest extends GambitTest {
 
 	@Test
 	public void findTraineeByEmailFalse() {
-		log.trace("Test null email.");
+		log.debug("Test null email.");
 		String email = "dsgdgsdg";
 		given()
 			.port(port)
