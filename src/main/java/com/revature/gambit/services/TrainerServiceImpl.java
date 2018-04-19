@@ -73,10 +73,9 @@ public class TrainerServiceImpl implements TrainerService {
 
 	public Trainer findTrainerByEmail(String email) {
 		log.debug("Method called to findTrainerByEmail with email: " + email);
-		User u = userRepository.findByEmail(email);
-		Trainer bt = trainerRepository.findByUserId(u.getUserId());
+		Trainer trainer = trainerRepository.findByEmail(email);
 
-		return bt;
+		return trainer;
 	}
 
 	public List<String> getAllTitles() {
