@@ -18,7 +18,7 @@ public class TraineeControllerTest extends GambitTest {
 	
 	private static final Logger log = Logger.getLogger(TraineeControllerTest.class);
 
-	private static final String BASE_URL = "http://localhost:10001/trainees";
+	private static final String BASE_URI = "/trainees";
 	
 	/**
 	 * Tests that trainee is created and status code is 201
@@ -30,10 +30,12 @@ public class TraineeControllerTest extends GambitTest {
 				+ "\"lastName\": \"Anwar\","
 				+ "\"email\": \"shaleen.anwar@gmail.com\"}";
 		given()
+			.port(port)
+			.basePath(BASE_URI)
 			.header("Content-Type", "application/json")
 			.body(body)
 			.when()	
-			.post(BASE_URL)
+			.post()
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.CREATED.value());
@@ -45,8 +47,11 @@ public class TraineeControllerTest extends GambitTest {
 	@Test
 	public void getAll(){
 		log.debug("Testing trainee getAll");
-		when()
-			.get(BASE_URL)
+		given()
+			.port(port)
+			.basePath(BASE_URI)
+			.when()
+			.get()
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.OK.value());
@@ -64,10 +69,12 @@ public class TraineeControllerTest extends GambitTest {
 				+ "\"email\":\"chandradatgir@yahoo.com\","
 				+ "\"trainingStatus\":\"Dropped\"}";
 		given()
+			.port(port)
+			.basePath(BASE_URI)
 			.header("Content-Type", "application/json")
 			.body(trainee)
 			.when()
-			.delete(BASE_URL)
+			.delete()
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.NO_CONTENT.value());
@@ -83,9 +90,11 @@ public class TraineeControllerTest extends GambitTest {
 		String email = "howard.johnson@hotmail.com";
 		String firstName= "Howard";
 		given()
+			.port(port)
+			.basePath(BASE_URI + "/email")
 			.param("email",email)
 			.when()
-			.get(BASE_URL + "/email")
+			.get()
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.OK.value())
@@ -99,9 +108,11 @@ public class TraineeControllerTest extends GambitTest {
 		String email = "dlaut1@hotmail.com";
 		String firstName= "Laut";
 		given()
+			.port(port)
+			.basePath(BASE_URI + "/email")
 			.param("email",email)
 			.when()
-			.get(BASE_URL + "/email")
+			.get()
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.OK.value())
@@ -115,9 +126,11 @@ public class TraineeControllerTest extends GambitTest {
 		String email = "kchangfatt@gmail.com";
 		String firstName= "Chang Fatt";
 		given()
-			.param("email",email)
+			.port(port)
+			.basePath(BASE_URI + "/email")
+			.param("email", email)
 			.when()
-			.get(BASE_URL + "/email")
+			.get()
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.OK.value())
@@ -130,9 +143,11 @@ public class TraineeControllerTest extends GambitTest {
 		log.trace("Test null email.");
 		String email = "dsgdgsdg";
 		given()
-			.param("email",email)
+			.port(port)
+			.basePath(BASE_URI + "/email")
+			.param("email", email)
 			.when()
-			.get(BASE_URL + "/email")
+			.get()
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.NOT_FOUND.value());
@@ -143,7 +158,7 @@ public class TraineeControllerTest extends GambitTest {
 		log.debug("Testing getting all trainees.");
 		given()
 			.port(port)
-			.basePath("/trainees")
+			.basePath(BASE_URI)
 			.when()
 			.get()
 			.then()
@@ -159,8 +174,10 @@ public class TraineeControllerTest extends GambitTest {
 	public void getByBatchAndStatus() {
 		log.debug("getByBatchAndStatus unit test starts here.");
 		given()
+			.port(port)
+			.basePath(BASE_URI + "/batch/1/status/Training")
 			.when()
-			.get(BASE_URL + "/batch/1/status/Training")
+			.get()
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.OK.value());
@@ -180,10 +197,12 @@ public class TraineeControllerTest extends GambitTest {
 				+ "\"email\":\"chandradatgir@yahoo.com\","
 				+ "\"trainingStatus\":\"Dropped\"}";
 		given()
+			.port(port)
+			.basePath(BASE_URI)
 			.header("Content-Type", "application/json")
 			.body(trainee)
 			.when()
-			.put("http://localhost:10001/trainees/")
+			.put()
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.NO_CONTENT.value());
