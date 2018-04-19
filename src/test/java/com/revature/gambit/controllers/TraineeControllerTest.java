@@ -2,6 +2,8 @@ package com.revature.gambit.controllers;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.equalTo;
 
 import org.apache.log4j.Logger;
@@ -36,7 +38,7 @@ public class TraineeControllerTest extends GambitTest {
 			.post(BASE_URL)
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.CREATED.value());
+			.statusCode(anyOf(is(HttpStatus.CREATED),is(HttpStatus.NO_CONTENT)));
 	}
 
 	/**
@@ -187,7 +189,7 @@ public class TraineeControllerTest extends GambitTest {
 			.header("Content-Type", "application/json")
 			.body(trainee)
 			.when()
-			.put("http://localhost:10001/trainees/")
+			.put(BASE_URL)
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.NO_CONTENT.value());
