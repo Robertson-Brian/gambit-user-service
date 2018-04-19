@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
 import org.springframework.boot.context.embedded.LocalServerPort;
-import org.springframework.http.HttpStatus;
 
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
@@ -36,8 +36,8 @@ public class TrainerControllerTest extends GambitTest {
     @Test
     public void testDeleteTrainer() {
 	log.info("Deleting a Trainer");
-	char trainerId = 1;
-	given().port(port).delete(BASE_URI + "/{id}", trainerId).then().assertThat().statusCode(HttpStatus.OK.value());
+	short trainerId = 1;
+	given().port(port).delete(BASE_URI + "/{id}", trainerId).then().assertThat().statusCode(HttpStatus.OK_200);
     }
 
     @Test
@@ -45,13 +45,13 @@ public class TrainerControllerTest extends GambitTest {
 	log.info("Deleting a Trainer");
 	short trainerId = -1;
 	given().port(port).delete(BASE_URI + "/{id}", trainerId).then().assertThat()
-		.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		.statusCode(HttpStatus.INTERNAL_SERVER_ERROR_500);
     }
 
     @Test
     public void findTrainerByEmail() {
 	when().get(FIND_TRAINER_BY_EMAIL_URL, "steven.kelsey@revature.com").then().assertThat()
-		.statusCode(HttpStatus.OK.value());
+		.statusCode(HttpStatus.OK_200);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class TrainerControllerTest extends GambitTest {
 	log.debug("Find all trainers titles at : " + FIND_ALL_TRAINER_TITLES_URI);
 
 	given().port(port).basePath(FIND_ALL_TRAINER_TITLES_URI).when().get().then().assertThat()
-		.statusCode(HttpStatus.OK.value()).body("$", hasItems("Lead Trainer", "Vice President of Technology",
+		.statusCode(HttpStatus.OK_200).body("$", hasItems("Lead Trainer", "Vice President of Technology",
 			"Technology Manager", "Senior Java Developer", "Trainer", "Senior Trainer"));
 
     }
@@ -72,7 +72,7 @@ public class TrainerControllerTest extends GambitTest {
 	List<Trainer> trainers = new ArrayList<>();
 
 	trainers = given().port(port).basePath(FIND_ALL_TRAINERS_URI).when().get().then().assertThat()
-		.statusCode(HttpStatus.OK.value()).extract().body().as(trainers.getClass());
+		.statusCode(HttpStatus.OK_200).extract().body().as(trainers.getClass());
 
 	assertTrue(!trainers.isEmpty());
     }
@@ -82,15 +82,15 @@ public class TrainerControllerTest extends GambitTest {
 	Trainer newTrainer = new Trainer("Mark", "Fleres", "mfleres@gmail.com", "Trainer");
 
 	given().contentType(ContentType.JSON).body(newTrainer).when().port(port).post(REGISTER_TRAINER_URI).then()
-		.assertThat().statusCode(HttpStatus.OK.value()).and().contentType(ContentType.JSON).and()
+		.assertThat().statusCode(HttpStatus.OK_200).and().contentType(ContentType.JSON).and()
 		.body("firstName", equalTo("Mark"));
 
 	// Test that a repeat register fails (email must be unique)
 	given().contentType(ContentType.JSON).body(newTrainer).when().port(port).post(REGISTER_TRAINER_URI).then()
-		.assertThat().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		.assertThat().statusCode(HttpStatus.BAD_REQUEST_400);
 
 	Trainer emptyTrainer = new Trainer("", "", "", "");
 	given().contentType(ContentType.JSON).body(emptyTrainer).when().port(port).post(REGISTER_TRAINER_URI).then()
-		.assertThat().statusCode(HttpStatus.BAD_REQUEST.value());
+		.assertThat().statusCode(HttpStatus.BAD_REQUEST_400);
     }
 }

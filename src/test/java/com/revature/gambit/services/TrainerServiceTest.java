@@ -26,23 +26,37 @@ public class TrainerServiceTest extends GambitTest {
     @Before
     public void testCreateTrainers() {
 	trainer1 = new Trainer("John", "Doe", "JohnDoe@gmail.com", "Trainer");
-	trainer2 = new Trainer("Mark", "Fleres", "mfleres@gmail.com", "Doctor");
+	trainer2 = new Trainer("Peter", "Alagna", "peter.alagna@revature.com", "Wizard");
+
+	trainerService.newTrainer(trainer1);
+	trainerService.newTrainer(trainer2);
     }
 
     @Test
     public void testNewTrainer() {
 	log.debug("Testing trainerService.newTrainer(Trainer trainer)");
-	Trainer savedTrainer = trainerService.newTrainer(trainer2);
+	Trainer newTrainer = new Trainer("Mark", "Fleres", "mfleres@gmail.com", "Dr.");
+	log.trace("newTrainer = " + newTrainer);
+	Trainer savedTrainer = trainerService.newTrainer(newTrainer);
+	log.trace("savedTrainer = " + savedTrainer);
 	assertNotEquals(0, savedTrainer.getUserId());
-	assertEquals(trainer2.getTitle(), savedTrainer.getTitle());
-	assertEquals(trainer2.getFirstName(), savedTrainer.getFirstName());
-		
-		//Test Empty Trainer
-		Trainer emptyTrainer = new Trainer("","","","");
-		Trainer savedEmptyTrainer = trainerService.newTrainer(emptyTrainer);
-		assertEquals(null,savedEmptyTrainer);
-	trainerService.delete(savedTrainer.getUserId());
-	assertNull(trainerService.findById(savedTrainer.getUserId()));
+	assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
+	assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
+
+	// Test Repeat Trainer
+	Trainer savedRepeatTrainer = trainerService.newTrainer(newTrainer);
+	assertEquals(null, savedRepeatTrainer);
+
+	// Test Empty Trainer
+	Trainer emptyTrainer = new Trainer("", "", "", "");
+	Trainer savedEmptyTrainer = trainerService.newTrainer(emptyTrainer);
+	assertEquals(null, savedEmptyTrainer);
+    }
+
+    @Test
+    public void testDeleteTrainer() {
+	trainerService.delete(trainer1.getUserId());
+	assertNull(trainerService.findById(trainer1.getUserId()));
     }
 
     @Test
@@ -56,14 +70,14 @@ public class TrainerServiceTest extends GambitTest {
     public void testGetAllTitles() {
 
 	log.debug("Testing trainerService.getAllTitles()");
-		assertEquals(6, trainerService.getAllTitles().size());
+	assertEquals(6, trainerService.getAllTitles().size());
 	assertNotEquals(0, trainerService.getAllTitles().size());
     }
 
     @Test
     public void testGetAllTrainers() {
 	log.debug("Testing trainerService.getAll()");
-		assertEquals(12, trainerService.getAll().size());
+	assertEquals(12, trainerService.getAll().size());
 	assertNotEquals(0, trainerService.getAll().size());
     }
 
