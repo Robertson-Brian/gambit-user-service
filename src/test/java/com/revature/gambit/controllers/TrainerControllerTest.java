@@ -1,11 +1,10 @@
 package com.revature.gambit.controllers;
 
-
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -14,21 +13,19 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit4.SpringRunner;
 
+import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.services.TrainerService;
 
 import io.restassured.http.ContentType;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class TrainerControllerTest {
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
+public class TrainerControllerTest extends GambitTest {
 
 	private static final Logger log = Logger.getLogger(TrainerControllerTest.class);
 
@@ -43,19 +40,19 @@ public class TrainerControllerTest {
 	@Autowired
 	private TrainerService trainerService;
 
-//	@Test
-//	public void findTrainerByEmail200() {
-//		log.info("Testing findTrainerByEmail with good input");
-//
-//		String email = "steven.kelsey@revature.com";
-//		Trainer expected = trainerService.findTrainerByEmail(email);
-//
-//		when().
-//			get(FIND_TRAINER_BY_EMAIL_URL, email).
-//		then().assertThat().
-//			statusCode(HttpStatus.OK.value()).
-//			body("email", is(expected.getEmail()));
-//	}
+	@Test
+	public void findTrainerByEmail200() {
+		log.info("Testing findTrainerByEmail with good input");
+
+		String email = "steven.kelsey@revature.com";
+		Trainer expected = trainerService.findTrainerByEmail(email);
+
+		when().
+			get(FIND_TRAINER_BY_EMAIL_URL, email).
+		then().assertThat().
+			statusCode(HttpStatus.OK.value()).
+			body("email", is(expected.getEmail()));
+	}
 
 	@Test
 	public void findTrainerByEmail500() {
@@ -81,54 +78,6 @@ public class TrainerControllerTest {
 					  	statusCode(HttpStatus.OK.value()).extract().body().asString();
 
 		assertEquals(body, "");
-	}
-
-	@Test
-	public void findTrainerByName200() {
-		String firstName = "Steven";
-		String lastName = "Kelsey";
-
-		Trainer expected = trainerService.findByName(firstName, lastName);
-
-		when().
-			get(FIND_TRAINER_BY_NAME_URL, firstName, lastName).
-		then().assertThat().
-			statusCode(HttpStatus.OK.value()).
-			body("firstName", is("Steven")).
-			body("lastName", is("Kelsey"));
-
-	}
-
-	@Test
-	public void findTrainerByName500() {
-		String firstName = "dejideji";
-		String lastName = "sxiwjdijiew";
-
-		when().
-			get(FIND_TRAINER_BY_NAME_URL, firstName, lastName).
-		then().assertThat().
-			statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-	}
-
-	@Test
-	public void findTrainerByNameNonTrainer() {
-		String firstName = "Chen";
-		String lastName = "Yan";
-
-		String body = when().
-						get(FIND_TRAINER_BY_NAME_URL, firstName, lastName).
-					  then().assertThat().
-					  	statusCode(HttpStatus.OK.value()).extract().body().asString();
-
-		assertEquals(body, "");
-	}
-
-	@Test
-	public void findTrainerByEmail() {
-		when().
-			get(FIND_TRAINER_BY_EMAIL_URL, "steven.kelsey@revature.com").
-		then().assertThat().
-			statusCode(HttpStatus.OK.value());
 	}
 
 	@Test

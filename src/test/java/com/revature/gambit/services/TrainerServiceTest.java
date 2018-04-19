@@ -2,6 +2,7 @@ package com.revature.gambit.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,11 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
-public class TrainerServiceTest {
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@SpringBootTest
+public class TrainerServiceTest extends GambitTest{
 
 	private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
 
@@ -45,5 +47,24 @@ public class TrainerServiceTest {
 		log.debug("Testing trainerService.getAll()");
 		assertEquals(1, trainerService.getAll().size());
 		assertNotEquals(0, trainerService.getAll().size());
+	}
+	
+	@Test
+	public void testFindTrainerByEmail() {
+		String expected = "steven.kelsey@revature.com";
+		Trainer trainer = trainerService.findTrainerByEmail("steven.kelsey@revature.com");
+		assertEquals(trainer.getEmail(), expected);
+	}
+	
+	@Test
+	public void testFindTrainerByEmailInvalid() {
+		Trainer trainer = trainerService.findTrainerByEmail("fdjnfjdd@revature.com");
+		assertEquals(trainer, null);
+	}
+	
+	@Test
+	public void testFindTrainerByEmailNonTrainer() {
+		Trainer trainer = trainerService.findTrainerByEmail("ychenq001@gmail.com");
+		assertEquals(trainer, null);
 	}
 }
