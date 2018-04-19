@@ -34,9 +34,13 @@ public class TrainerControllerImpl implements TrainerController {
 
 	@PostMapping
 	public ResponseEntity<Trainer> registerTrainer(@RequestBody Trainer trainer) {
-		log.info("Trainer Controller received request: create Trainer");
+		log.debug("Trainer Controller received request: create Trainer");
 		Trainer registeredTrainer = trainerService.newTrainer(trainer);
-		return new ResponseEntity<>(registeredTrainer, HttpStatus.OK);
+		if(registeredTrainer != null) {
+			return new ResponseEntity<>(registeredTrainer, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@PostMapping(value = "promote")
@@ -57,8 +61,8 @@ public class TrainerControllerImpl implements TrainerController {
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Trainer> findTrainerByEmail(@PathVariable String email) {
 		log.info("Trainer Controller received request: Finding trainer by email of " + email);
-		Trainer tUser = trainerService.findTrainerByEmail(email);
-		return new ResponseEntity<>(tUser, HttpStatus.OK);
+		Trainer trainer = trainerService.findTrainerByEmail(email);
+		return new ResponseEntity<>(trainer, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -88,7 +92,7 @@ public class TrainerControllerImpl implements TrainerController {
 	}
 
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id") Integer id) {
+	public ResponseEntity<?> deleteByTrainerId(@PathVariable("id") Integer id) {
 		log.info("Trainer Controller received request: deleteByTrainerId");
 		trainerService.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);
