@@ -39,8 +39,7 @@ public class TrainerControllerTest extends GambitTest {
     private static final String FIND_ALL_TRAINER_TITLES_URI = BASE_URI + "/titles";
     private static final String FIND_ALL_TRAINERS_URI = BASE_URI;
     private static final String REGISTER_TRAINER_URI = BASE_URI;
-    private static final String FIND_TRAINER_BY_EMAIL_URL = BASE_URI;
-    private static final String UPDATE_TRAINER_URL = BASE_URI;
+    private static final String UPDATE_TRAINER_URI = BASE_URI;
 
     @Test
     public void testDeleteTrainer() {
@@ -147,7 +146,7 @@ public class TrainerControllerTest extends GambitTest {
 			contentType(ContentType.JSON).
 			body(targetTrainer).
 		when().
-			port(port).put(UPDATE_TRAINER_URL).
+			port(port).put(UPDATE_TRAINER_URI).
 		then().
 			assertThat().statusCode(HttpStatus.INTERNAL_SERVER_ERROR_500);
 		
@@ -156,7 +155,7 @@ public class TrainerControllerTest extends GambitTest {
 		contentType(ContentType.JSON).
 		body(targetTrainer).
 		when().
-		port(port).put(UPDATE_TRAINER_URL).
+		port(port).put(UPDATE_TRAINER_URI).
 		then().
 		assertThat().statusCode(HttpStatus.OK_200).
 		and().
@@ -171,7 +170,7 @@ public class TrainerControllerTest extends GambitTest {
 		contentType(ContentType.JSON).
 		body(targetTrainer).
 		when().
-		port(port).put(UPDATE_TRAINER_URL).
+		port(port).put(UPDATE_TRAINER_URI).
 		then().
 		assertThat().statusCode(HttpStatus.OK_200).
 		and().

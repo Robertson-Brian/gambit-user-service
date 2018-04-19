@@ -82,6 +82,19 @@ public class TrainerServiceTest extends GambitTest {
 	Trainer trainer = trainerService.findTrainerByEmail("steven.kelsey@revature.com");
 	assertEquals(trainer.getEmail(), expected);
     }
+    
+    @Test                                                                                                                                                                                                                                                                                                                                                                                                        
+    public void findTrainerById(){
+        log.debug("Find trainer by id");
+        Trainer newTrainer = new Trainer("Patrick","Walsh","patrick.walsh@revature.com","Lead Trainer");
+         int userId = trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId();
+            Trainer findById = trainerService.findById(userId);
+
+        assertEquals(newTrainer.getFirstName(), findById.getFirstName());
+        assertEquals(newTrainer.getLastName(), findById.getLastName());
+        assertEquals(newTrainer.getEmail(), findById.getEmail());
+        assertEquals(newTrainer.getTitle(), findById.getTitle());
+ }
 
     @Test 
     public void testFindTrainerByEmailInvalid() {
@@ -111,7 +124,7 @@ public class TrainerServiceTest extends GambitTest {
 		List<String> updatedList = Arrays.asList("Patrick","Walsh","np4@hotmail.com","Technology Manager");
 		assertThat(updatedList,CoreMatchers.hasItems(updateTargetTrainer.getFirstName(),updateTargetTrainer.getLastName(),updateTargetTrainer.getEmail(),updateTargetTrainer.getTitle()));
 	
-		updateTargetTrainer.setFirstName("Stev");
+		updateTargetTrainer.setFirstName("Steve");
 		updateTargetTrainer.setLastName("Johns");
 		trainerService.update(updateTargetTrainer);
 		log.trace("updateTargetTrainer second time = " + updateTargetTrainer);
