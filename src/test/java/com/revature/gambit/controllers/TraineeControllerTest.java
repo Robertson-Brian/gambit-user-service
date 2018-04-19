@@ -25,6 +25,7 @@ public class TraineeControllerTest extends GambitTest {
 	 */
 	@Test
 	public void save() {
+		log.debug("Testing Trainee Insert");
 		String body = "{\"userId\" : 0,"
 				+ "\"firstName\": \"Shaleen\","
 				+ "\"lastName\": \"Anwar\","
@@ -39,6 +40,7 @@ public class TraineeControllerTest extends GambitTest {
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.CREATED.value());
+		log.trace("New trainee created");
 	}
 
 	/**
