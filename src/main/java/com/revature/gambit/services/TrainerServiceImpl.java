@@ -30,7 +30,7 @@ public class TrainerServiceImpl implements TrainerService {
 
 	public void delete(Integer id) {
 		log.debug("Method called to delete a trainer.");
-		userService.delete(trainerRepository.findByUserId(id).getUserId());
+		trainerRepository.delete(id);
 	}
 
 	public Trainer findById(Integer trainerId) {
