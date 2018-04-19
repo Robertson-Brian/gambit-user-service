@@ -27,27 +27,32 @@ public class TrainerControllerTest extends GambitTest {
 	
 	private static final Logger log = Logger.getLogger(TrainerControllerTest.class);
 	
-	private static final String BASE_URL = "/trainers";
-	private static final String FIND_TRAINER_BY_EMAIL_URL = BASE_URL + "/email/{email:.+}/";
-	private static final String FIND_ALL_TRAINER_TITLES_URL = BASE_URL + "/titles";
-	private static final String FIND_ALL_TRAINERS_URL = BASE_URL;
-	private static final String REGISTER_TRAINER_URL = BASE_URL;
+	private static final String BASE_URI = "/trainers";
+	private static final String FIND_TRAINER_BY_EMAIL_URI = BASE_URI + "/email/{email:.+}/";
+	private static final String FIND_ALL_TRAINER_TITLES_URI = BASE_URI + "/titles";
+	private static final String FIND_ALL_TRAINERS_URI = BASE_URI;
+	private static final String REGISTER_TRAINER_URI = BASE_URI;
 	
 	@Test
 	public void findTrainerByEmail() {
 		when().
-			get(FIND_TRAINER_BY_EMAIL_URL, "steven.kelsey@revature.com").
+			get(FIND_TRAINER_BY_EMAIL_URI, "steven.kelsey@revature.com").
 		then().assertThat().
 			statusCode(HttpStatus.OK.value());
 	}
 	
 	@Test
 	public void testFindAllTitles() {
-		log.info("Find all trainers titles at : "+FIND_ALL_TRAINER_TITLES_URL);
+		log.debug("Find all trainers titles at : "+FIND_ALL_TRAINER_TITLES_URI);
 		
-		 when()
-		.get(FIND_ALL_TRAINER_TITLES_URL)
-		.then().assertThat().statusCode(HttpStatus.OK.value())
+		 given()
+		.port(port)
+		.basePath(FIND_ALL_TRAINER_TITLES_URI)
+		.when()
+		.get()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.OK.value())
 		.body("$", hasItems("Lead Trainer","Vice President of Technology",
 	   		                "Technology Manager","Senior Java Developer",
 		    		        "Trainer","Senior Trainer")); 
@@ -57,14 +62,20 @@ public class TrainerControllerTest extends GambitTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testFindAllTrainers(){
-		log.info("Find all trainers titles at : "+FIND_ALL_TRAINERS_URL);
+		log.debug("Find all trainers titles at : "+FIND_ALL_TRAINERS_URI);
 		
 		List<Trainer> trainers = new ArrayList<>();
 		
-		trainers = when().get(FIND_ALL_TRAINERS_URL)
-		                 .then().assertThat().statusCode(HttpStatus.OK.value())
-		                 .extract().body()
-		  				 .as(trainers.getClass());
+		trainers = given()
+				       .port(port)
+				       .basePath(FIND_ALL_TRAINERS_URI)
+				       .when()
+				       .get()
+		               .then()
+		               .assertThat()
+		               .statusCode(HttpStatus.OK.value())
+		               .extract().body()
+		  			   .as(trainers.getClass());
 																						
 		assertTrue(!trainers.isEmpty());
 	}
@@ -77,7 +88,7 @@ public class TrainerControllerTest extends GambitTest {
 			contentType(ContentType.JSON).
 			body(newTrainer).
 		when().
-			port(port).post(REGISTER_TRAINER_URL).
+			port(port).post(REGISTER_TRAINER_URI).
 		then().
 			assertThat().statusCode(HttpStatus.OK.value()).
 		and().
@@ -90,7 +101,7 @@ public class TrainerControllerTest extends GambitTest {
 			contentType(ContentType.JSON).
 			body(newTrainer).
 		when().
-			port(port).post(REGISTER_TRAINER_URL).
+			port(port).post(REGISTER_TRAINER_URI).
 		then().
 			assertThat().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		
@@ -99,7 +110,7 @@ public class TrainerControllerTest extends GambitTest {
 			contentType(ContentType.JSON).
 			body(emptyTrainer).
 		when().
-			port(port).post(REGISTER_TRAINER_URL).
+			port(port).post(REGISTER_TRAINER_URI).
 		then().
 			assertThat().statusCode(HttpStatus.BAD_REQUEST.value());
 	}
