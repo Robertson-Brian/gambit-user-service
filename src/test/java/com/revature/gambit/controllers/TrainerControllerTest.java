@@ -1,9 +1,9 @@
 package com.revature.gambit.controllers;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -49,9 +49,22 @@ public class TrainerControllerTest extends GambitTest {
     }
 
     @Test
-    public void findTrainerByEmail() {
-	when().get(FIND_TRAINER_BY_EMAIL_URL, "steven.kelsey@revature.com").then().assertThat()
-		.statusCode(HttpStatus.OK_200);
+    public void findTrainerByEmail200() {
+	log.debug("test findTrainerByEmail with bad input");
+	String email = "steven.kelsey@revature.com";
+	given().when().port(port).get(FIND_TRAINER_BY_EMAIL_URI, email).then().assertThat()
+		.statusCode(HttpStatus.OK_200).body("email", equalTo(email));
+
+    }
+
+    @Test
+    public void findTrainerByEmail500() {
+	log.debug("test findTrainerByEmail with bad input");
+	String email = "sdjkssx@gmail.com";
+	String body = given().when().port(port).get(FIND_TRAINER_BY_EMAIL_URI, email).then().assertThat()
+		.statusCode(HttpStatus.OK_200).extract().body().asString();
+
+	assertEquals(body, "");
     }
 
     @Test
@@ -62,6 +75,16 @@ public class TrainerControllerTest extends GambitTest {
 		.statusCode(HttpStatus.OK_200).body("$", hasItems("Lead Trainer", "Vice President of Technology",
 			"Technology Manager", "Senior Java Developer", "Trainer", "Senior Trainer"));
 
+    }
+
+    @Test
+    public void findTrainerByEmailNonTrainer() {
+	log.debug("test findTrainerByEmail with non trainer email.");
+	String email = "ychenq001@gmail.com";
+	String body = given().when().port(port).get(FIND_TRAINER_BY_EMAIL_URI, email).then().assertThat()
+		.statusCode(HttpStatus.OK_200).extract().body().asString();
+
+	assertEquals(body, "");
     }
 
     @SuppressWarnings("unchecked")

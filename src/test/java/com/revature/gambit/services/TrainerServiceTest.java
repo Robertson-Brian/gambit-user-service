@@ -79,6 +79,28 @@ public class TrainerServiceTest extends GambitTest {
 	log.debug("Testing trainerService.getAll()");
 	assertEquals(12, trainerService.getAll().size());
 	assertNotEquals(0, trainerService.getAll().size());
+	}
+
+	@Test
+	public void testFindTrainerByEmail() {
+		log.debug("Testing trainerService.findTrainerByEmail with correct email address");
+		String expected = "steven.kelsey@revature.com";
+		Trainer trainer = trainerService.findTrainerByEmail("steven.kelsey@revature.com");
+		assertEquals(trainer.getEmail(), expected);
+	}
+
+	@Test
+	public void testFindTrainerByEmailInvalid() {
+		log.debug("Testing trainerService.findTrainerByEmail with invalid email address");
+		Trainer trainer = trainerService.findTrainerByEmail("fdjnfjdd@revature.com");
+		assertEquals(trainer, null);
+	}
+
+	@Test
+	public void testFindTrainerByEmailNonTrainer() {
+		log.debug("Testing trainerService.findTrainerByEmail with non-trainer email address");
+		Trainer trainer = trainerService.findTrainerByEmail("ychenq001@gmail.com");
+		assertEquals(trainer, null);
     }
 
 }
