@@ -91,16 +91,30 @@ public class TraineeServiceTest extends GambitTest {
 	 * Tests methods:
 	 * com.revature.gambit.services.TraineeServiceImpl.getAll()
 	 * 
-	 * After creating three trainees and calling getAll method returns all three.
-	 * The check is done by comparing the expected size and the size of the table.
+	 * Creates a List of all Trainees, then cycles through them to verify
+	 * 	they exist in the table.  
+	*/
+	@Test
+	public void getAllEntitiesCorrespond(){
+		log.debug("Testing getAll entities match existing entities on table.");		
+		List<Trainee> listTrainee = traineeService.getAll();
+		for(Trainee trainee : listTrainee){
+			assertEquals(trainee, traineeService.findByEmail(trainee.getEmail())); 
+		}
+		log.trace("Entities correspond");
+	}
+	
+	/** 
+	 * Tests methods:
+	 * com.revature.gambit.services.TraineeServiceImpl.getAll()
 	 * 
+	 * 	Verifies that table exists.
 	 */
 	@Test
-	public void getAll(){
-		log.debug("Testing trainee getAll");		
-		log.trace("Testing table exists and the size of table is correct");
+	public void getAllNotNull(){
+		log.debug("Testing that a table exists.");
 		assertNotNull(traineeService.getAll());
-		assertEquals(25, traineeService.getAll().size());
+		log.trace("Trainee Table Exists.");
 	}	
 	/**
 	 * Tests the delete method of the Trainee Service Layer.
