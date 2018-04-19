@@ -63,6 +63,7 @@ public class TraineeControllerTest extends GambitTest {
 	 * Asserts that a 204 - No Content status is returned.
 	 */
 	public void deleteTest() {
+		log.debug("TraineeControllerTest.deleteTest()");
 		String trainee = "{\"userId\":36,"
 				+ "\"firstName\":\"Gir\","
 				+ "\"lastName\":\"Chandradat\","
