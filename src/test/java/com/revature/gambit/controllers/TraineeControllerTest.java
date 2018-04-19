@@ -1,17 +1,15 @@
 package com.revature.gambit.controllers;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
-import static org.hamcrest.Matchers.anyOf;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.equalTo;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
 import org.springframework.boot.context.embedded.LocalServerPort;
-import org.springframework.http.HttpStatus;
 
 import com.revature.gambit.GambitTest;
+import com.revature.gambit.entities.Trainee;
 
 public class TraineeControllerTest extends GambitTest {
 	
@@ -27,37 +25,17 @@ public class TraineeControllerTest extends GambitTest {
 	 */
 	@Test
 	public void save() {
-		String body = "{\"userId\" : 0,"
-				+ "\"firstName\": \"Shaleen\","
-				+ "\"lastName\": \"Anwar\","
-				+ "\"email\": \"shaleen.anwar@gmail.com\"}";
+		Trainee trainee = new Trainee("John", "Smith", "example@gmail.com");
 		given()
 			.port(port)
 			.basePath(BASE_URI)
 			.header("Content-Type", "application/json")
-			.body(body)
+			.body(trainee)
 			.when()	
 			.post()
 			.then()
 			.assertThat()
-			.statusCode(anyOf(is(HttpStatus.CREATED),is(HttpStatus.NO_CONTENT)));
-	}
-
-	/**
-	 * Tests connection is OK with getAll
-	 */
-	@Test
-	public void getAll(){
-		log.debug("Testing trainee getAll");
-		given()
-			.port(port)
-			.basePath(BASE_URI)
-			.when()
-			.get()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.OK.value());
-		log.trace("All Trainees retrieved");
+			.statusCode(HttpStatus.CREATED_201);
 	}
 
 	/**
@@ -65,11 +43,9 @@ public class TraineeControllerTest extends GambitTest {
 	 * Asserts that a 204 - No Content status is returned.
 	 */
 	public void deleteTest() {
-		String trainee = "{\"userId\":36,"
-				+ "\"firstName\":\"Gir\","
-				+ "\"lastName\":\"Chandradat\","
-				+ "\"email\":\"chandradatgir@yahoo.com\","
-				+ "\"trainingStatus\":\"Dropped\"}";
+		log.debug("TraineeControllerTest.deleteTest()");
+		Trainee trainee = new Trainee("Gir", "Chandradat", "chandradatgir@yahoo.com");
+		trainee.setUserId(36);
 		given()
 			.port(port)
 			.basePath(BASE_URI)
@@ -79,18 +55,19 @@ public class TraineeControllerTest extends GambitTest {
 			.delete()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.NO_CONTENT.value());
+			.statusCode(HttpStatus.NO_CONTENT_204);
 	}
 
 	/**Test methods:
 	 * 
 	 * @see com.revature.gambit.services.TraineeServiceTest
+	 * Tests to see if the correct user is given with certain emails that correspond to said user
 	 */
 	@Test
 	public void findTraineeByEmail() {
-		log.trace("Test find Howard by email.");
+		log.debug("Test find Howard by email.");
 		String email = "howard.johnson@hotmail.com";
-		String firstName= "Howard";
+		String firstName = "Howard";
 		given()
 			.port(port)
 			.basePath(BASE_URI + "/email")
@@ -99,16 +76,16 @@ public class TraineeControllerTest extends GambitTest {
 			.get()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.OK.value())
+			.statusCode(HttpStatus.OK_200)
 			.and()
 			.body("firstName",equalTo(firstName));
 	}
 
 	@Test
 	public void findTraineeByEmailLaut() {
-		log.trace("Test find Howard by email.");
+		log.debug("Test find Howard by email.");
 		String email = "dlaut1@hotmail.com";
-		String firstName= "Laut";
+		String firstName = "Laut";
 		given()
 			.port(port)
 			.basePath(BASE_URI + "/email")
@@ -117,16 +94,16 @@ public class TraineeControllerTest extends GambitTest {
 			.get()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.OK.value())
+			.statusCode(HttpStatus.OK_200)
 			.and()
 			.body("firstName",equalTo(firstName));
 	}
 
 	@Test
 	public void findTraineeByEmailChang() {
-		log.trace("Test find Chang by email.");
+		log.debug("Test find Chang by email.");
 		String email = "kchangfatt@gmail.com";
-		String firstName= "Chang Fatt";
+		String firstName = "Chang Fatt";
 		given()
 			.port(port)
 			.basePath(BASE_URI + "/email")
@@ -135,14 +112,14 @@ public class TraineeControllerTest extends GambitTest {
 			.get()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.OK.value())
+			.statusCode(HttpStatus.OK_200)
 			.and()
 			.body("firstName",equalTo(firstName));
 	}
 
 	@Test
 	public void findTraineeByEmailFalse() {
-		log.trace("Test null email.");
+		log.debug("Test null email.");
 		String email = "dsgdgsdg";
 		given()
 			.port(port)
@@ -152,14 +129,9 @@ public class TraineeControllerTest extends GambitTest {
 			.get()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.NOT_FOUND.value());
+			.statusCode(HttpStatus.NOT_FOUND_404);
 	}
 
-	
-	/**
-	 * Checks that getByBatchAndStatus returns a 200 status code.
-	 *  
-	 */
 	@Test
 	public void getAllTrainees() {
 		log.debug("Testing getting all trainees.");
@@ -170,8 +142,9 @@ public class TraineeControllerTest extends GambitTest {
 			.get()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.OK.value());
+			.statusCode(HttpStatus.OK_200);
 	}
+
 	/**
 	 * Checks that getByBatchAndStatus returns a 200 status code.
 	 *  
@@ -186,7 +159,7 @@ public class TraineeControllerTest extends GambitTest {
 			.get()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.OK.value());
+			.statusCode(HttpStatus.OK_200);
 	}
 
 	/**
@@ -197,11 +170,10 @@ public class TraineeControllerTest extends GambitTest {
 	@Test
 	public void update() {
 		log.debug("Trainee Controller test: Updating trainee");
-		String trainee = "{\"userId\":1900,"
-				+ "\"firstName\":\"Johnny\","
-				+ "\"lastName\":\"Chapman\","
-				+ "\"email\":\"chandradatgir@yahoo.com\","
-				+ "\"trainingStatus\":\"Dropped\"}";
+		Trainee trainee = new Trainee("Howard", "Johnson", "howard.johnson@hotmail.com");
+		trainee.setUserId(13);
+		trainee.getBatches().add(2);
+		trainee.setFirstName("John");
 		given()
 			.port(port)
 			.basePath(BASE_URI)
@@ -211,6 +183,6 @@ public class TraineeControllerTest extends GambitTest {
 			.put()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.NO_CONTENT.value());
+			.statusCode(HttpStatus.NO_CONTENT_204);
 	}
 }

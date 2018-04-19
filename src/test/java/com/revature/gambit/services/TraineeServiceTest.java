@@ -52,10 +52,12 @@ public class TraineeServiceTest extends GambitTest {
 		// Checks that if email exists, it returns null
 		assertEquals(null, traineeService.save(trainee));
 	}
-
+	/**
+	 * Tests that find a user by their email.
+	 */
 	@Test
 	public void findByEmail() {
-		log.trace("Testing trainee save");
+		log.debug("Testing trainee save");
 		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
 				TrainingStatus.Training, 1, "Extensure");
 		traineeService.save(trainee);
@@ -64,7 +66,7 @@ public class TraineeServiceTest extends GambitTest {
 	}
 	@Test
 	public void findByInvalidEmail() {
-		log.trace("Testing trainee save");
+		log.debug("Testing trainee save");
 		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
 				TrainingStatus.Training, 1, "Extensure");
 		traineeService.save(trainee);
@@ -83,7 +85,7 @@ public class TraineeServiceTest extends GambitTest {
 	@Test
 	public void getAll(){
 		log.debug("Testing trainee getAll");		
-		log.debug("Testing table exists and the size of table is correct");
+		log.trace("Testing table exists and the size of table is correct");
 		assertNotNull(traineeService.getAll());
 		assertEquals(25, traineeService.getAll().size());
 	}	
@@ -93,7 +95,7 @@ public class TraineeServiceTest extends GambitTest {
 	 */
 	@Test
 	public void delete() {
-		log.debug("Test delete Trainee");
+		log.debug("TraineeServiceTest.delete()");
 		Trainee test = new Trainee("TestTrainDelete", "TestTrainDelete", "TestTrainDelete@brooks.net", "ajsy1b173h29479w",
 				TrainingStatus.Scheduled, "TestTrainDelete");
 		traineeService.save(test);
