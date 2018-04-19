@@ -28,6 +28,10 @@ public class TrainerServiceTest extends GambitTest {
 		assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
 		assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
 
+		//Test Repeat Trainer
+		Trainer savedRepeatTrainer = trainerService.newTrainer(newTrainer);
+		assertEquals(null,savedRepeatTrainer);
+
 		//Test Empty Trainer
 		Trainer emptyTrainer = new Trainer("","","","");
 		Trainer savedEmptyTrainer = trainerService.newTrainer(emptyTrainer);
