@@ -31,6 +31,27 @@ public class TraineeServiceImpl implements TraineeService {
 			return traineeRepository.save(trainee);
 		}
 	}
+	
+
+	@Transactional
+	public Trainee update(Trainee trainee) {
+		log.trace("Testing update method for " + trainee);
+		
+		Trainee preexisting = traineeRepository.findOneByEmail(trainee.getEmail());
+		log.trace("Trainee exists: " + preexisting);
+		if (preexisting != null && preexisting.getBatches() != null) {
+			// if so, add the trainee's batch assignments
+			log.trace("adding prexisting batches: " + preexisting.getBatches() + " to new batches: "
+					+ trainee.getBatches());
+			trainee.getBatches().addAll(preexisting.getBatches());
+			// maintain their Salesforce resourceId
+			log.trace("setting resourceId for trainee as: " + preexisting.getResourceId());
+			trainee.setResourceId(preexisting.getResourceId());
+			trainee.setUserId(preexisting.getUserId());
+			return traineeRepository.save(trainee);
+		}
+		return null;
+	}
 
 	@Transactional
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status) {

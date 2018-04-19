@@ -32,10 +32,10 @@ public class TraineeDTO {
 		super();
 	}
 
-	public TraineeDTO(Trainee t, String type) {
+	public TraineeDTO(Trainee trainee, String type) {
 		super();
 		this.time = new Timestamp(new Date().getTime());
-		this.payload = t;
+		this.payload = trainee;
 		this.requestType = type;
 		try {
 			this.sender = InetAddress.getLocalHost().getHostAddress();
@@ -44,10 +44,10 @@ public class TraineeDTO {
 		}
 	}
 
-	public TraineeDTO(Timestamp time, Trainee t, String sender, String requestType) {
+	public TraineeDTO(Timestamp time, Trainee trainee, String sender, String requestType) {
 		super();
 		this.time = time;
-		this.payload = t;
+		this.payload = trainee;
 		this.sender = sender;
 		this.requestType = requestType;
 	}
@@ -64,8 +64,8 @@ public class TraineeDTO {
 		return payload;
 	}
 
-	public void setTrainee(Trainee t) {
-		this.payload = t;
+	public void setTrainee(Trainee trainee) {
+		this.payload = trainee;
 	}
 
 	public String getSender() {
