@@ -11,6 +11,7 @@ import static org.hamcrest.Matchers.*;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
@@ -19,13 +20,31 @@ import org.springframework.http.HttpStatus;
 import com.revature.gambit.GambitTest;
 
 public class TraineeControllerTest extends GambitTest {
-
+	
+	@Autowired
+	private TraineeController traineeController;
+	
 	@LocalServerPort
 	private int port;
-
+	
 	private static final Logger log = Logger.getLogger(TraineeControllerTest.class);
 
 	private static final String BASE_URL = "http://localhost:10001//trainees";
+
+	
+	/**
+	 * Tests that trainee is created and status code is 201
+	 */
+	@Test
+	public void save() {
+		String body = "{\"userId\" : 0,\"firstName\": \"Shaleen\",\"lastName\": \"Anwar\",\"email\": \"shaleen.anwar@gmail.com\"}";
+		given().header("Content-Type", "application/json")
+				.body(body)
+				.when()	
+				.post(BASE_URL).then().assertThat().statusCode(201);
+
+	}
+
 	/**
 	 * Tests connection is OK with getAll
 	 */
@@ -120,7 +139,7 @@ public class TraineeControllerTest extends GambitTest {
 			.assertThat()
 			.statusCode(HttpStatus.NOT_FOUND.value());
 	}
-		
+
 	@Test
 	public void getAllTrainees() {
 		log.debug("Testing getting all trainees.");
@@ -144,4 +163,5 @@ public class TraineeControllerTest extends GambitTest {
 		log.debug("getByBatchAndStatus unit test starts here.");
 		given().when().get(BASE_URL + "/batch/1/status/Training").then().assertThat().statusCode(200);
 	}
+
 }
