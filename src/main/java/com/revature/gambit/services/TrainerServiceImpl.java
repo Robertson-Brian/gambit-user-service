@@ -40,6 +40,11 @@ public class TrainerServiceImpl implements TrainerService {
 
 	public Trainer newTrainer(Trainer trainer) {
 		log.debug("Method called to create a new trainer from Trainer object.");
+		if(trainer == null ||
+				trainer.getEmail() == null || trainer.getFirstName() == null || trainer.getLastName() == null || trainer.getTitle() == null ||
+				trainer.getEmail() == "" || trainer.getFirstName() == "" || trainer.getLastName() == "" || trainer.getTitle() == "") {
+			return null;
+		}
 		return trainerRepository.save(trainer);
 	}
 

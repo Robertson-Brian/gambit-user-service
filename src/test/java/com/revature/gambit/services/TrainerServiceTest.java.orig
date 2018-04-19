@@ -3,7 +3,10 @@ package com.revature.gambit.services;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+<<<<<<< HEAD
 import static org.junit.Assert.assertNull;
+=======
+>>>>>>> team-user-trainer
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
@@ -15,6 +18,7 @@ import com.revature.gambit.entities.Trainer;
 
 public class TrainerServiceTest extends GambitTest {
 
+<<<<<<< HEAD
     private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
 
     @Autowired
@@ -36,11 +40,11 @@ public class TrainerServiceTest extends GambitTest {
 	assertNotEquals(0, savedTrainer.getUserId());
 	assertEquals(trainer2.getTitle(), savedTrainer.getTitle());
 	assertEquals(trainer2.getFirstName(), savedTrainer.getFirstName());
-		
-		//Test Empty Trainer
-		Trainer emptyTrainer = new Trainer("","","","");
-		Trainer savedEmptyTrainer = trainerService.newTrainer(emptyTrainer);
-		assertEquals(null,savedEmptyTrainer);
+    }
+
+    @Test
+    public void testDeleteTrainer() {
+	Trainer savedTrainer = trainerService.newTrainer(trainer1);
 	trainerService.delete(savedTrainer.getUserId());
 	assertNull(trainerService.findById(savedTrainer.getUserId()));
     }
@@ -56,15 +60,53 @@ public class TrainerServiceTest extends GambitTest {
     public void testGetAllTitles() {
 
 	log.debug("Testing trainerService.getAllTitles()");
-		assertEquals(6, trainerService.getAllTitles().size());
+	assertEquals(1, trainerService.getAllTitles().size());
 	assertNotEquals(0, trainerService.getAllTitles().size());
     }
 
     @Test
     public void testGetAllTrainers() {
 	log.debug("Testing trainerService.getAll()");
-		assertEquals(12, trainerService.getAll().size());
+	assertEquals(1, trainerService.getAll().size());
 	assertNotEquals(0, trainerService.getAll().size());
     }
 
+=======
+	private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
+
+	@Autowired
+	private TrainerService trainerService;
+	
+	@Test
+	public void testNewTrainer() {
+		log.debug("Testing trainerService.newTrainer(Trainer trainer)");
+		Trainer newTrainer = new Trainer("Mark","Fleres","mfleres@gmail.com","Dr.");
+		log.trace("newTrainer = " + newTrainer);
+		Trainer savedTrainer = trainerService.newTrainer(newTrainer);
+		log.trace("savedTrainer = " + savedTrainer);
+		assertNotEquals(0, savedTrainer.getUserId());
+		assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
+		assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
+		
+		//Test Empty Trainer
+		Trainer emptyTrainer = new Trainer("","","","");
+		Trainer savedEmptyTrainer = trainerService.newTrainer(emptyTrainer);
+		assertEquals(null,savedEmptyTrainer);
+	}
+	
+	@Test
+	public void testGetAllTitles(){
+		
+		log.debug("Testing trainerService.getAllTitles()");
+		assertEquals(6, trainerService.getAllTitles().size());
+		assertNotEquals(0, trainerService.getAllTitles().size());
+	}
+	
+	@Test
+	public void testGetAllTrainers(){
+		log.debug("Testing trainerService.getAll()");
+		assertEquals(12, trainerService.getAll().size());
+		assertNotEquals(0, trainerService.getAll().size());
+	}
+>>>>>>> team-user-trainer
 }

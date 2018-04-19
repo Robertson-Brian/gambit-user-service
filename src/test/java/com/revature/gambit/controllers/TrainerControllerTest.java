@@ -26,12 +26,12 @@ public class TrainerControllerTest extends GambitTest {
     @LocalServerPort
     private int port;
 
-    private static final String BASE_URL = "http://localhost:10001/trainers/";
     private static final String BASE_URI = "/trainers";
-    private static final String FIND_TRAINER_BY_EMAIL_URL = BASE_URL + "/email/{email:.+}/";
-    private static final String FIND_ALL_TRAINER_TITLES_URL = BASE_URL + "/titles";
-    private static final String FIND_ALL_TRAINERS_URL = BASE_URL;
-    private static final String REGISTER_TRAINER_URL = BASE_URL;
+    private static final String FIND_TRAINER_BY_EMAIL_URI = BASE_URI + "/email/{email:.+}/";
+    private static final String FIND_ALL_TRAINER_TITLES_URI = BASE_URI + "/titles";
+    private static final String FIND_ALL_TRAINERS_URI = BASE_URI;
+    private static final String REGISTER_TRAINER_URI = BASE_URI;
+    private static final String FIND_TRAINER_BY_EMAIL_URL = BASE_URI;
 
     @Test
     public void testDeleteTrainer() {
@@ -49,13 +49,6 @@ public class TrainerControllerTest extends GambitTest {
     }
 
     @Test
-    public void testDeleteNullTrainer() {
-	log.info("Deleting a Trainer");
-	given().port(port).delete(BASE_URI + "/{id}", ).then().assertThat()
-		.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-    }
-
-    @Test
     public void findTrainerByEmail() {
 	when().get(FIND_TRAINER_BY_EMAIL_URL, "steven.kelsey@revature.com").then().assertThat()
 		.statusCode(HttpStatus.OK.value());
@@ -63,23 +56,23 @@ public class TrainerControllerTest extends GambitTest {
 
     @Test
     public void testFindAllTitles() {
-	log.info("Find all trainers titles at : " + FIND_ALL_TRAINER_TITLES_URL);
+	log.debug("Find all trainers titles at : " + FIND_ALL_TRAINER_TITLES_URI);
 
-	when().get(FIND_ALL_TRAINER_TITLES_URL).then().assertThat().statusCode(HttpStatus.OK.value()).body("$",
-		hasItems("Lead Trainer", "Vice President of Technology", "Technology Manager", "Senior Java Developer",
-			"Trainer", "Senior Trainer"));
+	given().port(port).basePath(FIND_ALL_TRAINER_TITLES_URI).when().get().then().assertThat()
+		.statusCode(HttpStatus.OK.value()).body("$", hasItems("Lead Trainer", "Vice President of Technology",
+			"Technology Manager", "Senior Java Developer", "Trainer", "Senior Trainer"));
 
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testFindAllTrainers() {
-	log.info("Find all trainers titles at : " + FIND_ALL_TRAINERS_URL);
+	log.debug("Find all trainers titles at : " + FIND_ALL_TRAINERS_URI);
 
 	List<Trainer> trainers = new ArrayList<>();
 
-	trainers = when().get(FIND_ALL_TRAINERS_URL).then().assertThat().statusCode(HttpStatus.OK.value()).extract()
-		.body().as(trainers.getClass());
+	trainers = given().port(port).basePath(FIND_ALL_TRAINERS_URI).when().get().then().assertThat()
+		.statusCode(HttpStatus.OK.value()).extract().body().as(trainers.getClass());
 
 	assertTrue(!trainers.isEmpty());
     }
@@ -88,16 +81,16 @@ public class TrainerControllerTest extends GambitTest {
     public void testRegisterTrainer() {
 	Trainer newTrainer = new Trainer("Mark", "Fleres", "mfleres@gmail.com", "Trainer");
 
-	given().contentType(ContentType.JSON).body(newTrainer).when().port(port).post(REGISTER_TRAINER_URL).then()
+	given().contentType(ContentType.JSON).body(newTrainer).when().port(port).post(REGISTER_TRAINER_URI).then()
 		.assertThat().statusCode(HttpStatus.OK.value()).and().contentType(ContentType.JSON).and()
 		.body("firstName", equalTo("Mark"));
 
 	// Test that a repeat register fails (email must be unique)
-	given().contentType(ContentType.JSON).body(newTrainer).when().port(port).post(REGISTER_TRAINER_URL).then()
+	given().contentType(ContentType.JSON).body(newTrainer).when().port(port).post(REGISTER_TRAINER_URI).then()
 		.assertThat().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 
 	Trainer emptyTrainer = new Trainer("", "", "", "");
-	given().contentType(ContentType.JSON).body(emptyTrainer).when().port(port).post(REGISTER_TRAINER_URL).then()
+	given().contentType(ContentType.JSON).body(emptyTrainer).when().port(port).post(REGISTER_TRAINER_URI).then()
 		.assertThat().statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }
