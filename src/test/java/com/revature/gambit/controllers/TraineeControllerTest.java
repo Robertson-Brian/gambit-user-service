@@ -138,7 +138,7 @@ public class TraineeControllerTest extends GambitTest {
 		log.debug("Testing getting all trainees.");
 		given()
 			.port(port)
-			.basePath(BASE_URL)
+			.basePath("/trainees")
 			.when()
 			.get()
 			.then()
