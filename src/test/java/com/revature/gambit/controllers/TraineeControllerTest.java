@@ -1,30 +1,13 @@
 package com.revature.gambit.controllers;
 
 import static io.restassured.RestAssured.given;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import static io.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.*;
-
-import com.revature.gambit.entities.Trainee;
-import com.revature.gambit.entities.TrainingStatus;
-
+import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.equalTo;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.http.HttpStatus;
-
-
 
 import com.revature.gambit.GambitTest;
 
@@ -35,7 +18,6 @@ public class TraineeControllerTest extends GambitTest {
 	
 	private static final Logger log = Logger.getLogger(TraineeControllerTest.class);
 
-
 	private static final String BASE_URL = "http://localhost:10001/trainees";
 	
 	/**
@@ -43,13 +25,18 @@ public class TraineeControllerTest extends GambitTest {
 	 */
 	@Test
 	public void save() {
-		String body = "{\"userId\" : 0,\"firstName\": \"Shaleen\",\"lastName\": \"Anwar\",\"email\": \"shaleen.anwar@gmail.com\"}";
+		String body = "{\"userId\" : 0,"
+				+ "\"firstName\": \"Shaleen\","
+				+ "\"lastName\": \"Anwar\","
+				+ "\"email\": \"shaleen.anwar@gmail.com\"}";
 		given()
 			.header("Content-Type", "application/json")
 			.body(body)
 			.when()	
-			.post(BASE_URL).then().assertThat().statusCode(201);
-
+			.post(BASE_URL)
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.CREATED.value());
 	}
 
 	/**
@@ -83,7 +70,7 @@ public class TraineeControllerTest extends GambitTest {
 			.delete(BASE_URL)
 			.then()
 			.assertThat()
-			.statusCode(204);
+			.statusCode(HttpStatus.NO_CONTENT.value());
 	}
 
 	/**Test methods:
@@ -162,9 +149,7 @@ public class TraineeControllerTest extends GambitTest {
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.OK.value());
-
 	}
-	
 
 	/**
 	 * Checks that getByBatchAndStatus returns a 200 status code.
@@ -173,13 +158,12 @@ public class TraineeControllerTest extends GambitTest {
 	@Test
 	public void getByBatchAndStatus() {
 		log.debug("getByBatchAndStatus unit test starts here.");
-
-		given().when().get(BASE_URL + "/batch/1/status/Training").then().assertThat().statusCode(200);
-
-	}
-
-  @Test
-	public void empty() {
+		given()
+			.when()
+			.get(BASE_URL + "/batch/1/status/Training")
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.OK.value());
 	}
 
 	/**
@@ -189,12 +173,19 @@ public class TraineeControllerTest extends GambitTest {
 	 */
 	@Test
 	public void update() {
-		String dummy = "{\"userId\":1900,\"firstName\":\"Johnny\",\"middleName\":null,\"lastName\":\"Chapman\",\"email\":\"chandradatgir@yahoo.com\",\"password\":null,\"backupPassword\":null,\"role\":null,\"homePhone\":null,\"mobilePhone\":null,\"token\":null,\"resourceId\":null,\"trainingStatus\":\"Dropped\",\"profileUrl\":null,\"recruiterName\":null,\"college\":null,\"degree\":null,\"major\":null,\"techScreenerName\":null,\"projectCompletion\":null,\"flagStatus\":null,\"flagNotes\":null,\"marketingStatus\":null,\"client\":null,\"endClient\":null}";
-		given().header("Content-Type", "application/json")
-		.body(dummy)
-		.when() 
-		.put("http://localhost:10001/trainees/").then().assertThat().statusCode(204);
 		log.debug("Trainee Controller test: Updating trainee");
+		String trainee = "{\"userId\":1900,"
+				+ "\"firstName\":\"Johnny\","
+				+ "\"lastName\":\"Chapman\","
+				+ "\"email\":\"chandradatgir@yahoo.com\","
+				+ "\"trainingStatus\":\"Dropped\"}";
+		given()
+			.header("Content-Type", "application/json")
+			.body(trainee)
+			.when()
+			.put("http://localhost:10001/trainees/")
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.NO_CONTENT.value());
 	}
-
 }
