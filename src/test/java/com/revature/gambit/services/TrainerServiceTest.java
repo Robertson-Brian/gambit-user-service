@@ -115,20 +115,6 @@ public class TrainerServiceTest extends GambitTest {
         assertEquals(newTrainer.getEmail(), findById.getEmail());
         assertEquals(newTrainer.getTitle(), findById.getTitle());
  }
-
-    @Test 
-    public void testFindTrainerByEmailInvalid() {
-	log.debug("Testing trainerService.findTrainerByEmail with invalid email address");
-	Trainer trainer = trainerService.findTrainerByEmail("fdjnfjdd@revature.com");
-	assertEquals(trainer, null);
-    }
-
-    @Test
-    public void testFindTrainerByEmailNonTrainer() {
-	log.debug("Testing trainerService.findTrainerByEmail with non-trainer email address");
-	Trainer trainer = trainerService.findTrainerByEmail("ychenq001@gmail.com");
-	assertEquals(trainer, null);
-    }
     
     @Test 
 	public void testUpdate(){
