@@ -4,85 +4,88 @@ import java.util.List;
 
 import com.revature.gambit.entities.Trainer;
 
+	/**
+	 * 
+	 * Performs insert, retrieval, update, deletion methods for Trainer users.
+	 *
+	 */
 public interface TrainerService {
 
 	/**
-	 * Delete a single Trainer
-	 *
+	 * Deletes a single Trainer from the database.
+	 * 
 	 * @param id
-	 *            - to find by
+	 * @author Raymond Xia
+	 * @return void
 	 */
 	void delete(Integer id);
 
 	/**
-	 * Find a single Trainer by trainerId
+	 * Retrieves a single Trainer by trainerId.
 	 *
 	 * @param trainerId
-	 *            - to find by
-	 * @return Trainer - that was found
+	 * @author Junyu Chen      
+	 * @return trainer
 	 */
 	Trainer findById(Integer trainerId);
 
 	/**
-	 * Creates a new User in the User database and a new Trainer in the trainer
-	 * database associated with that User.
+	 * Inserts a new Trainer into the User database.
 	 * 
-	 * @param -
-	 *            trainerUser which contains the user and trainer data
-	 * @return new TrainerUser - that was stored in the database.
+	 * @param trainer
+	 * @author Mark Fleres
+	 * @return trainer
 	 */
 	Trainer newTrainer(Trainer trainer);
 
 	/**
-	 * 
-	 * Creates a new trainer object to associate with a pre-existing User object
+	 * Converts a trainee user to a trainer user.
 	 * 
 	 * @param trainer
-	 *            - which contains the pre-existing user information
-	 * @return new Trainer - that was created from given user and new trainer
+	 * @author Mark Fleres
+	 * @return trainer
 	 */
 	Trainer promoteToTrainer(Trainer trainer);
 
 	/**
-	 * 
-	 * Updates both the User and Trainer components of a trainer's credentials
+	 * Updates Trainer information
 	 * 
 	 * @param Trainer
-	 *            - which contains user and trainer information
-	 * @return Trainer - which contains updated user and trainer information
+	 * @author Nikhil Pious
+	 * @return trainer
 	 */
 	Trainer update(Trainer trainer);
 
 	/**
-	 * Find a single Trainer by email
+	 * Returns a single Trainer from the email.
 	 * 
-	 * Searches Users by email, then searches trainers by the userId that was found.
-	 *
 	 * @param String
-	 *            email - to search by
-	 * @return Trainer - combination of the user and trainer that were found
+	 * @author Jeffrey Reyes
+	 * @return trainer
 	 */
 	Trainer findTrainerByEmail(String email);
     
 	/**
-	 * This method is used to get all trainer titles.
+	 * Retrieves all trainer titles.
 	 * 
-	 * @return  a list of titles
+	 * @author Jing Yu
+	 * @return List<String> of titles
 	 */
 	List<String> getAllTitles();
 
 	/**
-	 * This method is used to get all trainers.
+	 * Retrieves all trainers.
 	 * 
-	 * @return a list of trainers
+	 * @author Jing Yu
+	 * @return List<Trainer> of trainers
 	 */
 	List<Trainer> getAll();
 
 	/**
-	 * The method is used to get a trainer with full name
-	 * @param firstName
-	 * @param lastName
-	 * @return a trainer
+	 * Retrieves a trainer by their full name.
+	 * @param String firstName, lastName
+	 * @author Jeffrey Reyes
+	 * @return trainer
 	 */
 	Trainer findByName(String firstName, String lastName);
 

@@ -6,10 +6,12 @@ import static org.hamcrest.Matchers.equalTo;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainee;
+import com.revature.gambit.services.TraineeService;
 
 public class TraineeControllerTest extends GambitTest {
 	
@@ -19,6 +21,9 @@ public class TraineeControllerTest extends GambitTest {
 	private static final Logger log = Logger.getLogger(TraineeControllerTest.class);
 
 	private static final String BASE_URI = "/trainees";
+	
+	@Autowired
+	private TraineeService traineeService;
 	
 	/**
 	 * Tests that trainee is created and status code returned is 201.
@@ -68,8 +73,7 @@ public class TraineeControllerTest extends GambitTest {
 	@Test
 	public void deleteTest() {
 		log.debug("TraineeControllerTest.deleteTest()");
-		Trainee trainee = new Trainee("Gir", "Chandradat", "chandradatgir@yahoo.com");
-		trainee.setUserId(36);
+		Trainee trainee = traineeService.findByEmail("xinguang.huang1@gmail.com");
 		given()
 			.port(port)
 			.basePath(BASE_URI)
