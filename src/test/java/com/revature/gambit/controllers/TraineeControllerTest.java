@@ -61,6 +61,10 @@ public class TraineeControllerTest extends GambitTest {
 		log.trace("Trainee could not register because of existing email");
 	}
 	
+	/**
+	 * Tests that a new trainee canot be created if there are empty fields
+	 * and that status code returned is 400.
+	 */
 	  @Test
 	    public void saveEmptyTrainee() {
 			Trainee emptyTrainee = new Trainee("","","");
