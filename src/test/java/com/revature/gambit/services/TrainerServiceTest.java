@@ -18,6 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
 
+/**
+ * 
+ * Tests for inserting, updating, retrieving and deleting Trainers.
+ *
+ */
 public class TrainerServiceTest extends GambitTest {
 
     private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
@@ -26,7 +31,9 @@ public class TrainerServiceTest extends GambitTest {
     private TrainerService trainerService;
 
     /**
-     * Test that a trainer is created successfully
+     * Tests that a trainer is created successfully.
+     * 
+     * @author Mark Fleres
      */
     @Test 
     public void testNewTrainer() {
@@ -41,7 +48,9 @@ public class TrainerServiceTest extends GambitTest {
     }
     
     /**
-     * Test the same trainer can not be created again.
+     * Tests the same trainer can not be created again.
+     * 
+     * @author Mark Fleres
      */
     @Test
     public void testNewTrainerRepeat() {
@@ -52,7 +61,9 @@ public class TrainerServiceTest extends GambitTest {
     }
     
     /**
-     * Test an empty trainer cannot be created
+     * Tests an empty trainer cannot be created.
+     * 
+     * @author Mark Fleres
      */
     @Test
     public void testNewTrainerEmpty() {
@@ -63,7 +74,9 @@ public class TrainerServiceTest extends GambitTest {
     }
 
     /**
-     * Test delete a trainer
+     * Tests delete a trainer.
+     * 
+     * @author Raymond Xia
      */
     @Test 
     public void testDeleteTrainer() {
@@ -74,7 +87,9 @@ public class TrainerServiceTest extends GambitTest {
     }
 
     /**
-     * Test delete a non-existing trainer
+     * Test delete a non-existing trainer.
+     * 
+     * @author Raymond Xia
      */
     @Test 
     public void testDeleteNonexistentTrainer() {
@@ -84,10 +99,10 @@ public class TrainerServiceTest extends GambitTest {
     }
 
     /**
-     * Test to get all titles
-     * Available titles: 'Lead Trainer','Vice President of Technology'
-     * 'Technology Manager','Senior Java Developer'
-     * 'Trainer','Senior Trainer'
+     * Tests to retrieve all titles: 'Lead Trainer','Vice President of Technology'
+     * 'Technology Manager','Senior Java Developer','Trainer','Senior Trainer'.
+     * 
+     * @author Jing Yu
      */
     @Test 
     public void testGetAllTitles() {
@@ -97,7 +112,9 @@ public class TrainerServiceTest extends GambitTest {
     }
 
     /**
-     * Test to get all trainers
+     * Tests to retrieve all trainers.
+     * 
+     * @author Jing Yu
      */
     @Test 
     public void testGetAllTrainers() {
@@ -108,6 +125,11 @@ public class TrainerServiceTest extends GambitTest {
 		}		
 	}
     
+    /**
+     * Tests that get all Trainers does not return a null.
+     * 
+     * @author Jing Yu
+     */
     @Test
 	public void getAllNotNull(){
 		log.debug("Testing that a table exists.");
@@ -116,7 +138,9 @@ public class TrainerServiceTest extends GambitTest {
 	}	
 
     /**
-     * Test to find a trainer by valid email address
+     * Tests trainer retrieval by valid email address.
+     * 
+     * @author Jeffery Reyes
      */
 	@Test
 	public void testFindTrainerByEmail() {
@@ -127,7 +151,9 @@ public class TrainerServiceTest extends GambitTest {
 	}
 
 	/**
-	 * Test to find a trainer with invalid email address
+	 * Tests that trainer retrieval fails with an invalid email address.
+	 * 
+	 * @author Jeffery Reyes
 	 */
 	@Test
 	public void testFindTrainerByEmailInvalid() {
@@ -137,7 +163,9 @@ public class TrainerServiceTest extends GambitTest {
 	}
 	
     /**
-     * Test to find a trainer with a non-trainer email
+     * Tests that trainer retrieval fails with an non-trainer email.
+     * 
+     * @author Jeffery Reyes
      */
 	@Test
 	public void testFindTrainerByEmailNonTrainer() {
@@ -147,7 +175,9 @@ public class TrainerServiceTest extends GambitTest {
     }
 	
 	/**
-	 * Test to find a trainer with id
+	 * Test trainer retrieval by id.
+	 * 
+	 * @author Junyu Chen
 	 */
 	@Test                                                                                                                                                                                                                                                                                                                                                                                                        
     public void findTrainerById(){
@@ -163,7 +193,9 @@ public class TrainerServiceTest extends GambitTest {
  }
     
 	/**
-	 * Test to update a trainer object
+	 * Tests updating a trainer.
+	 * 
+	 * @author Nikhil Pious
 	 */
     @Test 
 	public void testUpdate(){

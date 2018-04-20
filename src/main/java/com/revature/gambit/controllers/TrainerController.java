@@ -6,26 +6,29 @@ import org.springframework.http.ResponseEntity;
 
 import com.revature.gambit.entities.Trainer;
 
+	/**
+	 * 
+	 * Accepts front-end requests and contacts the appropriate service method
+	 * to insert, update, delete, and retrieve trainer information.
+	 *
+	 */
 public interface TrainerController {
 
 	/**
-	 * Creates a new Trainer
+	 * Inserts a new Trainer.
 	 * 
 	 * @param Trainer
-	 * 
-	 * @return the trainer object and http status 200
+	 * @author Mark Fleres
+	 * @return trainer and HTTP Status 200 "OK" or HTTP Status 400 "Bad Request".
 	 */
 	ResponseEntity<Trainer> registerTrainer(Trainer trainer);
 
 	/**
-	 * Promotes User to Trainer.
+	 * Converts a trainee user to a trainer user.
 	 * 
-	 * Users can be trainees or trainers. This function is used to create a
-	 * TrainerUser object from a trainer
-	 * 
-	 * @param TrainerUser
-	 *            - contains the user information
-	 * @return new TrainerUser created
+	 * @param Trainer
+	 * @author Mark Fleres
+	 * @return trainer and HTTP Status 200 "OK".
 	 */
 	ResponseEntity<Trainer> promote(Trainer trainer);
 
@@ -33,56 +36,62 @@ public interface TrainerController {
 	 * Update Trainer information.
 	 * 
 	 * @param Trainer
-	 *          
-	 * @return the updated Trainer
+	 * @author Nikhil Pious
+	 * @return trainer and HTTP Status 200 "OK".
+	 * 
 	 */
 	ResponseEntity<Trainer> updateTrainer(Trainer trainer);
 
 	/**
-	 * Finds Trainer by email.
+	 * Retrieves Trainer by email.
 	 * 
-	 * @param email
-	 *            to find by
-	 * @return requested Trainer
+	 * @param String of Email
+	 * @author Jeffery Reyes
+	 * @return trainer and HTTP Status 200 "OK".
+	 * 
 	 */
 	ResponseEntity<Trainer> findTrainerByEmail(String email);
 
 	/**
 	 * Retrieve Trainer by Id
 	 * 
-	 * @param id
-	 *            of trainer
-	 * @return Trainer of requested trainer
+	 * @param Integer id
+	 * @author Junyu Chen
+	 * @return trainer and HTTP Status 200 "OK".
 	 */
 	ResponseEntity<Trainer> findTrainerById(Integer id);
 
 	/**
-	 * Retrieve all titles.
+	 * Retrieves a list of all titles.
 	 * 
-	 * @return List<String> of the titles
+	 * @author Jing Yu
+	 * @return List<String> of all titles and HTTP Status 200 "OK".
 	 */
 	ResponseEntity<List<String>> getAllTitles();
 
 	/**
-	 * Retrieve all trainers.
+	 * Retrieves a list of all trainers.
 	 * 
-	 * @return List<Trainer> of all trainers
+	 * @author Jing Yu
+	 * @return List<Trainer> of all trainers and HTTP Status 200 "OK".
 	 */
 	ResponseEntity<List<Trainer>> getAll();
 
 	/**
-	 * Finds a user by unique firstname/lastname combination. This needs further
-	 * thought.
+	 * Retrieves a Trainer by first and last name.
 	 * 
-	 * @param first name and last name to search by
-	 * @return Trainer with the requested name
+	 * @param String firstName, String lastName
+	 * @author Jeffery Reyes
+	 * @return trainer
 	 */
 	ResponseEntity<Trainer> findByName(String firstName, String lastName);
 
 	/**
-	 * Deactivates the User account associated with the given TrainerId.
+	 * Delete Trainer by ID
 	 * 
-	 * @return Http status 200
+	 * @param Integer id
+	 * @author Raymond Xia
+	 * @return HTTP Status 200
 	 */
 	ResponseEntity<?> deleteByTrainerId(Integer id);
 
