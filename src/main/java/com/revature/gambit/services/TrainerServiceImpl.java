@@ -13,7 +13,7 @@ import com.revature.gambit.entities.User;
 import com.revature.gambit.repositories.TrainerRepository;
 import com.revature.gambit.repositories.UserRepository;
 
-/** Logic needs to be checked **/
+
 @Service("trainerService")
 public class TrainerServiceImpl implements TrainerService {
 
@@ -33,9 +33,9 @@ public class TrainerServiceImpl implements TrainerService {
 		trainerRepository.delete(id);
 	}
 
-	public Trainer findById(Integer userId) {
-		log.debug("Method called to find Trainer by ID with id: " + userId);
-		return trainerRepository.findByUserId(userId);
+	public Trainer findById(Integer trainerId) {
+		log.debug("Method called to find Trainer by ID with id: " + trainerId);
+		return trainerRepository.findByUserId(trainerId);
 	}
 
 	public Trainer newTrainer(Trainer trainer) {
@@ -51,25 +51,23 @@ public class TrainerServiceImpl implements TrainerService {
 
 	public Trainer promoteToTrainer(Trainer trainer) {
 		log.debug("Method called to promote a user to a trainer.");
-		User u = userRepository.findByUserId(trainer.getUserId());
+		User user = userRepository.findByUserId(trainer.getUserId());
 		Trainer bt = new Trainer();
-		bt.setUserId(u.getUserId());
+		bt.setUserId(user.getUserId());
 		bt.setTitle(trainer.getTitle());
 		bt.setUserId(0);
 		return bt;
 	}
 
-	public Trainer update(Trainer tu) {
-		log.debug("Method called to update a trainer and associated user.");
-		Trainer bt = trainerRepository.findByUserId(tu.getUserId());
-		User u = userService.findUserById((bt.getUserId()));
-		BeanUtils.copyProperties(tu, u, "userId");
-		User persisted = userRepository.save(u);
-		bt.setTitle(tu.getTitle());
-		Trainer ret = trainerRepository.save(bt);
-		
-		return ret;
+	public Trainer update(Trainer trainer) {
+		log.debug("Method called to update a trainer first name, last name, email, and title");
+		Trainer updatingTrainer = trainerRepository.findByUserId(trainer.getUserId());
+		BeanUtils.copyProperties(trainer, updatingTrainer,"userId");
+		User user = userService.findUserById(updatingTrainer.getUserId());
+		userRepository.save(user);
+		return trainerRepository.save(updatingTrainer);
 	}
+	
 
 	public Trainer findTrainerByEmail(String email) {
 		log.debug("Method called to findTrainerByEmail with email: " + email);
