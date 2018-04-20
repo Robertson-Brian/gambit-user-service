@@ -91,7 +91,7 @@ public class UserControllerImpl implements UserController {
 
 	}
 
-	@GetMapping("id/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<User> findUserById(@PathVariable Integer id) {
 		log.info("User Controller received request: find user by id.");
 		User user = userService.findUserById(id);
