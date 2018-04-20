@@ -51,10 +51,14 @@ public class UserControllerImpl implements UserController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> updateUser(@Valid @RequestBody User user) {
+	public ResponseEntity<User> updateUser(@Valid @RequestBody User user) {
 		log.info("User Controller received request: Update user " + user);
-		userService.update(user);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		User updatedUser = userService.update(user);
+		if(updatedUser != null) {
+			return new ResponseEntity<>(updatedUser, HttpStatus.NO_CONTENT);
+		} else {
+			throw new AuthUserException("User not updated/available", HttpStatus.BAD_REQUEST);
+		}
 
 	}
 

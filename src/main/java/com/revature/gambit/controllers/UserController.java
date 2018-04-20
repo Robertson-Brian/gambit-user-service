@@ -22,7 +22,7 @@ public interface UserController {
 	 * @param User to update
 	 * @return http status success but no content
 	 */
-	ResponseEntity<Void> updateUser(User user);
+	ResponseEntity<User> updateUser(User user);
 
 	/**
 	 * Finds the user by matching email address.
