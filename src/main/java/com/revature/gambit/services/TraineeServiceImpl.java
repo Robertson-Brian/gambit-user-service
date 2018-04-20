@@ -23,14 +23,21 @@ public class TraineeServiceImpl implements TraineeService {
 	@Transactional
 	public Trainee save(Trainee trainee) {
 		log.debug("save trainee: " + trainee);
+		if(trainee.getFirstName() == "" || trainee.getLastName() == "" || trainee.getEmail() == "") {
+			return null;
+		}
 		// check if trainee already exists
 		Trainee preexisting = traineeRepository.findByEmail(trainee.getEmail());
 		log.debug("Trainee exists: " + preexisting);
 		if (preexisting != null) {
 			return null;
 		} else {
+			
 			return traineeRepository.save(trainee);
+			
 		}
+		
+		
 	}
 
 	@Transactional
