@@ -27,14 +27,4 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: none
-
-#Eureka Client Configuration
-eureka:
-  instance:
-    preferIpAddress: true
-    leaseRenewalIntervalInSeconds: 1
-    leaseExpirationDurationInSeconds: 2
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_HOME}
  
