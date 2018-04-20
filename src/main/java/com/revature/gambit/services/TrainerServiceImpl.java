@@ -86,9 +86,10 @@ public class TrainerServiceImpl implements TrainerService {
 
 	public Trainer findByName(String firstName, String lastName) {
 		log.debug("Method called to get findByName.");
-		User u = userService.findByName(firstName, lastName);
-		Trainer bt = trainerRepository.findByUserId(u.getUserId());
-		return bt;
+//		User u = userService.findByName(firstName, lastName);
+//		Trainer bt = trainerRepository.findByUserId(u.getUserId());
+//		return bt;
+		return trainerRepository.findTrainerByFirstNameAndLastName(firstName, lastName);
 	}
 
 }

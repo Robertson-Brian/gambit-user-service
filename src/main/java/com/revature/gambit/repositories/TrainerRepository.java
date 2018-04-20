@@ -11,6 +11,7 @@ public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
 
      Trainer findByUserId(int userId);
 	 Trainer findByEmail(String email);
+	 Trainer findTrainerByFirstNameAndLastName(String firstName, String lastName);
 
     @Query("SELECT DISTINCT title FROM Trainer")
      List<String> findDistinctTitle();
