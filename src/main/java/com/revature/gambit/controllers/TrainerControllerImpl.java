@@ -44,56 +44,53 @@ public class TrainerControllerImpl implements TrainerController {
 	}
 
 	@PostMapping(value = "promote")
-	public ResponseEntity<Trainer> promote(@RequestBody Trainer tu) {
-		log.info("Trainer Controller received request: promote to Trainer");
-		Trainer t = trainerService.promoteToTrainer(tu);
+	public ResponseEntity<Trainer> promote(@RequestBody Trainer trainer) {
+		log.debug("Trainer Controller received request: promote to Trainer");
+		Trainer t = trainerService.promoteToTrainer(trainer);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 
 	}
 
 	@PutMapping
-	public ResponseEntity<Trainer> updateTrainer(@RequestBody Trainer tu) {
-		log.info("Trainer Controller received request: update Trainer");
-		Trainer t = trainerService.update(tu);
-		return new ResponseEntity<>(t, HttpStatus.OK);
+	public ResponseEntity<Trainer> updateTrainer(@RequestBody Trainer trainer) {
+		log.debug("Trainer Controller received request: update Trainer");
+		return new ResponseEntity<>(trainerService.update(trainer), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Trainer> findTrainerByEmail(@PathVariable String email) {
-		log.info("Trainer Controller received request: Finding trainer by email of " + email);
-		Trainer trainer = trainerService.findTrainerByEmail(email);
-		return new ResponseEntity<>(trainer, HttpStatus.OK);
+		log.debug("Trainer Controller received request: Finding trainer by email of " + email);
+		return new ResponseEntity<>(trainerService.findTrainerByEmail(email), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Trainer> findTrainerById(@PathVariable("id") Integer id) {
-		log.info("Trainer Controller received request: findTrainerById");
+		log.debug("Trainer Controller received request: findTrainerById");
 		return new ResponseEntity<Trainer>(trainerService.findById(id), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/titles")
 	public ResponseEntity<List<String>> getAllTitles() {
-		log.info("Trainer Controller received request: getTitles");
+		log.debug("Trainer Controller received request: getTitles");
 		return new ResponseEntity<List<String>>(trainerService.getAllTitles(), HttpStatus.OK);
 	}
 
 	@GetMapping
 	public ResponseEntity<List<Trainer>> getAll() {
-		log.info("Trainer Controller received request: getAll");
+		log.debug("Trainer Controller received request: getAll");
 		return new ResponseEntity<List<Trainer>>(trainerService.getAll(), HttpStatus.OK);
 	}
 
 	@GetMapping("name/{firstName}/{lastName}")
 	public ResponseEntity<Trainer> findByName(@PathVariable("firstName") String firstName,
 			@PathVariable("lastName") String lastName) {
-		log.info("Trainer Controller received request: findByName");
-		Trainer trainer = trainerService.findByName(firstName, lastName);
-		return new ResponseEntity<Trainer>(trainer, HttpStatus.OK);
+		log.debug("Trainer Controller received request: findByName");
+		return new ResponseEntity<Trainer>(trainerService.findByName(firstName, lastName), HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> deleteByTrainerId(@PathVariable("id") Integer id) {
-		log.info("Trainer Controller received request: deleteByTrainerId");
+		log.debug("Trainer Controller received request: deleteByTrainerId");
 		trainerService.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
