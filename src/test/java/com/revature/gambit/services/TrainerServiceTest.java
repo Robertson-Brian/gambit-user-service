@@ -211,5 +211,27 @@ public class TrainerServiceTest extends GambitTest {
 		assertThat(newUpdatedList,CoreMatchers.hasItems(updateTargetTrainer.getFirstName(),updateTargetTrainer.getLastName(),updateTargetTrainer.getEmail(),updateTargetTrainer.getTitle()));
 		assertNotEquals("steves",updateTargetTrainer.getFirstName());
 	}
+    
+    @Test
+    public void testFindByName() {
+    	log.debug("Testing findByName with valid trainer.");
+    	Trainer trainer = trainerService.findByName("Steven", "Kelsey");
+    	assertEquals(trainer.getFirstName(), "Steven");
+    	assertEquals(trainer.getLastName(), "Kelsey");
+    }
+    
+    @Test
+    public void testFindByNameInvalidTrainer() {
+    	log.debug("Testin findByName with invalid trainer.");
+    	Trainer trainer = trainerService.findByName("ndjhsd", "dedfjir");
+    	assertEquals(trainer, null);
+    }
+    
+    @Test
+    public void testFindByNameNonTrainer() {
+    	log.debug("Testin findByName with non trainer.");
+    	Trainer trainer = trainerService.findByName("Chen", "Yan");
+    	assertEquals(trainer, null);
+    }
 
 }

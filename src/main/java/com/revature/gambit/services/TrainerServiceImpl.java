@@ -71,8 +71,6 @@ public class TrainerServiceImpl implements TrainerService {
 		log.debug("Method called to update a trainer first name, last name, email, and title");
 		Trainer updatingTrainer = trainerRepository.findByUserId(trainer.getUserId());
 		BeanUtils.copyProperties(trainer, updatingTrainer,"userId");
-		User user = userService.findUserById(updatingTrainer.getUserId());
-		userRepository.save(user);
 		return trainerRepository.save(updatingTrainer);
 	}
 	
@@ -95,9 +93,10 @@ public class TrainerServiceImpl implements TrainerService {
 
 	public Trainer findByName(String firstName, String lastName) {
 		log.debug("Method called to get findByName.");
-		User u = userService.findByName(firstName, lastName);
-		Trainer bt = trainerRepository.findByUserId(u.getUserId());
-		return bt;
+//		User u = userService.findByName(firstName, lastName);
+//		Trainer bt = trainerRepository.findByUserId(u.getUserId());
+//		return bt;
+		return trainerRepository.findTrainerByFirstNameAndLastName(firstName, lastName);
 	}
 
 }

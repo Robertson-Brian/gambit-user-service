@@ -42,6 +42,7 @@ public class TrainerControllerTest extends GambitTest {
     private static final String UPDATE_TRAINER_URI = BASE_URI;
     private static final String FIND_TRAINER_BY_ID_URI = BASE_URI + "/{id}";
     private static final String PROMOTE_TRAINER_URI = BASE_URI + "/promote";
+    private static final String FIND_TRAINER_BY_NAME_URL = BASE_URI + "/name/{firstName}/{lastName}";
 
 
     @Test
@@ -152,7 +153,7 @@ public class TrainerControllerTest extends GambitTest {
     }
 
     @Test
-    public void findTrainerByEmail500() {
+    public void findTrainerByEmailInvalidTrainer() {
     	log.debug("test findTrainerByEmail with bad input");
     	String email = "sdjkssx@gmail.com";
     	String body = given()
@@ -161,7 +162,7 @@ public class TrainerControllerTest extends GambitTest {
     			             .get(FIND_TRAINER_BY_EMAIL_URI, email)
     			             .then()
     			             .assertThat()
-    				         .statusCode(HttpStatus.OK_200)
+    				         .statusCode(HttpStatus.NOT_FOUND_404)
     				         .extract()
     				         .body()
     				         .asString();
@@ -196,7 +197,7 @@ public class TrainerControllerTest extends GambitTest {
     			             .get(FIND_TRAINER_BY_EMAIL_URI, email)
     			             .then()
     			             .assertThat()
-    				         .statusCode(HttpStatus.OK_200)
+    				         .statusCode(HttpStatus.NOT_FOUND_404)
     				         .extract()
     				         .body()
     				         .asString();
@@ -351,6 +352,63 @@ public class TrainerControllerTest extends GambitTest {
 		       .and()
 		       .body("title", is(not("Technology Manager")));
 			
+	}
+   
+   @Test
+   public void findTrainerByName200() {
+	   log.debug("Testing findTrainerByName with valid trainer name");
+	   String firstName = "Steven";
+	   String lastName = "Kelsey";
+
+	   Trainer expected = trainerService.findByName(firstName, lastName);
+
+	   given()
+	   		.when()
+			.port(port)
+			.get(FIND_TRAINER_BY_NAME_URL, firstName, lastName)
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.OK_200)
+			.body("firstName", equalTo(expected.getFirstName()))
+			.body("lastName", equalTo(expected.getLastName()));
+
+	}
+
+   @Test
+   public void findTrainerByNameInavlidTrainer() {
+	   log.debug("Testing findTrainerByName with invalid user name");
+	   String firstName = "dejideji";
+	   String lastName = "sxiwjdijiew";
+		
+	   String body = given()
+			   			.when()
+			   			.port(port)
+			   			.get(FIND_TRAINER_BY_NAME_URL, firstName, lastName)
+			   			.then()
+			   			.assertThat()
+			   			.statusCode(HttpStatus.NOT_FOUND_404).extract().body().asString();
+	   
+	   assertEquals(body, "");
+	   
+	   
+	}
+
+   @Test
+   public void findTrainerByNameNonTrainer() {
+	   log.debug("Testing findByTrainerByName with valid user name, but who is not a trainer");
+	   String firstName = "Chen";
+	   String lastName = "Yan";
+
+	   String body = given()
+			   			.when()
+						.port(port)
+						.get(FIND_TRAINER_BY_NAME_URL, firstName, lastName)
+						.then()
+						.assertThat()
+					  	.statusCode(HttpStatus.NOT_FOUND_404)
+					  	.extract().body().asString();
+
+		assertEquals(body, "");
 	}
 
 }
