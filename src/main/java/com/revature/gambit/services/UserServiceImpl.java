@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.gambit.entities.User;
+import com.revature.gambit.entities.UserRole;
 import com.revature.gambit.repositories.UserRepository;
 
 @Service("userService")
@@ -47,6 +48,10 @@ public class UserServiceImpl implements UserService {
 		//Logic here should be getting the role from the DB.
 		//u.setRole("INACTIVE");		
 		userRepository.save(u);
+	}
+
+	public List<User> findByRole(UserRole role) {
+		return userRepository.findByRole(role);
 	}
 
 }

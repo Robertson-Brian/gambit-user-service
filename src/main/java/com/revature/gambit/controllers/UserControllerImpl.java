@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.User;
+import com.revature.gambit.exceptions.AuthUserException;
 import com.revature.gambit.services.UserService;
 
 /**
@@ -37,8 +38,12 @@ public class UserControllerImpl implements UserController {
 	@PostMapping
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		log.info("User Controller received request: create User: " + user);
-		User persisted = userService.makeUser(user);
-		return new ResponseEntity<>(persisted, HttpStatus.CREATED);
+		User persisted;
+		if((persisted = userService.makeUser(user)) != null){
+			return new ResponseEntity<>(persisted, HttpStatus.CREATED);
+		} else {
+			throw new AuthUserException("User not added", HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@PutMapping
