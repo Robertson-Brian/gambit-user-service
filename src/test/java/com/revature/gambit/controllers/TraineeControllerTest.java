@@ -65,6 +65,7 @@ public class TraineeControllerTest extends GambitTest {
 	 * Tests deletion of a trainee.
 	 * Asserts that a 204 - No Content status is returned.
 	 */
+	@Test
 	public void deleteTest() {
 		log.debug("TraineeControllerTest.deleteTest()");
 		Trainee trainee = new Trainee("Gir", "Chandradat", "chandradatgir@yahoo.com");
