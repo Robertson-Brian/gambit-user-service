@@ -24,10 +24,10 @@ public class TrainerDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public TrainerDTO(Trainer tu, String Type) {
+	public TrainerDTO(Trainer trainer, String Type) {
 		super();
 		this.time = new Timestamp(new Date().getTime());
-		this.trainer = tu;
+		this.trainer = trainer;
 		this.requestType = Type;
 		try {
 			this.sender = InetAddress.getLocalHost().getHostAddress();
@@ -36,10 +36,10 @@ public class TrainerDTO {
 		}
 	}
 
-	public TrainerDTO(Timestamp time, Trainer tu, String sender, String requestType) {
+	public TrainerDTO(Timestamp time, Trainer trainer, String sender, String requestType) {
 		super();
 		this.time = time;
-		this.trainer = tu;
+		this.trainer = trainer;
 		this.sender = sender;
 		this.requestType = requestType;
 	}
@@ -56,8 +56,8 @@ public class TrainerDTO {
 		return trainer;
 	}
 
-	public void setTrainerUser(Trainer tu) {
-		this.trainer = tu;
+	public void setTrainerUser(Trainer trainer) {
+		this.trainer = trainer;
 	}
 
 	public String getSender() {
