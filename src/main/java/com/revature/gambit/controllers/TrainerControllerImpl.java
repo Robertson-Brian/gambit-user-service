@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainer;
+import com.revature.gambit.entities.User;
 import com.revature.gambit.services.TrainerService;
 
 /**
@@ -46,9 +47,12 @@ public class TrainerControllerImpl implements TrainerController {
 	@PostMapping(value = "promote")
 	public ResponseEntity<Trainer> promote(@RequestBody Trainer trainer) {
 		log.debug("Trainer Controller received request: promote to Trainer");
-		Trainer t = trainerService.promoteToTrainer(trainer);
-		return new ResponseEntity<>(t, HttpStatus.OK);
-
+		Trainer promotedTrainer = trainerService.promoteToTrainer((User)trainer, trainer.getTitle());
+		if(promotedTrainer != null) {
+			return new ResponseEntity<>(promotedTrainer, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@PutMapping
@@ -60,7 +64,13 @@ public class TrainerControllerImpl implements TrainerController {
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Trainer> findTrainerByEmail(@PathVariable String email) {
 		log.debug("Trainer Controller received request: Finding trainer by email of " + email);
-		return new ResponseEntity<>(trainerService.findTrainerByEmail(email), HttpStatus.OK);
+		Trainer trainer = trainerService.findTrainerByEmail(email); 
+		if (trainer == null) {
+			return ResponseEntity.notFound().build();
+		}
+		else {
+			return new ResponseEntity<>(trainer, HttpStatus.OK);
+		}
 	}
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -85,7 +95,13 @@ public class TrainerControllerImpl implements TrainerController {
 	public ResponseEntity<Trainer> findByName(@PathVariable("firstName") String firstName,
 			@PathVariable("lastName") String lastName) {
 		log.debug("Trainer Controller received request: findByName");
-		return new ResponseEntity<Trainer>(trainerService.findByName(firstName, lastName), HttpStatus.OK);
+		Trainer trainer = trainerService.findByName(firstName, lastName);
+		if (trainer == null) {
+			return ResponseEntity.notFound().build();
+		}
+		else {
+			return new ResponseEntity<Trainer>(trainer, HttpStatus.OK);
+		}
 	}
 
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
