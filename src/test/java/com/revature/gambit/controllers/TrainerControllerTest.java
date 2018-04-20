@@ -47,6 +47,8 @@ public class TrainerControllerTest extends GambitTest {
     private static final String REGISTER_TRAINER_URI = BASE_URI;
     private static final String UPDATE_TRAINER_URI = BASE_URI;
     private static final String FIND_TRAINER_BY_ID_URI = BASE_URI + "/{id}";
+    private static final String PROMOTE_TRAINER_URI = BASE_URI + "/promote";
+    private static final String FIND_TRAINER_BY_NAME_URI = BASE_URI + "/name/{firstName}/{lastName}";
 
 
     /**
@@ -55,6 +57,74 @@ public class TrainerControllerTest extends GambitTest {
      * @return Status Code 200 upon success.
      * @author Raymond Xia
      */
+    @Test
+    public void testPromoteToTrainer() {
+    	log.debug("Promote to trainer test.");
+    	Trainer trainerToPromote = new Trainer("","","dlaut1@hotmail.com","Trainer");
+    	given()
+	       .contentType(ContentType.JSON)
+	       .body(trainerToPromote)
+	       .when()
+	       .port(port)
+	       .post(PROMOTE_TRAINER_URI)
+	       .then()
+		   .assertThat()
+		   .statusCode(HttpStatus.OK_200)
+		   .and()
+		   .contentType(ContentType.JSON)
+		   .and()
+		   .body("title", equalTo("Trainer"));
+    }
+
+    @Test
+    public void testPromoteToNonExistantTrainer() {
+    	log.debug("Promote to trainer test with a non-existant trainer.");
+    	Trainer trainerToPromote = new Trainer("","","mfleres@gmail.com","Trainer");
+    	given()
+	       .contentType(ContentType.JSON)
+	       .body(trainerToPromote)
+	       .when()
+	       .port(port)
+	       .post(PROMOTE_TRAINER_URI)
+	       .then()
+		   .assertThat()
+		   .statusCode(HttpStatus.BAD_REQUEST_400);
+    }
+
+    @Test
+    public void testPromoteToTrainerWithOnlyName() {
+    	log.debug("Promote to trainer test with a non-existant trainer.");
+    	Trainer trainerToPromote = new Trainer("Laut","Daniel","","Trainer");
+    	given()
+	       .contentType(ContentType.JSON)
+	       .body(trainerToPromote)
+	       .when()
+	       .port(port)
+	       .post(PROMOTE_TRAINER_URI)
+	       .then()
+		   .assertThat()
+		   .statusCode(HttpStatus.OK_200)
+		   .and()
+		   .contentType(ContentType.JSON)
+		   .and()
+		   .body("title", equalTo("Trainer"));
+    }
+
+    @Test
+    public void testPromoteToNoTrainer() {
+    	log.debug("Promote to trainer test with empty fields.");
+    	Trainer trainerToPromote = new Trainer("","","","");
+    	given()
+	       .contentType(ContentType.JSON)
+	       .body(trainerToPromote)
+	       .when()
+	       .port(port)
+	       .post(PROMOTE_TRAINER_URI)
+	       .then()
+		   .assertThat()
+		   .statusCode(HttpStatus.BAD_REQUEST_400);
+    }
+
     @Test
     public void testDeleteTrainer() {
     	log.debug("Deleting a Trainer");
@@ -113,20 +183,20 @@ public class TrainerControllerTest extends GambitTest {
      * @author Jeffrey Reyes
      */
     @Test
-    public void findTrainerByEmail500() {
+    public void findTrainerByEmailInvalidTrainer() {
     	log.debug("test findTrainerByEmail with bad input");
-    	String email = "sdjkssx@gmail.com";
+    	String email = "jefrey@gmail.com";
     	String body = given()
     			             .when()
     			             .port(port)
     			             .get(FIND_TRAINER_BY_EMAIL_URI, email)
     			             .then()
     			             .assertThat()
-    				         .statusCode(HttpStatus.OK_200)
+    				         .statusCode(HttpStatus.NOT_FOUND_404)
     				         .extract()
     				         .body()
     				         .asString();
-	
+
     	assertEquals(body, "");
     }
 
@@ -139,7 +209,7 @@ public class TrainerControllerTest extends GambitTest {
     @Test
     public void testFindAllTitles() {
     	log.debug("Find all trainers titles at : " + FIND_ALL_TRAINER_TITLES_URI);
-	
+
     	given()
     	       .port(port)
     	       .basePath(FIND_ALL_TRAINER_TITLES_URI)
@@ -169,11 +239,11 @@ public class TrainerControllerTest extends GambitTest {
     			             .get(FIND_TRAINER_BY_EMAIL_URI, email)
     			             .then()
     			             .assertThat()
-    				         .statusCode(HttpStatus.OK_200)
+    				         .statusCode(HttpStatus.NOT_FOUND_404)
     				         .extract()
     				         .body()
     				         .asString();
-	
+
     	assertEquals(body, "");
     }
 
@@ -186,8 +256,8 @@ public class TrainerControllerTest extends GambitTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testFindAllTrainers() {
-    	log.debug("Find all trainers titles at : " + FIND_ALL_TRAINERS_URI);	
-    	List<Trainer> trainers = new ArrayList<>();	
+    	log.debug("Find all trainers titles at : " + FIND_ALL_TRAINERS_URI);
+    	List<Trainer> trainers = new ArrayList<>();
     	trainers = given()
     			          .port(port)
     			          .basePath(FIND_ALL_TRAINERS_URI)
@@ -199,7 +269,7 @@ public class TrainerControllerTest extends GambitTest {
     			          .extract()
     			          .body()
     			          .as(trainers.getClass());
-	
+
     	assertTrue(!trainers.isEmpty());
     }
 
@@ -226,6 +296,7 @@ public class TrainerControllerTest extends GambitTest {
     		   .and()
     		   .body("firstName", equalTo("Mark"));
     }
+
     
     /**
      * Tests that a trainer cannot be registered when trainer already exists.
@@ -247,7 +318,7 @@ public class TrainerControllerTest extends GambitTest {
 			   .assertThat()
 			   .statusCode(HttpStatus.BAD_REQUEST_400);
     }
-    
+  
     /**
      * Tests that registering an empty trainer object cannot be registered.
      * 
@@ -267,6 +338,7 @@ public class TrainerControllerTest extends GambitTest {
 			   .assertThat()
 			   .statusCode(HttpStatus.BAD_REQUEST_400);
     }
+
     
     /**
      * Test trainer retrieval by their ID.
@@ -293,6 +365,7 @@ public class TrainerControllerTest extends GambitTest {
                      "title", equalTo("Lead Trainer"));
 
     }
+
     
     /**
     * Test 1: Testing that a trainer cannot be updated if the trainer doesn't exist.
@@ -304,7 +377,7 @@ public class TrainerControllerTest extends GambitTest {
    @Test
    public void testUpdateTrainer() {
    	log.debug("Test for updating a trainer");
-		Trainer targetTrainer = new Trainer("Nikhil","Pious","nikii@gmail.com","Technology Manager");		
+		Trainer targetTrainer = new Trainer("Nikhil","Pious","nikii@gmail.com","Technology Manager");
 		targetTrainer.setUserId(37);
 		given()
 			   .contentType(ContentType.JSON)
@@ -349,7 +422,64 @@ public class TrainerControllerTest extends GambitTest {
 		       .body("firstName", equalTo("Nikhil"))
 		       .and()
 		       .body("title", is(not("Technology Manager")));
-			
+
+	}
+
+   @Test
+   public void findTrainerByName200() {
+	   log.debug("Testing findTrainerByName with valid trainer name");
+	   String firstName = "Steven";
+	   String lastName = "Kelsey";
+
+	   Trainer expected = trainerService.findByName(firstName, lastName);
+
+	   given()
+	   		.when()
+			.port(port)
+			.get(FIND_TRAINER_BY_NAME_URI, firstName, lastName)
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.OK_200)
+			.body("firstName", equalTo(expected.getFirstName()))
+			.body("lastName", equalTo(expected.getLastName()));
+
+	}
+
+   @Test
+   public void findTrainerByNameInavlidTrainer() {
+	   log.debug("Testing findTrainerByName with invalid user name");
+	   String firstName = "jef";
+	   String lastName = "rey";
+
+	   String body = given()
+			   			.when()
+			   			.port(port)
+			   			.get(FIND_TRAINER_BY_NAME_URI, firstName, lastName)
+			   			.then()
+			   			.assertThat()
+			   			.statusCode(HttpStatus.NOT_FOUND_404).extract().body().asString();
+
+	   assertEquals(body, "");
+
+
+	}
+
+   @Test
+   public void findTrainerByNameNonTrainer() {
+	   log.debug("Testing findByTrainerByName with valid user name, but who is not a trainer");
+	   String firstName = "Chen";
+	   String lastName = "Yan";
+
+	   String body = given()
+			   			.when()
+						.port(port)
+						.get(FIND_TRAINER_BY_NAME_URI, firstName, lastName)
+						.then()
+						.assertThat()
+					  	.statusCode(HttpStatus.NOT_FOUND_404)
+					  	.extract().body().asString();
+
+		assertEquals(body, "");
 	}
 
 }

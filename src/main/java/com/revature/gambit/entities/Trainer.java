@@ -28,6 +28,17 @@ public class Trainer extends User {
 		this.title = title;
 		
 	}
+	
+	public Trainer(User user, String title) {
+		this.setFirstName(user.getFirstName());
+		this.setMiddleName(user.getMiddleName());
+		this.setLastName(user.getLastName());
+		this.setEmail(user.getEmail());
+		this.setHomePhone(user.getHomePhone());
+		this.setMobilePhone(user.getMobilePhone());
+		this.setRole(user.getRole());
+		this.title = title;
+	}
 
 	public String getTitle() {
 		return title;
