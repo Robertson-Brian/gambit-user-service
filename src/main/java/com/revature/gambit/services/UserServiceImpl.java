@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 import com.revature.gambit.entities.User;
 import com.revature.gambit.entities.UserRole;
 import com.revature.gambit.repositories.UserRepository;
+import com.revature.gambit.repositories.UserRoleRepository;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	UserRoleRepository userRoleRepository;
 
 	public User makeUser(User user) {
 		return userRepository.save(user);
@@ -52,6 +56,14 @@ public class UserServiceImpl implements UserService {
 
 	public List<User> findByRole(UserRole role) {
 		return userRepository.findByRole(role);
+	}
+	
+	public UserRole findUserRoleByName(String roleName) {
+		if(roleName != null) {
+			return userRoleRepository.findByRole(roleName);
+		} else {
+			return null;
+		}
 	}
 
 }

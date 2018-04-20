@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.User;
+import com.revature.gambit.entities.UserRole;
 import com.revature.gambit.exceptions.AuthUserException;
 import com.revature.gambit.services.UserService;
 
@@ -31,6 +32,9 @@ import com.revature.gambit.services.UserService;
 public class UserControllerImpl implements UserController {
 
 	private static final Logger log = Logger.getLogger(UserControllerImpl.class);
+	
+	private static final String TRAINER_ROLE = "ROLE_TRAINER";
+	private static final String ASSOCIATE_ROLE = "";
 
 	@Autowired
 	private UserService userService;
@@ -87,7 +91,7 @@ public class UserControllerImpl implements UserController {
 
 	}
 
-	@GetMapping("id/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<User> findUserById(@PathVariable Integer id) {
 		log.info("User Controller received request: find user by id.");
 		User user = userService.findUserById(id);
@@ -100,6 +104,20 @@ public class UserControllerImpl implements UserController {
 		log.info("User Controller received request: find user by name");
 		User user = userService.findByName(firstName, lastName);
 		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<List<User>> getAllTrainers() {
+		UserRole role = userService.findUserRoleByName(TRAINER_ROLE);
+		List<User> trainersList = userService.findByRole(role);
+		return new ResponseEntity<>(trainersList, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<List<User>> getAllAssociates() {
+		UserRole role = userService.findUserRoleByName(ASSOCIATE_ROLE);
+		List<User> associatesList = userService.findByRole(role);
+		return new ResponseEntity<>(associatesList, HttpStatus.OK);
 	}
 
 }
