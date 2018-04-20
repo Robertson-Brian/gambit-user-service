@@ -11,6 +11,8 @@ import org.springframework.boot.context.embedded.LocalServerPort;
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainee;
 
+import io.restassured.http.ContentType;
+
 public class TraineeControllerTest extends GambitTest {
 	
 	@LocalServerPort
@@ -21,7 +23,10 @@ public class TraineeControllerTest extends GambitTest {
 	private static final String BASE_URI = "/trainees";
 	
 	/**
-	 * Tests that trainee is created and status code returned is 201.
+	 * Tests that trainee is successfully created.
+	 * Asserts that Status Code 201 - CREATED is returned.
+	 * 
+	 * @author Shaleen Anwar
 	 */
 	@Test
 	public void save() {
@@ -41,8 +46,10 @@ public class TraineeControllerTest extends GambitTest {
 	}
 	
 	/**
-	 * Tests that a new trainee cannot be created if email already exists
-	 * and that status code returned is 400.
+	 * Tests that a new trainee cannot be created if email already exists.
+	 * Asserts that Status Code 400 - BAD REQUEST is returned.
+	 * 
+	 * @author Shaleen Anwar
 	 */
 	@Test
 	public void saveDuplicate() {
@@ -63,7 +70,9 @@ public class TraineeControllerTest extends GambitTest {
 
 	/**
 	 * Tests deletion of a trainee.
-	 * Asserts that a 204 - No Content status is returned.
+	 * Asserts that Status Code 204 - NO CONTENT is returned.
+	 * 
+	 * @author Joseph Arbelaez
 	 */
 	public void deleteTest() {
 		log.debug("TraineeControllerTest.deleteTest()");
@@ -81,10 +90,12 @@ public class TraineeControllerTest extends GambitTest {
 			.statusCode(HttpStatus.NO_CONTENT_204);
 	}
 
-	/**Test methods:
+	/** 
+	 * Tests to see if the correct user is given,
+	 * using certain emails that correspond to said user.
+	 * Asserts that Status Code 200 - OK is returned.
 	 * 
-	 * @see com.revature.gambit.services.TraineeServiceTest
-	 * Tests to see if the correct user is given with certain emails that correspond to said user
+	 * @author Joel DeJesus
 	 */
 	@Test
 	public void findTraineeByEmail() {
@@ -103,7 +114,13 @@ public class TraineeControllerTest extends GambitTest {
 			.and()
 			.body("firstName",equalTo(firstName));
 	}
-
+	
+	/**
+	 * Tests finding the trainee "Laut" by the given email.
+	 * Asserts that Status Code 200 - OK is returned.
+	 * 
+	 * @author Joel DeJesus
+	 */
 	@Test
 	public void findTraineeByEmailLaut() {
 		log.debug("Test find Howard by email.");
@@ -121,7 +138,13 @@ public class TraineeControllerTest extends GambitTest {
 			.and()
 			.body("firstName",equalTo(firstName));
 	}
-
+	
+	/**
+	 * Tests finding the trainee "Chang Fatt" by the given email.
+	 * Asserts that Status Code 200 - OK is returned.
+	 * 
+	 * @author Joel DeJesus
+	 */
 	@Test
 	public void findTraineeByEmailChang() {
 		log.debug("Test find Chang by email.");
@@ -139,7 +162,13 @@ public class TraineeControllerTest extends GambitTest {
 			.and()
 			.body("firstName",equalTo(firstName));
 	}
-
+	
+	/**
+	 * Tests finding a nonexistent email.
+	 * Asserts that Status Code 404 - NOT FOUND is returned.
+	 * 
+	 * @author Joel DeJesus
+	 */
 	@Test
 	public void findTraineeByEmailFalse() {
 		log.debug("Test null email.");
@@ -154,7 +183,13 @@ public class TraineeControllerTest extends GambitTest {
 			.assertThat()
 			.statusCode(HttpStatus.NOT_FOUND_404);
 	}
-
+	
+	/**
+	 * Tests retrieving all trainees.
+	 * Asserts that Status Code 200 - OK is returned.
+	 * 
+	 * @author Peter Alagna
+	 */
 	@Test
 	public void getAllTrainees() {
 		log.debug("Testing getting all trainees.");
@@ -167,10 +202,12 @@ public class TraineeControllerTest extends GambitTest {
 			.assertThat()
 			.statusCode(HttpStatus.OK_200);
 	}
-
+	
 	/**
-	 * Checks that getByBatchAndStatus returns a 200 status code.
-	 *  
+	 * Tests finding a trainee by batch and training status.
+	 * Asserts that Status Code 200 - OK is returned.
+	 * 
+	 * @author Brian Ethier
 	 */
 	@Test
 	public void getByBatchAndStatus() {
@@ -186,8 +223,10 @@ public class TraineeControllerTest extends GambitTest {
 	}
 	
 	/**
-	 * Checks that when you send an invalid training status
-	 * bad request gets returned.
+	 * Tests finding a trainee by an invalid training status.
+	 * Asserts that Status Code 400 - BAD REQUEST is returned.
+	 * 
+	 * @author Brian Ethier
 	 */
 	@Test
 	public void getByBatchAndBadStatus() {
@@ -201,19 +240,26 @@ public class TraineeControllerTest extends GambitTest {
 			.assertThat()
 			.statusCode(HttpStatus.BAD_REQUEST_400);
 	}
-
+	
 	/**
-	 * This method tests updating a trainee.
-	 * It asserts that a 204 request will be received, as a PUT method.
+	 * Two Tests:
+	 * First:  Tests updating a trainee's first name.
+	 * 		   Asserts that Status Code 204 - NO CONTENT is returned.
+	 * Second: Tests updating a nonexistent trainee.
+	 * 		   Asserts that Status Code 400 - BAD REQUEST is returned.
 	 * 
+	 * @author Ismael Khalil
 	 */
+	
 	@Test
-	public void update() {
-		log.debug("Trainee Controller test: Updating trainee");
-		Trainee trainee = new Trainee("Howard", "Johnson", "howard.johnson@hotmail.com");
+	public void testUpdate() {
+		log.debug("Trainee Controller test: Updating trainee's name");
+		Trainee trainee = new Trainee("Larry", "Miller", "larrymiller@gmail.com");
 		trainee.setUserId(13);
 		trainee.getBatches().add(2);
-		trainee.setFirstName("John");
+		trainee.setFirstName("Howard");
+		trainee.setLastName("Johnson");
+		trainee.setEmail("howard.johnson@hotmail.com");
 		given()
 			.port(port)
 			.basePath(BASE_URI)
@@ -224,17 +270,10 @@ public class TraineeControllerTest extends GambitTest {
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.NO_CONTENT_204);
-	}
-
-	/**
-	 * This method will attempt to return a nonexistent employee,
-	 * and return 
-	 * 
-	 */
-	@Test
-	public void updateNull() {
-		log.debug("Trainee Controller test: Update a nonexistent employee");
-		Trainee trainee = new Trainee("Howard", "Stern", "filler@hmail.com");
+			log.trace("Updated trainee: " + trainee);
+		
+		log.debug("Trainee Controller test: Update a nonexistent trainee");
+		Trainee nullTrainee = new Trainee("Howard", "Stern", "filler@hmail.com");
 		given()
 			.port(port)
 			.basePath(BASE_URI)
@@ -244,5 +283,6 @@ public class TraineeControllerTest extends GambitTest {
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.BAD_REQUEST_400);
-	}
+			log.trace("Trainee does not exist.");
+	}	
 }

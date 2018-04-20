@@ -32,12 +32,11 @@ public class TraineeServiceImpl implements TraineeService {
 			return traineeRepository.save(trainee);
 		}
 	}
-	
 
 	@Transactional
 	public Trainee update(Trainee trainee) {
 		log.trace("Testing update method for " + trainee);
-		
+
 		Trainee preexisting = traineeRepository.findByEmail(trainee.getEmail());
 		log.trace("Trainee exists: " + preexisting);
 		if (preexisting != null) {
@@ -55,6 +54,12 @@ public class TraineeServiceImpl implements TraineeService {
 	}
 
 	@Transactional
+	public void delete(Trainee trainee) {
+		log.debug("TraineeServiceImpl.delete" + trainee);
+		traineeRepository.delete(trainee);
+	}
+
+	@Transactional
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status) {
 		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId + " with status: " + status);
 		try {
@@ -64,24 +69,18 @@ public class TraineeServiceImpl implements TraineeService {
 		}
 		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,TrainingStatus.valueOf(status));
 	}
-	
-	@Transactional
-	public void delete(Trainee trainee) {
-		log.debug("TraineeServiceImpl.delete" + trainee);
-		traineeRepository.delete(trainee);
-	}
 
 	@Transactional
 	public List<Trainee> getAll() {
 		log.debug("findAll Trainees.");
 		return traineeRepository.findAll();
 	}
-	
+
 	@Transactional
 	public Trainee findByEmail(String email) {
 		log.trace("findByEmail: " + email);
 		if(traineeRepository.findByEmail(email)!=null)
-		return traineeRepository.findByEmail(email);
+			return traineeRepository.findByEmail(email);
 		else
 			return null;
 	}
