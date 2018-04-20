@@ -55,7 +55,6 @@ public class TrainerControllerTest extends GambitTest {
      * @return Status Code 200 upon success.
      * @author Raymond Xia
      */
-    
     @Test
     public void testDeleteTrainer() {
     	log.debug("Deleting a Trainer");
@@ -74,7 +73,6 @@ public class TrainerControllerTest extends GambitTest {
      * @return Status Code 500 upon success.
      * @author Raymond Xia
      */
-    
     @Test
     public void testDeleteNonexistentTrainer() {
     	log.debug("Deleting a Trainer");
@@ -91,9 +89,8 @@ public class TrainerControllerTest extends GambitTest {
      * Tests that a trainer retrieval from their email.
      * 
      * @return Status Code 200 upon success.
-     * @author Jeffery Reyes
+     * @author Jeffrey Reyes
      */
-    
     @Test
     public void findTrainerByEmail200() {
     	log.debug("test findTrainerByEmail with bad input");
@@ -113,9 +110,8 @@ public class TrainerControllerTest extends GambitTest {
      * Tests that trainer retrieval fails with a invalid email.
      * 
      * @return Status Code 200
-     * @author Jeffery Reyes
+     * @author Jeffrey Reyes
      */
-    
     @Test
     public void findTrainerByEmail500() {
     	log.debug("test findTrainerByEmail with bad input");
@@ -140,7 +136,6 @@ public class TrainerControllerTest extends GambitTest {
      * @return Status Code 200 upon success.
      * @author Jing Yu
      */
-    
     @Test
     public void testFindAllTitles() {
     	log.debug("Find all trainers titles at : " + FIND_ALL_TRAINER_TITLES_URI);
@@ -300,8 +295,9 @@ public class TrainerControllerTest extends GambitTest {
     }
     
     /**
-    * Testing that trainer cannot be updated if the trainer doesn't exist.
-    * 
+    * Test 1: Testing that a trainer cannot be updated if the trainer doesn't exist.
+    * Test 2: Testing that a trainer ID can be updated.
+    * Test 3: Testing that a trainer title can be updated.
     * @author Nikhil Pious
     * @return Status Code 500 upon success.
     */
@@ -319,13 +315,7 @@ public class TrainerControllerTest extends GambitTest {
 		       .then()
 			   .assertThat()
 			   .statusCode(HttpStatus.INTERNAL_SERVER_ERROR_500);
-		
-	 /**
-	 * Tests that a trainer's ID can be updated.
-	 * 
-	 * @author Nikhil Pious
-	 * @return Status Code 200 upon Success
-	 */
+
 		targetTrainer.setUserId(trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId());
 		given()
 		       .contentType(ContentType.JSON)
@@ -342,12 +332,7 @@ public class TrainerControllerTest extends GambitTest {
 		       .body("firstName",is(notNullValue()))
 		       .and()
 		       .body("title", equalTo("Technology Manager"));
-	/**
-	 * Tests that a trainer's Title can be updated.
-	 * 
-	 * @author Nikhil Pious
-	 * @return Status Code 200 upon Success
-	 */
+
 		targetTrainer.setTitle("Senior Java Developer");
 		given()
 		       .contentType(ContentType.JSON)

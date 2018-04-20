@@ -140,7 +140,7 @@ public class TrainerServiceTest extends GambitTest {
     /**
      * Tests trainer retrieval by valid email address.
      * 
-     * @author Jeffery Reyes
+     * @author Jeffrey Reyes
      */
 	@Test
 	public void testFindTrainerByEmail() {
@@ -153,7 +153,7 @@ public class TrainerServiceTest extends GambitTest {
 	/**
 	 * Tests that trainer retrieval fails with an invalid email address.
 	 * 
-	 * @author Jeffery Reyes
+	 * @author Jeffrey Reyes
 	 */
 	@Test
 	public void testFindTrainerByEmailInvalid() {
@@ -165,7 +165,7 @@ public class TrainerServiceTest extends GambitTest {
     /**
      * Tests that trainer retrieval fails with an non-trainer email.
      * 
-     * @author Jeffery Reyes
+     * @author Jeffrey Reyes
      */
 	@Test
 	public void testFindTrainerByEmailNonTrainer() {
