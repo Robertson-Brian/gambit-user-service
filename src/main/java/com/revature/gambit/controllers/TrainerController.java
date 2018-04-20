@@ -46,7 +46,7 @@ public interface TrainerController {
 	 * Retrieves Trainer by email.
 	 * 
 	 * @param String of Email
-	 * @author Jeffery Reyes
+	 * @author Jeffrey Reyes
 	 * @return trainer and HTTP Status 200 "OK".
 	 * 
 	 */
@@ -81,7 +81,7 @@ public interface TrainerController {
 	 * Retrieves a Trainer by first and last name.
 	 * 
 	 * @param String firstName, String lastName
-	 * @author Jeffery Reyes
+	 * @author Jeffrey Reyes
 	 * @return trainer
 	 */
 	ResponseEntity<Trainer> findByName(String firstName, String lastName);
