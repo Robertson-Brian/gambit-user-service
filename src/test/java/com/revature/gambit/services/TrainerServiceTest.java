@@ -132,7 +132,7 @@ public class TrainerServiceTest extends GambitTest {
 	@Test
 	public void testFindTrainerByEmailInvalid() {
 		log.debug("Testing trainerService.findTrainerByEmail with invalid email address");
-		Trainer trainer = trainerService.findTrainerByEmail("fdjnfjdd@revature.com");
+		Trainer trainer = trainerService.findTrainerByEmail("jefrey@revature.com");
 		assertEquals(trainer, null);
 	}
 	
@@ -198,14 +198,14 @@ public class TrainerServiceTest extends GambitTest {
     
     @Test
     public void testFindByNameInvalidTrainer() {
-    	log.debug("Testin findByName with invalid trainer.");
-    	Trainer trainer = trainerService.findByName("ndjhsd", "dedfjir");
+    	log.debug("Testing findByName with invalid trainer.");
+    	Trainer trainer = trainerService.findByName("jeff", "rey");
     	assertEquals(trainer, null);
     }
     
     @Test
     public void testFindByNameNonTrainer() {
-    	log.debug("Testin findByName with non trainer.");
+    	log.debug("Testing findByName with non trainer.");
     	Trainer trainer = trainerService.findByName("Chen", "Yan");
     	assertEquals(trainer, null);
     }

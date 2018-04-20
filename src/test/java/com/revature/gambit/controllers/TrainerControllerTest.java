@@ -41,7 +41,7 @@ public class TrainerControllerTest extends GambitTest {
     private static final String REGISTER_TRAINER_URI = BASE_URI;
     private static final String UPDATE_TRAINER_URI = BASE_URI;
     private static final String FIND_TRAINER_BY_ID_URI = BASE_URI + "/{id}";
-    private static final String FIND_TRAINER_BY_NAME_URL = BASE_URI + "/name/{firstName}/{lastName}";
+    private static final String FIND_TRAINER_BY_NAME_URI = BASE_URI + "/name/{firstName}/{lastName}";
 
 
     @Test
@@ -86,7 +86,7 @@ public class TrainerControllerTest extends GambitTest {
     @Test
     public void findTrainerByEmailInvalidTrainer() {
     	log.debug("test findTrainerByEmail with bad input");
-    	String email = "sdjkssx@gmail.com";
+    	String email = "jefrey@gmail.com";
     	String body = given()
     			             .when()
     			             .port(port)
@@ -296,7 +296,7 @@ public class TrainerControllerTest extends GambitTest {
 	   given()
 	   		.when()
 			.port(port)
-			.get(FIND_TRAINER_BY_NAME_URL, firstName, lastName)
+			.get(FIND_TRAINER_BY_NAME_URI, firstName, lastName)
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.OK_200)
@@ -308,13 +308,13 @@ public class TrainerControllerTest extends GambitTest {
    @Test
    public void findTrainerByNameInavlidTrainer() {
 	   log.debug("Testing findTrainerByName with invalid user name");
-	   String firstName = "dejideji";
-	   String lastName = "sxiwjdijiew";
+	   String firstName = "jef";
+	   String lastName = "rey";
 		
 	   String body = given()
 			   			.when()
 			   			.port(port)
-			   			.get(FIND_TRAINER_BY_NAME_URL, firstName, lastName)
+			   			.get(FIND_TRAINER_BY_NAME_URI, firstName, lastName)
 			   			.then()
 			   			.assertThat()
 			   			.statusCode(HttpStatus.NOT_FOUND_404).extract().body().asString();
@@ -333,7 +333,7 @@ public class TrainerControllerTest extends GambitTest {
 	   String body = given()
 			   			.when()
 						.port(port)
-						.get(FIND_TRAINER_BY_NAME_URL, firstName, lastName)
+						.get(FIND_TRAINER_BY_NAME_URI, firstName, lastName)
 						.then()
 						.assertThat()
 					  	.statusCode(HttpStatus.NOT_FOUND_404)
