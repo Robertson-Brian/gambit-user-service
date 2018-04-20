@@ -48,14 +48,23 @@ public class TrainerServiceImpl implements TrainerService {
 		return trainerRepository.save(trainer);
 	}
 
-	public Trainer promoteToTrainer(Trainer trainer) {
+	public Trainer promoteToTrainer(User user, String title) {
 		log.debug("Method called to promote a user to a trainer.");
-		User user = userRepository.findByUserId(trainer.getUserId());
-		Trainer bt = new Trainer();
-		bt.setUserId(user.getUserId());
-		bt.setTitle(trainer.getTitle());
-		bt.setUserId(0);
-		return bt;
+		if(user == null) {
+			return null;
+		}
+		User baseUser;
+		log.trace("Finding user by email");
+		if((baseUser = userService.findUserByEmail(user.getEmail())) == null) {
+			log.trace("Finding user by name");
+			if((baseUser = userService.findByName(user.getFirstName(), user.getLastName())) == null) {
+				log.trace("User does not exist in the database");
+				return null;
+			}
+		}
+		userRepository.delete(baseUser.getUserId());
+		Trainer userToPromote = new Trainer(baseUser,title);
+		return this.newTrainer(userToPromote);
 	}
 
 	public Trainer update(Trainer trainer) {

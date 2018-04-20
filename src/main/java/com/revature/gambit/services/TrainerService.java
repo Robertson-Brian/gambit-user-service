@@ -3,6 +3,7 @@ package com.revature.gambit.services;
 import java.util.List;
 
 import com.revature.gambit.entities.Trainer;
+import com.revature.gambit.entities.User;
 
 public interface TrainerService {
 
@@ -37,11 +38,13 @@ public interface TrainerService {
 	 * 
 	 * Creates a new trainer object to associate with a pre-existing User object
 	 * 
-	 * @param trainer
+	 * @param user
 	 *            - which contains the pre-existing user information
+	 * @param title
+	 * 			  - The title of the new Trainer
 	 * @return new Trainer - that was created from given user and new trainer
 	 */
-	Trainer promoteToTrainer(Trainer trainer);
+	Trainer promoteToTrainer(User user, String title);
 
 	/**
 	 * 

@@ -41,8 +41,77 @@ public class TrainerControllerTest extends GambitTest {
     private static final String REGISTER_TRAINER_URI = BASE_URI;
     private static final String UPDATE_TRAINER_URI = BASE_URI;
     private static final String FIND_TRAINER_BY_ID_URI = BASE_URI + "/{id}";
+    private static final String PROMOTE_TRAINER_URI = BASE_URI + "/promote";
 
 
+    @Test
+    public void testPromoteToTrainer() {
+    	log.debug("Promote to trainer test.");
+    	Trainer trainerToPromote = new Trainer("","","dlaut1@hotmail.com","Trainer");
+    	given()
+	       .contentType(ContentType.JSON)
+	       .body(trainerToPromote)
+	       .when()
+	       .port(port)
+	       .post(PROMOTE_TRAINER_URI)
+	       .then()
+		   .assertThat()
+		   .statusCode(HttpStatus.OK_200)
+		   .and()
+		   .contentType(ContentType.JSON)
+		   .and()
+		   .body("title", equalTo("Trainer"));
+    }
+    
+    @Test
+    public void testPromoteToNonExistantTrainer() {
+    	log.debug("Promote to trainer test with a non-existant trainer.");
+    	Trainer trainerToPromote = new Trainer("","","mfleres@gmail.com","Trainer");
+    	given()
+	       .contentType(ContentType.JSON)
+	       .body(trainerToPromote)
+	       .when()
+	       .port(port)
+	       .post(PROMOTE_TRAINER_URI)
+	       .then()
+		   .assertThat()
+		   .statusCode(HttpStatus.BAD_REQUEST_400);
+    }
+    
+    @Test
+    public void testPromoteToTrainerWithOnlyName() {
+    	log.debug("Promote to trainer test with a non-existant trainer.");
+    	Trainer trainerToPromote = new Trainer("Daniel","Laut","","Trainer");
+    	given()
+	       .contentType(ContentType.JSON)
+	       .body(trainerToPromote)
+	       .when()
+	       .port(port)
+	       .post(PROMOTE_TRAINER_URI)
+	       .then()
+		   .assertThat()
+		   .statusCode(HttpStatus.OK_200)
+		   .and()
+		   .contentType(ContentType.JSON)
+		   .and()
+		   .body("title", equalTo("Trainer"));
+    }
+    
+    @Test
+    public void testPromoteToNoTrainer() {
+    	log.debug("Promote to trainer test with empty fields.");
+    	Trainer trainerToPromote = new Trainer("","","","");
+    	given()
+	       .contentType(ContentType.JSON)
+	       .body(trainerToPromote)
+	       .when()
+	       .port(port)
+	       .post(PROMOTE_TRAINER_URI)
+	       .then()
+		   .assertThat()
+		   .statusCode(HttpStatus.BAD_REQUEST_400);
+    }
+    
     @Test
     public void testDeleteTrainer() {
     	log.debug("Deleting a Trainer");
