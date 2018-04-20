@@ -10,9 +10,6 @@ import org.springframework.boot.context.embedded.LocalServerPort;
 
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainee;
-import com.revature.gambit.entities.Trainer;
-
-import io.restassured.http.ContentType;
 
 public class TraineeControllerTest extends GambitTest {
 	
