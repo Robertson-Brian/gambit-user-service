@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.services.TraineeService;
-
 /**
  * Handles all Janus requests for Trainee resources.
  *
@@ -27,15 +27,20 @@ import com.revature.gambit.services.TraineeService;
 @RequestMapping(value = "trainees", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TraineeControllerImpl implements TraineeController {
 	private static final Logger log = Logger.getLogger(TraineeControllerImpl.class);
-	
+
 	@Autowired
 	private TraineeService traineeService;
-	
+
 	@GetMapping("batch/{id}/status/{status}")
 	public ResponseEntity<List<Trainee>> findAllByBatchAndStatus(@PathVariable Integer id,
 			@PathVariable String status) {
 		log.debug("Trainee Controller received request: Finding trainees for batch: " + id + " with status: " + status);
-		return new ResponseEntity<>(traineeService.findAllByBatchAndStatus(id, status), HttpStatus.OK);
+		List<Trainee> trainees = traineeService.findAllByBatchAndStatus(id, status);
+		if(trainees!= null){
+			return new ResponseEntity<>(trainees, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(trainees, HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@GetMapping
@@ -47,26 +52,38 @@ public class TraineeControllerImpl implements TraineeController {
 	@PostMapping
 	public ResponseEntity<Trainee> createTrainee(@RequestBody Trainee trainee) {
 		log.debug("Trainee Controller received request: Creating trainee: " + trainee);
-		return new ResponseEntity<>(traineeService.save(trainee), HttpStatus.CREATED);
+		Trainee newTrainee = traineeService.save(trainee);
+		if (newTrainee != null) {
+			return new ResponseEntity<>(newTrainee, HttpStatus.CREATED); 
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+		}
+		
 	}
 
 	@PutMapping
 	public ResponseEntity<Trainee> updateTrainee(@RequestBody Trainee trainee) {
 		log.debug("Trainee Controller received request: Updating trainee: " + trainee);
-		return new ResponseEntity<>(traineeService.save(trainee), HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(traineeService.update(trainee), HttpStatus.NO_CONTENT);
 	}
 
-	@DeleteMapping("/{traineeId}")
-	public ResponseEntity<Void> deleteTrainee(@PathVariable Integer traineeId) {
-		log.debug("Trainee Controller received request: Deleting trainee: " + traineeId);		
-		traineeService.delete(traineeId);
+	@DeleteMapping
+	public ResponseEntity<?> deleteTrainee(@RequestBody Trainee trainee) {
+		log.debug("TraineeControllerImpl.deleteTrainee: " + trainee);		
+		traineeService.delete(trainee);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@GetMapping("/{email}")
-	public ResponseEntity<Trainee> findByEmail(@PathVariable String email) {
+	@GetMapping("/email{email}")
+	public ResponseEntity<Trainee> findByEmail(@RequestParam(value="email") String email) {
 		log.debug("Finding trainees by email: " + email);
-		return new ResponseEntity<>(traineeService.findByEmail(email), HttpStatus.OK);
+		Trainee trainee = traineeService.findByEmail(email);
+		if (trainee != null) {
+			return new ResponseEntity<>(trainee,HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 }
