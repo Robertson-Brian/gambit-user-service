@@ -17,7 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
+import com.revature.gambit.entities.User;
 
+/**
+ * 
+ * Tests for inserting, updating, retrieving and deleting Trainers.
+ *
+ */
 public class TrainerServiceTest extends GambitTest {
 
     private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
@@ -25,8 +31,69 @@ public class TrainerServiceTest extends GambitTest {
     @Autowired
     private TrainerService trainerService;
 
+    @Test
+    public void testPromoteTrainer() {
+    	String title = "Trainer";
+    	User userToPromote = new User("Laut","Daniel","dlaut1@hotmail.com");
+    	log.trace("trainerToPromote.id = " + userToPromote.getUserId());
+    	assertNotEquals(null, userToPromote);
+    	
+    	Trainer promotedTrainer = trainerService.promoteToTrainer(userToPromote, title);
+    	assertNotEquals(null,promotedTrainer);
+    	
+    	assertEquals(title,promotedTrainer.getTitle());
+    	
+    	assertEquals(promotedTrainer.getFirstName(),userToPromote.getFirstName());
+    	
+    	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
+    }
+    
+    @Test
+    public void testPromoteTrainerWithOnlyEmail() {
+    	String title = "Trainer";
+    	User userToPromote = new User("","","dlaut1@hotmail.com");
+    	log.trace("trainerToPromote.id = " + userToPromote.getUserId());
+    	assertNotEquals(null, userToPromote);
+    	
+    	Trainer promotedTrainer = trainerService.promoteToTrainer(userToPromote, title);
+    	assertNotEquals(null,promotedTrainer);
+    	
+    	assertEquals(title,promotedTrainer.getTitle());
+    	
+    	assertEquals("Laut",promotedTrainer.getFirstName());
+    	
+    	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
+    }
+    
+    @Test
+    public void testPromoteTrainerWithOnlyName() {
+    	String title = "Trainer";
+    	User userToPromote = new User("Laut","Daniel","");
+    	log.trace("trainerToPromote.id = " + userToPromote.getUserId());
+    	assertNotEquals(null, userToPromote);
+    	
+    	Trainer promotedTrainer = trainerService.promoteToTrainer(userToPromote, title);
+    	assertNotEquals(null,promotedTrainer);
+    	
+    	assertEquals(title,promotedTrainer.getTitle());
+    	
+    	assertEquals(promotedTrainer.getFirstName(),userToPromote.getFirstName());
+    	
+    	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
+    }
+    
+    @Test
+    public void testPromoteEmptyTrainer() {
+    	String title = "Trainer";
+    	User userToPromote = new User("","","");
+    	Trainer promotedTrainer = trainerService.promoteToTrainer(userToPromote, title);
+    	assertEquals(null,promotedTrainer);
+    }
+    
     /**
-     * Test that a trainer is created successfully
+     * Tests that a trainer is created successfully.
+     * 
+     * @author Mark Fleres
      */
     @Test 
     public void testNewTrainer() {
@@ -41,7 +108,9 @@ public class TrainerServiceTest extends GambitTest {
     }
     
     /**
-     * Test the same trainer can not be created again.
+     * Tests the same trainer can not be created again.
+     * 
+     * @author Mark Fleres
      */
     @Test
     public void testNewTrainerRepeat() {
@@ -52,7 +121,9 @@ public class TrainerServiceTest extends GambitTest {
     }
     
     /**
-     * Test an empty trainer cannot be created
+     * Tests an empty trainer cannot be created.
+     * 
+     * @author Mark Fleres
      */
     @Test
     public void testNewTrainerEmpty() {
@@ -63,7 +134,9 @@ public class TrainerServiceTest extends GambitTest {
     }
 
     /**
-     * Test delete a trainer
+     * Tests delete a trainer.
+     * 
+     * @author Raymond Xia
      */
     @Test 
     public void testDeleteTrainer() {
@@ -74,7 +147,9 @@ public class TrainerServiceTest extends GambitTest {
     }
 
     /**
-     * Test delete a non-existing trainer
+     * Test delete a non-existing trainer.
+     * 
+     * @author Raymond Xia
      */
     @Test 
     public void testDeleteNonexistentTrainer() {
@@ -84,10 +159,10 @@ public class TrainerServiceTest extends GambitTest {
     }
 
     /**
-     * Test to get all titles
-     * Available titles: 'Lead Trainer','Vice President of Technology'
-     * 'Technology Manager','Senior Java Developer'
-     * 'Trainer','Senior Trainer'
+     * Tests to retrieve all titles: 'Lead Trainer','Vice President of Technology'
+     * 'Technology Manager','Senior Java Developer','Trainer','Senior Trainer'.
+     * 
+     * @author Jing Yu
      */
     @Test 
     public void testGetAllTitles() {
@@ -97,7 +172,9 @@ public class TrainerServiceTest extends GambitTest {
     }
 
     /**
-     * Test to get all trainers
+     * Tests to retrieve all trainers.
+     * 
+     * @author Jing Yu
      */
     @Test 
     public void testGetAllTrainers() {
@@ -108,6 +185,11 @@ public class TrainerServiceTest extends GambitTest {
 		}		
 	}
     
+    /**
+     * Tests that get all Trainers does not return a null.
+     * 
+     * @author Jing Yu
+     */
     @Test
 	public void getAllNotNull(){
 		log.debug("Testing that a table exists.");
@@ -116,7 +198,9 @@ public class TrainerServiceTest extends GambitTest {
 	}	
 
     /**
-     * Test to find a trainer by valid email address
+     * Tests trainer retrieval by valid email address.
+     * 
+     * @author Jeffrey Reyes
      */
 	@Test
 	public void testFindTrainerByEmail() {
@@ -127,17 +211,21 @@ public class TrainerServiceTest extends GambitTest {
 	}
 
 	/**
-	 * Test to find a trainer with invalid email address
+	 * Tests that trainer retrieval fails with an invalid email address.
+	 * 
+	 * @author Jeffrey Reyes
 	 */
 	@Test
 	public void testFindTrainerByEmailInvalid() {
 		log.debug("Testing trainerService.findTrainerByEmail with invalid email address");
-		Trainer trainer = trainerService.findTrainerByEmail("fdjnfjdd@revature.com");
+		Trainer trainer = trainerService.findTrainerByEmail("jefrey@revature.com");
 		assertEquals(trainer, null);
 	}
 	
     /**
-     * Test to find a trainer with a non-trainer email
+     * Tests that trainer retrieval fails with an non-trainer email.
+     * 
+     * @author Jeffrey Reyes
      */
 	@Test
 	public void testFindTrainerByEmailNonTrainer() {
@@ -147,7 +235,9 @@ public class TrainerServiceTest extends GambitTest {
     }
 	
 	/**
-	 * Test to find a trainer with id
+	 * Test trainer retrieval by id.
+	 * 
+	 * @author Junyu Chen
 	 */
 	@Test                                                                                                                                                                                                                                                                                                                                                                                                        
     public void findTrainerById(){
@@ -163,7 +253,9 @@ public class TrainerServiceTest extends GambitTest {
  }
     
 	/**
-	 * Test to update a trainer object
+	 * Tests updating a trainer.
+	 * 
+	 * @author Nikhil Pious
 	 */
     @Test 
 	public void testUpdate(){
@@ -187,5 +279,27 @@ public class TrainerServiceTest extends GambitTest {
 		assertThat(newUpdatedList,CoreMatchers.hasItems(updateTargetTrainer.getFirstName(),updateTargetTrainer.getLastName(),updateTargetTrainer.getEmail(),updateTargetTrainer.getTitle()));
 		assertNotEquals("steves",updateTargetTrainer.getFirstName());
 	}
+    
+    @Test
+    public void testFindByName() {
+    	log.debug("Testing findByName with valid trainer.");
+    	Trainer trainer = trainerService.findByName("Steven", "Kelsey");
+    	assertEquals(trainer.getFirstName(), "Steven");
+    	assertEquals(trainer.getLastName(), "Kelsey");
+    }
+    
+    @Test
+    public void testFindByNameInvalidTrainer() {
+    	log.debug("Testing findByName with invalid trainer.");
+    	Trainer trainer = trainerService.findByName("jeff", "rey");
+    	assertEquals(trainer, null);
+    }
+    
+    @Test
+    public void testFindByNameNonTrainer() {
+    	log.debug("Testing findByName with non trainer.");
+    	Trainer trainer = trainerService.findByName("Chen", "Yan");
+    	assertEquals(trainer, null);
+    }
 
 }

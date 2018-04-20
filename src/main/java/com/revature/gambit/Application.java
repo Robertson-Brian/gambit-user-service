@@ -31,6 +31,7 @@ public class Application implements CommandLineRunner{
 	@Autowired
 	ApplicationContext context;
 	
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
@@ -46,6 +47,6 @@ public class Application implements CommandLineRunner{
 		log.debug("Running init methods for all fallback classes");
 		TrainerServiceFallbackImpl trainerFallback = context.getBean(TrainerServiceFallbackImpl.class);
 		trainerFallback.init();
-		
+
 	}
 }
