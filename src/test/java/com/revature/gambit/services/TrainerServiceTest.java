@@ -35,7 +35,7 @@ public class TrainerServiceTest extends GambitTest {
     @Test
     public void testPromoteTrainer() {
     	String title = "Trainer";
-    	User userToPromote = userService.findUserByEmail("dlaut1@hotmail.com");
+    	User userToPromote = new User("Laut","Daniel","dlaut1@hotmail.com");
     	log.trace("trainerToPromote.id = " + userToPromote.getUserId());
     	assertNotEquals(null, userToPromote);
     	
@@ -47,6 +47,48 @@ public class TrainerServiceTest extends GambitTest {
     	assertEquals(promotedTrainer.getFirstName(),userToPromote.getFirstName());
     	
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
+    }
+    
+    @Test
+    public void testPromoteTrainerWithOnlyEmail() {
+    	String title = "Trainer";
+    	User userToPromote = new User("","","dlaut1@hotmail.com");
+    	log.trace("trainerToPromote.id = " + userToPromote.getUserId());
+    	assertNotEquals(null, userToPromote);
+    	
+    	Trainer promotedTrainer = trainerService.promoteToTrainer(userToPromote, title);
+    	assertNotEquals(null,promotedTrainer);
+    	
+    	assertEquals(title,promotedTrainer.getTitle());
+    	
+    	assertEquals("Laut",promotedTrainer.getFirstName());
+    	
+    	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
+    }
+    
+    @Test
+    public void testPromoteTrainerWithOnlyName() {
+    	String title = "Trainer";
+    	User userToPromote = new User("Laut","Daniel","");
+    	log.trace("trainerToPromote.id = " + userToPromote.getUserId());
+    	assertNotEquals(null, userToPromote);
+    	
+    	Trainer promotedTrainer = trainerService.promoteToTrainer(userToPromote, title);
+    	assertNotEquals(null,promotedTrainer);
+    	
+    	assertEquals(title,promotedTrainer.getTitle());
+    	
+    	assertEquals(promotedTrainer.getFirstName(),userToPromote.getFirstName());
+    	
+    	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
+    }
+    
+    @Test
+    public void testPromoteEmptyTrainer() {
+    	String title = "Trainer";
+    	User userToPromote = new User("","","");
+    	Trainer promotedTrainer = trainerService.promoteToTrainer(userToPromote, title);
+    	assertEquals(null,promotedTrainer);
     }
     
     /**

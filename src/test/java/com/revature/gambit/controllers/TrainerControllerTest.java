@@ -82,7 +82,7 @@ public class TrainerControllerTest extends GambitTest {
     @Test
     public void testPromoteToTrainerWithOnlyName() {
     	log.debug("Promote to trainer test with a non-existant trainer.");
-    	Trainer trainerToPromote = new Trainer("Daniel","Laut","","Trainer");
+    	Trainer trainerToPromote = new Trainer("Laut","Daniel","","Trainer");
     	given()
 	       .contentType(ContentType.JSON)
 	       .body(trainerToPromote)
