@@ -76,6 +76,8 @@ public class TraineeControllerTest extends GambitTest {
 	/**
 	 * Tests that a new trainee canot be created if there are empty fields
 	 * and that status code returned is 400.
+	 * 
+	 * @author Brian Ethier
 	 */
 	  @Test
 	    public void saveEmptyTrainee() {

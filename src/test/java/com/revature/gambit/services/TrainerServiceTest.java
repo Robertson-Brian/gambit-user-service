@@ -20,9 +20,7 @@ import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.User;
 
 /**
- * 
  * Tests for inserting, updating, retrieving and deleting Trainers.
- *
  */
 public class TrainerServiceTest extends GambitTest {
 
@@ -31,6 +29,11 @@ public class TrainerServiceTest extends GambitTest {
     @Autowired
     private TrainerService trainerService;
 
+    /**
+     * Tests that a trainee can be promoted to trainer.
+     * 
+     * @author Mark Fleres
+     */
     @Test
     public void testPromoteTrainer() {
     	String title = "Trainer";
@@ -48,6 +51,11 @@ public class TrainerServiceTest extends GambitTest {
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
     }
     
+    /**
+     * Tests that a trainee can be promoted using only email.
+     * 
+     * @author Mark Fleres
+     */
     @Test
     public void testPromoteTrainerWithOnlyEmail() {
     	String title = "Trainer";
@@ -65,6 +73,11 @@ public class TrainerServiceTest extends GambitTest {
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
     }
     
+    /**
+     * Tests that a trainee can be promoted to trainer with only name.
+     * 
+     * @author Mark Fleres
+     */
     @Test
     public void testPromoteTrainerWithOnlyName() {
     	String title = "Trainer";
@@ -82,6 +95,11 @@ public class TrainerServiceTest extends GambitTest {
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
     }
     
+    /**
+     * Tests that a null trainee cannot be promoted.
+     * 
+     * @author Mark Fleres
+     */
     @Test
     public void testPromoteEmptyTrainer() {
     	String title = "Trainer";
@@ -280,6 +298,11 @@ public class TrainerServiceTest extends GambitTest {
 		assertNotEquals("steves",updateTargetTrainer.getFirstName());
 	}
     
+    /**
+     * Tests trainer retrieval by name.
+     * 
+     * @author Jeffrey Reyes
+     */
     @Test
     public void testFindByName() {
     	log.debug("Testing findByName with valid trainer.");
@@ -288,6 +311,11 @@ public class TrainerServiceTest extends GambitTest {
     	assertEquals(trainer.getLastName(), "Kelsey");
     }
     
+    /**
+     * Tests trainer retrieval fails with an invalid trainer .
+     * 
+     * @author Jeffrey Reyes
+     */
     @Test
     public void testFindByNameInvalidTrainer() {
     	log.debug("Testing findByName with invalid trainer.");
@@ -295,6 +323,11 @@ public class TrainerServiceTest extends GambitTest {
     	assertEquals(trainer, null);
     }
     
+    /**
+     * Tests trainer retrieval fails with trainee input.
+     * 
+     * @author Jeffrey Reyes
+     */
     @Test
     public void testFindByNameNonTrainer() {
     	log.debug("Testing findByName with non trainer.");

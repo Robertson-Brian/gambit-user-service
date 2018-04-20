@@ -21,7 +21,6 @@ import com.revature.gambit.entities.TrainingStatus;
 
 /**
  * Test methods for inserting, updating, retrieving, and deleting.
- * 
  */
 
 @Transactional
