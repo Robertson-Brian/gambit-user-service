@@ -25,6 +25,9 @@ public class TrainerServiceTest extends GambitTest {
     @Autowired
     private TrainerService trainerService;
 
+    /**
+     * Test that a trainer is created successfully
+     */
     @Test 
     public void testNewTrainer() {
     	log.debug("Testing trainerService.newTrainer(Trainer trainer)");
@@ -37,6 +40,9 @@ public class TrainerServiceTest extends GambitTest {
     	assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
     }
     
+    /**
+     * Test the same trainer can not be created again.
+     */
     @Test
     public void testNewTrainerRepeat() {
     	// Test Repeat Trainer
@@ -45,6 +51,9 @@ public class TrainerServiceTest extends GambitTest {
     	assertEquals(null, savedRepeatTrainer);
     }
     
+    /**
+     * Test an empty trainer cannot be created
+     */
     @Test
     public void testNewTrainerEmpty() {
     	// Test Empty Trainer
@@ -53,13 +62,20 @@ public class TrainerServiceTest extends GambitTest {
     	assertEquals(null, savedEmptyTrainer);
     }
 
+    /**
+     * Test delete a trainer
+     */
     @Test 
     public void testDeleteTrainer() {
+    	log.debug("Testing trainerService.delete()");
     	int patrickId = trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId();
     	trainerService.delete(patrickId);
     	assertNull(trainerService.findById(patrickId));
     }
 
+    /**
+     * Test delete a non-existing trainer
+     */
     @Test 
     public void testDeleteNonexistentTrainer() {
     	assertThatThrownBy(() -> {
@@ -67,6 +83,12 @@ public class TrainerServiceTest extends GambitTest {
     	});
     }
 
+    /**
+     * Test to get all titles
+     * Available titles: 'Lead Trainer','Vice President of Technology'
+     * 'Technology Manager','Senior Java Developer'
+     * 'Trainer','Senior Trainer'
+     */
     @Test 
     public void testGetAllTitles() {
     	log.debug("Testing trainerService.getAllTitles()");
@@ -74,6 +96,9 @@ public class TrainerServiceTest extends GambitTest {
     	assertNotEquals(0, trainerService.getAllTitles().size());
     }
 
+    /**
+     * Test to get all trainers
+     */
     @Test 
     public void testGetAllTrainers() {
     	log.debug("Testing trainerService.getAll()");
@@ -81,6 +106,9 @@ public class TrainerServiceTest extends GambitTest {
     	assertNotEquals(0, trainerService.getAll().size());
 	}
 
+    /**
+     * Test to find a trainer by valid email address
+     */
 	@Test
 	public void testFindTrainerByEmail() {
 		log.debug("Testing trainerService.findTrainerByEmail with correct email address");
@@ -89,13 +117,19 @@ public class TrainerServiceTest extends GambitTest {
 		assertEquals(trainer.getEmail(), expected);
 	}
 
+	/**
+	 * Test to find a trainer with invalid email address
+	 */
 	@Test
 	public void testFindTrainerByEmailInvalid() {
 		log.debug("Testing trainerService.findTrainerByEmail with invalid email address");
 		Trainer trainer = trainerService.findTrainerByEmail("fdjnfjdd@revature.com");
 		assertEquals(trainer, null);
 	}
-
+	
+    /**
+     * Test to find a trainer with a non-trainer email
+     */
 	@Test
 	public void testFindTrainerByEmailNonTrainer() {
 		log.debug("Testing trainerService.findTrainerByEmail with non-trainer email address");
@@ -103,6 +137,9 @@ public class TrainerServiceTest extends GambitTest {
 		assertEquals(trainer, null);
     }
 	
+	/**
+	 * Test to find a trainer with id
+	 */
 	@Test                                                                                                                                                                                                                                                                                                                                                                                                        
     public void findTrainerById(){
         log.debug("Find trainer by id");
@@ -116,6 +153,9 @@ public class TrainerServiceTest extends GambitTest {
         assertEquals(newTrainer.getTitle(), findById.getTitle());
  }
     
+	/**
+	 * Test to update a trainer object
+	 */
     @Test 
 	public void testUpdate(){
 		log.debug("Testing trainer update)");

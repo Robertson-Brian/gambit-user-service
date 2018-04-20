@@ -19,7 +19,7 @@ public interface TrainerService {
 	 *
 	 * @param trainerId
 	 *            - to find by
-	 * @return TrainerUser - that was found
+	 * @return Trainer - that was found
 	 */
 	Trainer findById(Integer trainerId);
 
@@ -37,21 +37,21 @@ public interface TrainerService {
 	 * 
 	 * Creates a new trainer object to associate with a pre-existing User object
 	 * 
-	 * @param trainerUser
+	 * @param trainer
 	 *            - which contains the pre-existing user information
-	 * @return new TrainerUser - that was created from given user and new trainer
+	 * @return new Trainer - that was created from given user and new trainer
 	 */
-	Trainer promoteToTrainer(Trainer tu);
+	Trainer promoteToTrainer(Trainer trainer);
 
 	/**
 	 * 
 	 * Updates both the User and Trainer components of a trainer's credentials
 	 * 
-	 * @param TrainerUser
+	 * @param Trainer
 	 *            - which contains user and trainer information
-	 * @return TrainerUser - which contains updated user and trainer information
+	 * @return Trainer - which contains updated user and trainer information
 	 */
-	Trainer update(Trainer tu);
+	Trainer update(Trainer trainer);
 
 	/**
 	 * Find a single Trainer by email
@@ -60,7 +60,7 @@ public interface TrainerService {
 	 *
 	 * @param String
 	 *            email - to search by
-	 * @return TrainerUser - combination of the user and trainer that were found
+	 * @return Trainer - combination of the user and trainer that were found
 	 */
 	Trainer findTrainerByEmail(String email);
     
@@ -78,6 +78,12 @@ public interface TrainerService {
 	 */
 	List<Trainer> getAll();
 
+	/**
+	 * The method is used to get a trainer with full name
+	 * @param firstName
+	 * @param lastName
+	 * @return a trainer
+	 */
 	Trainer findByName(String firstName, String lastName);
 
 }

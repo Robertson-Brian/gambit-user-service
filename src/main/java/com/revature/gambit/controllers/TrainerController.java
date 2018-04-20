@@ -11,11 +11,9 @@ public interface TrainerController {
 	/**
 	 * Creates a new Trainer
 	 * 
-	 * @param TrainerUser
-	 *            - the TrainerUser used to
-	 *             create the trainer and corresponding
-	 *            user
-	 * @return the trainerUser object and http status 200
+	 * @param Trainer
+	 * 
+	 * @return the trainer object and http status 200
 	 */
 	ResponseEntity<Trainer> registerTrainer(Trainer trainer);
 
@@ -29,23 +27,23 @@ public interface TrainerController {
 	 *            - contains the user information
 	 * @return new TrainerUser created
 	 */
-	ResponseEntity<Trainer> promote(Trainer tu);
+	ResponseEntity<Trainer> promote(Trainer trainer);
 
 	/**
 	 * Update Trainer information.
 	 * 
-	 * @param TrainerUser
-	 *            to be updated
-	 * @return the updated TrainerUser
+	 * @param Trainer
+	 *          
+	 * @return the updated Trainer
 	 */
-	ResponseEntity<Trainer> updateTrainer(Trainer tu);
+	ResponseEntity<Trainer> updateTrainer(Trainer trainer);
 
 	/**
 	 * Finds Trainer by email.
 	 * 
 	 * @param email
 	 *            to find by
-	 * @return requested TrainerUser
+	 * @return requested Trainer
 	 */
 	ResponseEntity<Trainer> findTrainerByEmail(String email);
 
@@ -54,7 +52,7 @@ public interface TrainerController {
 	 * 
 	 * @param id
 	 *            of trainer
-	 * @return TrainerUser of requested trainer
+	 * @return Trainer of requested trainer
 	 */
 	ResponseEntity<Trainer> findTrainerById(Integer id);
 
@@ -68,7 +66,7 @@ public interface TrainerController {
 	/**
 	 * Retrieve all trainers.
 	 * 
-	 * @return List<TrainerUser> of all trainers
+	 * @return List<Trainer> of all trainers
 	 */
 	ResponseEntity<List<Trainer>> getAll();
 
@@ -76,9 +74,8 @@ public interface TrainerController {
 	 * Finds a user by unique firstname/lastname combination. This needs further
 	 * thought.
 	 * 
-	 * @param first
-	 *            name and last name to search by
-	 * @return TrainerUser with the requested name
+	 * @param first name and last name to search by
+	 * @return Trainer with the requested name
 	 */
 	ResponseEntity<Trainer> findByName(String firstName, String lastName);
 

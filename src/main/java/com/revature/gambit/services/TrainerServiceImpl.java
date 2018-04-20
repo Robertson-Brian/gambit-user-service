@@ -13,7 +13,7 @@ import com.revature.gambit.entities.User;
 import com.revature.gambit.repositories.TrainerRepository;
 import com.revature.gambit.repositories.UserRepository;
 
-/** Logic needs to be checked **/
+
 @Service("trainerService")
 public class TrainerServiceImpl implements TrainerService {
 
@@ -49,12 +49,12 @@ public class TrainerServiceImpl implements TrainerService {
 		return trainerRepository.save(trainer);
 	}
 
-	public Trainer promoteToTrainer(Trainer tu) {
+	public Trainer promoteToTrainer(Trainer trainer) {
 		log.debug("Method called to promote a user to a trainer.");
-		User u = userRepository.findByUserId(tu.getUserId());
+		User user = userRepository.findByUserId(trainer.getUserId());
 		Trainer bt = new Trainer();
-		bt.setUserId(u.getUserId());
-		bt.setTitle(tu.getTitle());
+		bt.setUserId(user.getUserId());
+		bt.setTitle(trainer.getTitle());
 		bt.setUserId(0);
 		return bt;
 	}
