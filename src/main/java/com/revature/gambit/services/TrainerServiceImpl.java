@@ -52,9 +52,9 @@ public class TrainerServiceImpl implements TrainerService {
 		}
 		User baseUser;
 		log.trace("Finding user by email");
-		if((baseUser = userService.findUserByEmail(user.getEmail())) == null) {
+		if((baseUser = userRepository.findByEmail(user.getEmail())) == null) {
 			log.trace("Finding user by name");
-			if((baseUser = userService.findByName(user.getFirstName(), user.getLastName())) == null) {
+			if((baseUser = userRepository.findUserByFirstNameAndLastName(user.getFirstName(), user.getLastName())) == null) {
 				log.trace("User does not exist in the database");
 				return null;
 			}
