@@ -79,6 +79,7 @@ public class TrainerServiceImpl implements TrainerService {
 		return trainerRepository.findDistinctTitle();
 	}
 
+	
 	public List<Trainer> getAll() {
 		log.debug("Method called to get all trainers.");
 		return trainerRepository.findAll();

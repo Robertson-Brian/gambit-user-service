@@ -11,6 +11,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+import com.revature.gambit.monitoring.TrainerServiceFallbackImpl;
 import com.revature.gambit.services.TrainerService;
 
 import springfox.documentation.builders.PathSelectors;
@@ -22,7 +23,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @SpringBootApplication
 @EnableEurekaClient
-@EnableDiscoveryClient
 @EnableCircuitBreaker
 public class Application implements CommandLineRunner{
 	
@@ -43,9 +43,9 @@ public class Application implements CommandLineRunner{
 
 	@Override
 	public void run(String... arg0) throws Exception {
-		log.info("Run init methods for all fallback classes");
-		TrainerService trainerService = context.getBean(TrainerService.class);
-		log.info("Size of list of trainers: "+trainerService.getAll().size());
+		log.debug("Running init methods for all fallback classes");
+		TrainerServiceFallbackImpl trainerFallback = context.getBean(TrainerServiceFallbackImpl.class);
+		trainerFallback.init();
 		
 	}
 }
