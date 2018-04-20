@@ -10,6 +10,9 @@ import org.springframework.boot.context.embedded.LocalServerPort;
 
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainee;
+import com.revature.gambit.entities.Trainer;
+
+import io.restassured.http.ContentType;
 
 public class TraineeControllerTest extends GambitTest {
 	
@@ -60,6 +63,22 @@ public class TraineeControllerTest extends GambitTest {
 			.statusCode(HttpStatus.BAD_REQUEST_400);
 		log.trace("Trainee could not register because of existing email");
 	}
+	
+	  @Test
+	    public void saveEmptyTrainee() {
+			Trainee emptyTrainee = new Trainee("","","");
+			given()
+			.port(port)
+			.basePath(BASE_URI)
+			.header("Content-Type", "application/json")
+			.body(emptyTrainee)
+			.when()	
+			.post()
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.BAD_REQUEST_400);
+		log.trace("Trainee could not register because it was empty");
+	    }
 
 	/**
 	 * Tests deletion of a trainee.

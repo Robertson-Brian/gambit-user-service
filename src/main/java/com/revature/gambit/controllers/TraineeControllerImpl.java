@@ -58,7 +58,6 @@ public class TraineeControllerImpl implements TraineeController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
 		}
-		
 	}
 
 	@PutMapping
