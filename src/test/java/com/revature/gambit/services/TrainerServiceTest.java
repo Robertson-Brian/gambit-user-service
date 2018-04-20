@@ -1,6 +1,7 @@
 package com.revature.gambit.services;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -12,11 +13,14 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hamcrest.CoreMatchers;
+import org.hibernate.Hibernate;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.revature.gambit.GambitTest;
+import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.entities.Trainer;
+import com.revature.gambit.entities.User;
 
 public class TrainerServiceTest extends GambitTest {
 
@@ -24,7 +28,69 @@ public class TrainerServiceTest extends GambitTest {
 
     @Autowired
     private TrainerService trainerService;
+    
+    @Autowired
+    private UserService userService;
 
+    @Test
+    public void testPromoteTrainer() {
+    	String title = "Trainer";
+    	User userToPromote = new User("Laut","Daniel","dlaut1@hotmail.com");
+    	log.trace("trainerToPromote.id = " + userToPromote.getUserId());
+    	assertNotEquals(null, userToPromote);
+    	
+    	Trainer promotedTrainer = trainerService.promoteToTrainer(userToPromote, title);
+    	assertNotEquals(null,promotedTrainer);
+    	
+    	assertEquals(title,promotedTrainer.getTitle());
+    	
+    	assertEquals(promotedTrainer.getFirstName(),userToPromote.getFirstName());
+    	
+    	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
+    }
+    
+    @Test
+    public void testPromoteTrainerWithOnlyEmail() {
+    	String title = "Trainer";
+    	User userToPromote = new User("","","dlaut1@hotmail.com");
+    	log.trace("trainerToPromote.id = " + userToPromote.getUserId());
+    	assertNotEquals(null, userToPromote);
+    	
+    	Trainer promotedTrainer = trainerService.promoteToTrainer(userToPromote, title);
+    	assertNotEquals(null,promotedTrainer);
+    	
+    	assertEquals(title,promotedTrainer.getTitle());
+    	
+    	assertEquals("Laut",promotedTrainer.getFirstName());
+    	
+    	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
+    }
+    
+    @Test
+    public void testPromoteTrainerWithOnlyName() {
+    	String title = "Trainer";
+    	User userToPromote = new User("Laut","Daniel","");
+    	log.trace("trainerToPromote.id = " + userToPromote.getUserId());
+    	assertNotEquals(null, userToPromote);
+    	
+    	Trainer promotedTrainer = trainerService.promoteToTrainer(userToPromote, title);
+    	assertNotEquals(null,promotedTrainer);
+    	
+    	assertEquals(title,promotedTrainer.getTitle());
+    	
+    	assertEquals(promotedTrainer.getFirstName(),userToPromote.getFirstName());
+    	
+    	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
+    }
+    
+    @Test
+    public void testPromoteEmptyTrainer() {
+    	String title = "Trainer";
+    	User userToPromote = new User("","","");
+    	Trainer promotedTrainer = trainerService.promoteToTrainer(userToPromote, title);
+    	assertEquals(null,promotedTrainer);
+    }
+    
     /**
      * Test that a trainer is created successfully
      */
