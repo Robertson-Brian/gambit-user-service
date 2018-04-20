@@ -3,6 +3,7 @@ package com.revature.gambit.services;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
@@ -102,9 +103,18 @@ public class TrainerServiceTest extends GambitTest {
     @Test 
     public void testGetAllTrainers() {
     	log.debug("Testing trainerService.getAll()");
-    	assertEquals(12, trainerService.getAll().size());
-    	assertNotEquals(0, trainerService.getAll().size());
+    	List<Trainer> listTrainer = trainerService.getAll();
+		for(Trainer trainer : listTrainer){
+			assertEquals(trainer, trainerService.findTrainerByEmail(trainer.getEmail())); 
+		}		
 	}
+    
+    @Test
+	public void getAllNotNull(){
+		log.debug("Testing that a table exists.");
+		assertNotNull(trainerService.getAll());
+		log.trace("Trainer Table Exists.");
+	}	
 
     /**
      * Test to find a trainer by valid email address
