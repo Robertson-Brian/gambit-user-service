@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findByEmail(email);
 	}
 
-	public List<String> getAllRoles() {
+	public List<UserRole> getAllRoles() {
 		return userRepository.findAllUserRoles();
 	}
 
