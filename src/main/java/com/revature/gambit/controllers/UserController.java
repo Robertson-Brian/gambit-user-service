@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.revature.gambit.entities.User;
+import com.revature.gambit.entities.UserRole;
 
 public interface UserController {
 
@@ -45,7 +46,7 @@ public interface UserController {
 	 * 
 	 * @return List<String> of all the roles a User can be.
 	 */
-	ResponseEntity<List<String>> getAllUserRoles();
+	ResponseEntity<List<UserRole>> getAllUserRoles();
 
 	/**
 	 * Retrieves all users from the User table.

@@ -80,9 +80,9 @@ public class UserControllerImpl implements UserController {
 	}
 
 	@GetMapping("roles")
-	public ResponseEntity<List<String>> getAllUserRoles() {
+	public ResponseEntity<List<UserRole>> getAllUserRoles() {
 		log.info("User Controller received request: Fetching all user roles");
-		List<String> roles = userService.getAllRoles();
+		List<UserRole> roles = userService.getAllRoles();
 		return new ResponseEntity<>(roles, HttpStatus.OK);
 
 	}

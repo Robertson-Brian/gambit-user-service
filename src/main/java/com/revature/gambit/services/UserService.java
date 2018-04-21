@@ -15,7 +15,7 @@ public interface UserService {
 
 	User findUserByEmail(String email);
 
-	List<String> getAllRoles();
+	List<UserRole> getAllRoles();
 	
 	UserRole findUserRoleByName(String roleName);
 
