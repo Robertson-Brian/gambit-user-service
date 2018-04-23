@@ -34,9 +34,10 @@ public class TraineeControllerImpl implements TraineeController {
 	@GetMapping("batch/{id}/status/{status}")
 	public ResponseEntity<List<Trainee>> findAllByBatchAndStatus(@PathVariable Integer id,
 			@PathVariable String status) {
-		log.debug("Trainee Controller received request: Finding trainees for batch: " + id + " with status: " + status);
+		log.debug("Trainee Controller received request: Finding trainees for batch: " 
+			+ id + " with status: " + status);
 		List<Trainee> trainees = traineeService.findAllByBatchAndStatus(id, status);
-		if(trainees!= null){
+		if(trainees != null) {
 			return new ResponseEntity<>(trainees, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(trainees, HttpStatus.BAD_REQUEST);
@@ -58,7 +59,6 @@ public class TraineeControllerImpl implements TraineeController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
 		}
-		
 	}
 
 	@PutMapping

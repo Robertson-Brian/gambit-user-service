@@ -22,9 +22,6 @@ public class TrainerServiceImpl implements TrainerService {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
-	private UserService userService;
-
 	private static final Logger log = Logger.getLogger(TrainerServiceImpl.class);
 
 	public void delete(Integer id) {
@@ -48,22 +45,29 @@ public class TrainerServiceImpl implements TrainerService {
 		return trainerRepository.save(trainer);
 	}
 
-	public Trainer promoteToTrainer(Trainer trainer) {
+	public Trainer promoteToTrainer(User user, String title) {
 		log.debug("Method called to promote a user to a trainer.");
-		User user = userRepository.findByUserId(trainer.getUserId());
-		Trainer bt = new Trainer();
-		bt.setUserId(user.getUserId());
-		bt.setTitle(trainer.getTitle());
-		bt.setUserId(0);
-		return bt;
+		if(user == null) {
+			return null;
+		}
+		User baseUser;
+		log.trace("Finding user by email");
+		if((baseUser = userRepository.findByEmail(user.getEmail())) == null) {
+			log.trace("Finding user by name");
+			if((baseUser = userRepository.findUserByFirstNameAndLastName(user.getFirstName(), user.getLastName())) == null) {
+				log.trace("User does not exist in the database");
+				return null;
+			}
+		}
+		userRepository.delete(baseUser.getUserId());
+		Trainer userToPromote = new Trainer(baseUser,title);
+		return this.newTrainer(userToPromote);
 	}
 
 	public Trainer update(Trainer trainer) {
 		log.debug("Method called to update a trainer first name, last name, email, and title");
 		Trainer updatingTrainer = trainerRepository.findByUserId(trainer.getUserId());
 		BeanUtils.copyProperties(trainer, updatingTrainer,"userId");
-		User user = userService.findUserById(updatingTrainer.getUserId());
-		userRepository.save(user);
 		return trainerRepository.save(updatingTrainer);
 	}
 	
@@ -86,9 +90,7 @@ public class TrainerServiceImpl implements TrainerService {
 
 	public Trainer findByName(String firstName, String lastName) {
 		log.debug("Method called to get findByName.");
-		User u = userService.findByName(firstName, lastName);
-		Trainer bt = trainerRepository.findByUserId(u.getUserId());
-		return bt;
+		return trainerRepository.findTrainerByFirstNameAndLastName(firstName, lastName);
 	}
 
 }
