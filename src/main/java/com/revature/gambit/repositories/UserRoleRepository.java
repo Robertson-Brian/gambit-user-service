@@ -6,5 +6,5 @@ import com.revature.gambit.entities.UserRole;
 
 public interface UserRoleRepository extends JpaRepository<UserRole, Long>{
 
-	UserRole findByRole(String role);
+	public UserRole findByRole(String role);
 }

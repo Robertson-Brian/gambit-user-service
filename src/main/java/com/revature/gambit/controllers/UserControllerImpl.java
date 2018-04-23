@@ -46,12 +46,12 @@ public class UserControllerImpl implements UserController {
 		if((persisted = userService.makeUser(user)) != null){
 			return new ResponseEntity<>(persisted, HttpStatus.CREATED);
 		} else {
-			throw new AuthUserException("User not added", HttpStatus.BAD_REQUEST);
+			throw new AuthUserException("User not added", HttpStatus.UNAUTHORIZED);
 		}
 	}
 
 	@PutMapping
-	public ResponseEntity<User> updateUser(@Valid @RequestBody User user) {
+	public ResponseEntity<User> updateUser( @RequestBody User user) {
 		log.info("User Controller received request: Update user " + user);
 		User updatedUser = userService.update(user);
 		if(updatedUser != null) {
@@ -70,12 +70,10 @@ public class UserControllerImpl implements UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
-	@DeleteMapping
+	@PutMapping("inactive")
 	public ResponseEntity<Void> makeInactive(@RequestBody User user) {
-		log.info("User Controller received request: Updating user: " + user);
-		//Logic here should be getting the role from the DB.
-		//user.setRole("INACTIVE");
-		userService.update(user);
+		log.info("User Controller received request: Inactivating user: " + user);
+		userService.delete(user.getUserId());
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 

@@ -38,6 +38,6 @@ public interface UserService {
 	/**
 	 * Users are not deleted, they are simply set to inactive.
 	 */
-	void delete(Integer id);
+	User delete(Integer id);
 
 }

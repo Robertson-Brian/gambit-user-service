@@ -35,6 +35,7 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 	}
+	
 
 	@NotEmpty
 	@Column(name = "FIRST_NAME", nullable = false)
