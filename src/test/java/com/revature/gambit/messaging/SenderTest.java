@@ -94,7 +94,8 @@ public class SenderTest {
 		  try {
 			  return mapper.readValue(received.value(), clazz);
 		  } catch (Exception e) {
-			  return received.value();
+			  logger.error("unmarshalling error", e);
+			  return null;
 		  }
 		  
 	  }
