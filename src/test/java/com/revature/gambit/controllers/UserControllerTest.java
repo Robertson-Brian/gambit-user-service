@@ -1,8 +1,5 @@
 package com.revature.gambit.controllers;
 
-//import org.apache.log4j.Logger;
-
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -48,8 +45,7 @@ public class UserControllerTest extends GambitTest {
     private static final String FIND_ALL_USER_ROLES = BASE_URI+ "/roles";
     private static final String FIND_USER_BY_ID_URI = BASE_URI + "/{id}";
     private static final String FIND_USER_BY_NAME_URI = BASE_URI + "/name/{firstName}/{lastName}";
-    private static final String FIND_ALL_TRAINERS_URI = BASE_URI;
-    private static final String FIND_ALL_ASSOCIATES_URI = BASE_URI;
+
     
     
     /**
@@ -109,7 +105,6 @@ public class UserControllerTest extends GambitTest {
 		       .body("firstName",is(notNullValue()))
 		       .and()
 		       .body("email", equalTo("patrick@revature.com"));
-
 
 	}
 
@@ -204,12 +199,11 @@ public class UserControllerTest extends GambitTest {
 		   .statusCode(HttpStatus.NO_CONTENT_204);
 		
 	}
-
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testAllUsers(){
-		log.debug("Testng findAllusers");
+	public void testFindAllUsers(){
+		log.debug("Testing findAllUsers");
     	List<User> users = new ArrayList<>();
     	users = given()
     			          .port(port)
@@ -226,47 +220,5 @@ public class UserControllerTest extends GambitTest {
     	assertTrue(!users.isEmpty());
 		
 	}
-    
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testAllTrainers(){
-		log.debug("Tessting findAllTrainers");
-    	List<Trainer> trainers = new ArrayList<>();
-    	trainers = given()
-    			          .port(port)
-    			          .basePath(FIND_ALL_TRAINERS_URI)
-    			          .when()
-    			          .get()
-    			          .then()
-    			          .assertThat()
-    			          .statusCode(HttpStatus.OK_200)
-    			          .extract()
-    			          .body()
-    			          .as(trainers.getClass());
-
-    	assertTrue(!trainers.isEmpty());
-		
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testAllAssociates(){
-		log.debug("Testing findAllAssociates");
-    	List<Trainee> trainees = new ArrayList<>();
-    	trainees = given()
-    			          .port(port)
-    			          .basePath(FIND_ALL_ASSOCIATES_URI)
-    			          .when()
-    			          .get()
-    			          .then()
-    			          .assertThat()
-    			          .statusCode(HttpStatus.OK_200)
-    			          .extract()
-    			          .body()
-    			          .as(trainees.getClass());
-
-    	assertTrue(!trainees.isEmpty());
-		
-	}    
 
 }
