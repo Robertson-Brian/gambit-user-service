@@ -27,6 +27,18 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: none
+  kafka:
+#    consumer:
+#      auto-offset-reset: earliest
+#      group-id: gambit
+    bootstrap-servers: ${KAFKA_URL}
+    topic:
+      trainer.register: trainer.register.t
+      trainer.update: trainer.update.t
+      trainer.delete: trainer.delete.t
+      trainee.register: trainee.register.t
+      trainee.update: trainee.update.t
+      trainee.delete: trainee.delete.t
 
 #Eureka Client Configuration
 eureka:
