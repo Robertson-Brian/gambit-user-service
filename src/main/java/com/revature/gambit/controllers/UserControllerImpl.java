@@ -31,9 +31,6 @@ import com.revature.gambit.services.UserService;
 public class UserControllerImpl implements UserController {
 
 	private static final Logger log = Logger.getLogger(UserControllerImpl.class);
-	
-	private static final String TRAINER_ROLE = "ROLE_TRAINER";
-	private static final String ASSOCIATE_ROLE = "";
 
 	@Autowired
 	private UserService userService;
@@ -106,19 +103,4 @@ public class UserControllerImpl implements UserController {
 		User user = userService.findByName(firstName, lastName);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
-
-	@Override
-	public ResponseEntity<List<User>> getAllTrainers() {
-		UserRole role = userService.findUserRoleByName(TRAINER_ROLE);
-		List<User> trainersList = userService.findByRole(role);
-		return new ResponseEntity<>(trainersList, HttpStatus.OK);
-	}
-
-	@Override
-	public ResponseEntity<List<User>> getAllAssociates() {
-		UserRole role = userService.findUserRoleByName(ASSOCIATE_ROLE);
-		List<User> associatesList = userService.findByRole(role);
-		return new ResponseEntity<>(associatesList, HttpStatus.OK);
-	}
-
 }
