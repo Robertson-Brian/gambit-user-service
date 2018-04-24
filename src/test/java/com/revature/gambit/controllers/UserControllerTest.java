@@ -15,8 +15,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import com.revature.gambit.GambitTest;
-import com.revature.gambit.entities.Trainee;
-import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.User;
 import com.revature.gambit.entities.UserRole;
 import com.revature.gambit.services.UserService;
