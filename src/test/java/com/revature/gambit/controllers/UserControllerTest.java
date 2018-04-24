@@ -15,8 +15,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import com.revature.gambit.GambitTest;
-import com.revature.gambit.entities.Trainee;
-import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.User;
 import com.revature.gambit.entities.UserRole;
 import com.revature.gambit.services.UserService;
@@ -40,7 +38,7 @@ public class UserControllerTest extends GambitTest {
     private static final String REGISTER_USER_URI = BASE_URI;
     private static final String UPDATE_USER_URI = BASE_URI;
     private static final String FIND_USER_BY_EMAIL_URI = BASE_URI + "/email/{email:.+}/";
-    private static final String DELETE_USER_URI = BASE_URI+"/inactive";
+    private static final String DELETE_USER_URI = BASE_URI+"/inactivate";
     private static final String FIND_ALL_USERS_URI = BASE_URI;
     private static final String FIND_ALL_USER_ROLES = BASE_URI+ "/roles";
     private static final String FIND_USER_BY_ID_URI = BASE_URI + "/{id}";

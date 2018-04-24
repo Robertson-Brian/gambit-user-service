@@ -66,7 +66,7 @@ public class UserControllerImpl implements UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
-	@PutMapping("/inactive")
+	@PutMapping("/inactivate")
 	public ResponseEntity<Void> makeInactive(@RequestBody User user) {
 		log.info("User Controller received request: Inactivating user: " + user);
 		userService.delete(user.getUserId());
