@@ -1,5 +1,9 @@
 package com.revature.gambit.controllers;
 
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
+
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -7,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainee;
+import com.revature.gambit.messaging.Sender;
 import com.revature.gambit.services.TraineeService;
+
 /**
  * Handles all Janus requests for Trainee resources.
  *
@@ -33,7 +38,7 @@ public class TraineeControllerImpl implements TraineeController {
 	private TraineeService traineeService;
 	
 	@Autowired
-	private KafkaTemplate<String,String> template;
+	private Sender sender;
 
 	@GetMapping("batch/{id}/status/{status}")
 	public ResponseEntity<List<Trainee>> findAllByBatchAndStatus(@PathVariable Integer id,
@@ -59,7 +64,8 @@ public class TraineeControllerImpl implements TraineeController {
 		log.debug("Trainee Controller received request: Creating trainee: " + trainee);
 		Trainee newTrainee = traineeService.save(trainee);
 		if (newTrainee != null) {
-			return new ResponseEntity<>(newTrainee, HttpStatus.CREATED); 
+			sender.publish(TOPIC_REGISTER_TRAINEE,newTrainee);
+			return new ResponseEntity<>(newTrainee, HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
 		}
@@ -68,6 +74,7 @@ public class TraineeControllerImpl implements TraineeController {
 	@PutMapping
 	public ResponseEntity<Trainee> updateTrainee(@RequestBody Trainee trainee) {
 		log.debug("Trainee Controller received request: Updating trainee: " + trainee);
+		sender.publish(TOPIC_UPDATE_TRAINEE,trainee);
 		return new ResponseEntity<>(traineeService.update(trainee), HttpStatus.NO_CONTENT);
 	}
 
@@ -75,6 +82,7 @@ public class TraineeControllerImpl implements TraineeController {
 	public ResponseEntity<?> deleteTrainee(@RequestBody Trainee trainee) {
 		log.debug("TraineeControllerImpl.deleteTrainee: " + trainee);		
 		traineeService.delete(trainee);
+		sender.publish(TOPIC_DELETE_TRAINEE, trainee);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
