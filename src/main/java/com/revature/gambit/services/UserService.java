@@ -37,6 +37,12 @@ public interface UserService {
 
 	/**
 	 * Users are not deleted, they are simply set to inactive.
+	 * 
+	 * @author Mark Fleres
+	 * @author Nikhil
+	 * 
+	 * @return The deactivated user.
+	 * @param ID of the User to set inactive.
 	 */
 	User delete(Integer id);
 
