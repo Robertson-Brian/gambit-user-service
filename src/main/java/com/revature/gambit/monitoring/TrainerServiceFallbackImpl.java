@@ -17,7 +17,6 @@ import com.revature.gambit.repositories.TrainerRepository;
  * @author Jing Yu
  *
  */
-
 @Component
 public class TrainerServiceFallbackImpl implements TrainerServiceFallback {
 
@@ -27,15 +26,14 @@ public class TrainerServiceFallbackImpl implements TrainerServiceFallback {
 	private TrainerRepository trainerRepository;	
 	
 	private List<Trainer> trainers;
-	 /**
-	  * Execute this method once the application is fully startup
-	  */
+	
+	 
 	  public void init(){
 		  log.debug("Load a list of all trainers when the application starts up.");
 		  trainers = trainerRepository.findAll();
 		  log.info("Static trainer list size: "+trainers);		
 	  }
-	  
+
 	  public List<Trainer> getAllFallback(){
 		  log.info("This is the fallback method for TrainerService.getAll()."
 		  		+ "A list of trainers will be returned back.");		  
@@ -53,14 +51,21 @@ public class TrainerServiceFallbackImpl implements TrainerServiceFallback {
 	  }
 	  
 	  public Trainer findByIdFallback(Integer trainerId){
+		  log.info("This is the fallback method for TrainerService.findById()."
+			  		+ "A list of trainers will be returned back.");	
+		  //TO DO LIST: FIND A TRAINER FROM THE STATIC LIST BY TRAINERID
 		  return null;
 	  }
 	  
 	  public Trainer findTrainerByEmailFallback(String email){
+		  log.info("This is the fallback method for TrainerService.findTrainerByEmailFallback()."
+			  		+ "A list of trainers will be returned back.");		
 		  return null;
 	  }
 	  
 	  public Trainer findByNameFallback(String firstName, String lastName){
+		  log.info("This is the fallback method for TrainerService.findByName()."
+			  		+ "A list of trainers will be returned back.");		
 		  return null;
 	  }
 	  
