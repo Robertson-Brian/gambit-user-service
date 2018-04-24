@@ -88,23 +88,22 @@ public class SenderTest {
 	    container.stop();
 	  }
 	  
-//	  Object recieve(Class clazz) throws InterruptedException{
-//		  ConsumerRecord<String, String> received = records.poll(10, TimeUnit.SECONDS);
-//		  try {
-//			  mapper.readValue(received.value(), clazz.);
-//		  } catch (Exception e) {
-//			  return received.value();
-//		  }
-//		  
-//	  }
+	  Object receive(Class<?> clazz) throws InterruptedException{
+		  // Use this to receive object from mock kafka server. It will unmarshalled the json.
+		  ConsumerRecord<String, String> received = records.poll(10, TimeUnit.SECONDS);
+		  try {
+			  return mapper.readValue(received.value(), clazz);
+		  } catch (Exception e) {
+			  return received.value();
+		  }
+		  
+	  }
 	  
 	  @Test
 	  public void testSend() throws InterruptedException{
 		  sender.publish(SENDER_TOPIC, new Trainer("test", "test", "testtest@gmail.com", "Mr."));
 		  
-		  ConsumerRecord<String, String> received = records.poll(10, TimeUnit.SECONDS);
-		  
-		  logger.info("recieved:" + received.value());
+		  logger.info("recieved:" + receive(Trainer.class));
 	  }
 
 }
