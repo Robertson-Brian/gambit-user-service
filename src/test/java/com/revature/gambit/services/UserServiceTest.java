@@ -98,7 +98,7 @@ public class UserServiceTest extends GambitTest {
 	@Test
 	public void testGetAllRoles(){
 		log.debug("Testing UserService getAllRoles()");
-		int expected=3;
+		int expected=4;
     	List<UserRole> listRole = userService.getAllRoles();
     	assertEquals(expected, listRole.size());
     	assertThat(Arrays.asList("ROLE_VP","ROLE_QC","ROLE_TRAINER"),hasItems(listRole.get(0).getRole(),listRole.get(1).getRole(),listRole.get(2).getRole()));;

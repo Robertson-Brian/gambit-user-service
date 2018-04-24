@@ -2,8 +2,10 @@ package com.revature.gambit.controllers;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -14,6 +16,8 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.User;
 import com.revature.gambit.entities.UserRole;
@@ -140,7 +144,11 @@ public class UserControllerTest extends GambitTest {
     			.as(userRoles.getClass());
 
     	assertTrue(!userRoles.isEmpty());
-		
+    	
+    	//ObjectMapper mapper = new ObjectMapper();
+    	UserRole inactiveRole = new UserRole(4,"INACTIVE");
+    	//String inactiveRoleAsJson = mapper.writeValueAsString(inactiveRole);
+		assertThat(userRoles,hasItem(inactiveRole));
 	}
 
 	@Test 
