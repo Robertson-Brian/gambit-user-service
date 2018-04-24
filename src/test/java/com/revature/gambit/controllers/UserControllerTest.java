@@ -14,6 +14,7 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
+
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.User;
 import com.revature.gambit.entities.UserRole;
@@ -140,7 +141,6 @@ public class UserControllerTest extends GambitTest {
     			.as(userRoles.getClass());
 
     	assertTrue(!userRoles.isEmpty());
-		
 	}
 
 	@Test 

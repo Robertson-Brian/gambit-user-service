@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public List<UserRole> getAllRoles() {
-		return userRepository.findAllUserRoles();
+		return userRoleRepository.findAll();
 	}
 
 	public User findUserById(Integer id) {
