@@ -39,7 +39,6 @@ public class UserServiceTest extends GambitTest {
     	log.trace("savedTrainer = " + savedUser);
     	assertNotEquals(0, savedUser.getUserId());
     	assertEquals(newUser.getFirstName(), savedUser.getFirstName());
-    	//*************** delete below statement if you think everything is fine**********//
     	assertNull(userService.makeUser(newUser));
 	}
 	
@@ -85,8 +84,8 @@ public class UserServiceTest extends GambitTest {
 	public void testFindUserByEmail(){
 		
 		log.debug("Testing UserService findUserByEmail()");
-		String expected = "patrick.walsh@revature.com";
-		User user = userService.findUserByEmail("patrick.walsh@revature.com");
+		String expected = "wingz101@icloud.com";
+		User user = userService.findUserByEmail("wingz101@icloud.com");
 		assertEquals(user.getEmail(), expected);
 		String notExpected ="xinguang.huang1@gmail.com";
 		assertThat(notExpected,is(not(user.getEmail())));
@@ -138,12 +137,10 @@ public class UserServiceTest extends GambitTest {
 	public void testDelete(){
     	log.debug("Testing UserService delete()");
     	assertNotNull(userService.findUserByEmail("wingz101@icloud.com"));
-    	//User user= userService.findUserByEmail("wingz101@icloud.com");
-    	User user2 = userService.makeUser(newUser);
-    	//userService.delete(user2.getUserId());
-    	userService.delete(user2.getUserId());
-    	//userService.delete(1);
-    	assertNull(userService.findUserByEmail("wingz101@icloud.com"));
+    	User user= userService.findUserByEmail("wingz101@icloud.com");
+    	User inactiveUser=userService.delete(user.getUserId());
+    	userService.delete(user.getUserId());
+    	assertEquals("INACTIVE",inactiveUser.getRole().getRole());
 		
 	}
 	
