@@ -72,26 +72,4 @@ public interface UserController {
 	 */
 	ResponseEntity<User> findByName(String firstName, String lastName);
 	
-	/**
-	 * Return all the trainers in the database
-	 * 
-	 * @author Jeffrey Camacho (1712-Steve)
-	 * * Gambit Integrators:
-	 * * @author Mark Fleres
-	 * 
-	 * @return a list of all the users in the database whose role is trainer
-	 */
-	ResponseEntity<List<User>> getAllTrainers();
-	
-	/**
-	 * Return all the associates in the database
-	 * 
-	 * @author Jeffrey Camacho (1712-Steve)
-	 * * Gambit Integrators:
-	 * * @author Mark Fleres
-	 * 
-	 * @return a list of all the users in the database whose role is associate (null)
-	 */
-	ResponseEntity<List<User>> getAllAssociates();
-
 }
