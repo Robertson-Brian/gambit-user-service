@@ -51,13 +51,13 @@ public class UserControllerImpl implements UserController {
 	}
 
 	@PutMapping
-	public ResponseEntity<User> updateUser( @RequestBody User user) {
+	public ResponseEntity<User> updateUser(@Valid @RequestBody User user) {
 		log.info("User Controller received request: Update user " + user);
 		User updatedUser = userService.update(user);
 		if(updatedUser != null) {
-			return new ResponseEntity<>(updatedUser, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(updatedUser, HttpStatus.OK);
 		} else {
-			throw new AuthUserException("User not updated/available", HttpStatus.BAD_REQUEST);
+			throw new AuthUserException("User not updated/available", HttpStatus.UNAUTHORIZED);
 		}
 
 	}
@@ -70,14 +70,14 @@ public class UserControllerImpl implements UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
-	@PutMapping("inactive")
+	@PutMapping("/inactive")
 	public ResponseEntity<Void> makeInactive(@RequestBody User user) {
 		log.info("User Controller received request: Inactivating user: " + user);
 		userService.delete(user.getUserId());
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@GetMapping("roles")
+	@GetMapping("/roles")
 	public ResponseEntity<List<UserRole>> getAllUserRoles() {
 		log.info("User Controller received request: Fetching all user roles");
 		List<UserRole> roles = userService.getAllRoles();

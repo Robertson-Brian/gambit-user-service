@@ -39,7 +39,6 @@ public class UserServiceTest extends GambitTest {
     	log.trace("savedTrainer = " + savedUser);
     	assertNotEquals(0, savedUser.getUserId());
     	assertEquals(newUser.getFirstName(), savedUser.getFirstName());
-    	//*************** delete below statement if you think everything is fine**********//
     	assertNull(userService.makeUser(newUser));
 	}
 	

@@ -2,11 +2,9 @@ package com.revature.gambit.services;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.revature.gambit.entities.User;
 import com.revature.gambit.entities.UserRole;
 import com.revature.gambit.repositories.UserRepository;
@@ -35,10 +33,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public User update(User user) {
-	/*	if(findUserById(user.getUserId())==null){
+	if(findUserById(user.getUserId())==null){
 			return null;
-		}*/
-		return userRepository.save(user);
+		}
+		User updatingUser = userRepository.findByUserId(user.getUserId());
+		BeanUtils.copyProperties(user, updatingUser,"userId");
+		return userRepository.save(updatingUser);
 	}
 	
 	public User findUserByEmail(String email) {
