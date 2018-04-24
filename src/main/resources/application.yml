@@ -28,7 +28,7 @@ spring:
     hibernate:
       ddl-auto: none
 #  kafka:
-#    bootstrap-servers: ec2-35-182-41-35.ca-central-1.compute.amazonaws.com:9092
+#    bootstrap-servers: ${KAFKA_URL}
 
 #Eureka Client Configuration
 eureka:
