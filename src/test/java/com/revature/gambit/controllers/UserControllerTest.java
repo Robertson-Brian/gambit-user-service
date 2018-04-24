@@ -40,7 +40,7 @@ public class UserControllerTest extends GambitTest {
     private static final String REGISTER_USER_URI = BASE_URI;
     private static final String UPDATE_USER_URI = BASE_URI;
     private static final String FIND_USER_BY_EMAIL_URI = BASE_URI + "/email/{email:.+}/";
-    private static final String DELETE_USER_URI = BASE_URI+"/inactive";
+    private static final String DELETE_USER_URI = BASE_URI+"/inactivate";
     private static final String FIND_ALL_USERS_URI = BASE_URI;
     private static final String FIND_ALL_USER_ROLES = BASE_URI+ "/roles";
     private static final String FIND_USER_BY_ID_URI = BASE_URI + "/{id}";
