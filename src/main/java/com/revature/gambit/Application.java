@@ -6,13 +6,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import com.revature.gambit.monitoring.TrainerServiceFallbackImpl;
-import com.revature.gambit.services.TrainerService;
+import com.revature.gambit.services.TrainerServiceImpl;
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -45,8 +43,8 @@ public class Application implements CommandLineRunner{
 	@Override
 	public void run(String... arg0) throws Exception {
 		log.debug("Running init methods for all fallback classes");
-		TrainerServiceFallbackImpl trainerFallback = context.getBean(TrainerServiceFallbackImpl.class);
-		trainerFallback.init();
+		TrainerServiceImpl trainerService = context.getBean(TrainerServiceImpl.class);
+		trainerService.init();
 
 	}
 }

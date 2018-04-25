@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.User;
 import com.revature.gambit.repositories.TrainerRepository;
@@ -23,7 +24,15 @@ public class TrainerServiceImpl implements TrainerService {
 	private UserRepository userRepository;
 
 	private static final Logger log = Logger.getLogger(TrainerServiceImpl.class);
+	
+	private List<Trainer> trainers;
 
+	public void init(){
+		  log.debug("Load a list of all trainers when the application starts up.");
+		  trainers = trainerRepository.findAll();
+		  log.info("Static trainer list size: "+trainers);		
+	  }
+	
 	public void delete(Integer id) {
 		log.debug("Method called to delete a trainer.");
 		trainerRepository.delete(id);
@@ -83,7 +92,7 @@ public class TrainerServiceImpl implements TrainerService {
 		return trainerRepository.findDistinctTitle();
 	}
 
-	
+	@HystrixCommand(fallbackMethod = "getAllFallback")
 	public List<Trainer> getAll() {
 		log.debug("Method called to get all trainers.");
 		return trainerRepository.findAll();
@@ -93,5 +102,12 @@ public class TrainerServiceImpl implements TrainerService {
 		log.debug("Method called to get findByName.");
 		return trainerRepository.findTrainerByFirstNameAndLastName(firstName, lastName);
 	}
+	
+	@SuppressWarnings("unused")
+	private List<Trainer> getAllFallback(){
+		log.debug("This is the fallback method for TrainerService.getAll()."
+		  		+ "A list of trainers will be returned back.");		  
+		return trainers;
+	  }
 
 }

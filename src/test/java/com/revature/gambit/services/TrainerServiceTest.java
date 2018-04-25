@@ -301,5 +301,20 @@ public class TrainerServiceTest extends GambitTest {
     	Trainer trainer = trainerService.findByName("Chen", "Yan");
     	assertEquals(trainer, null);
     }
+    
+    /**
+     * Tests fallback method for retrieving all trainers.
+     * 
+     * @author Jing Yu
+     */
+    @Test 
+    public void testGetAllTrainersFallback() {
+    	log.debug("Testing fallback for trainerService.getAll()");
+    	List<Trainer> listTrainer = trainerService.getAll();
+    	if(listTrainer.size()<100){
+    	throw new RuntimeException("Simulate the failures.");
+    	}
+		
+	}
 
 }
