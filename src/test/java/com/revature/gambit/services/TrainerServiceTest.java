@@ -96,15 +96,17 @@ public class TrainerServiceTest extends GambitTest {
      * @author Mark Fleres
      */
     @Test 
-    public void testNewTrainer() {
+    public void testNewTrainer() throws InterruptedException {
     	log.debug("Testing trainerService.newTrainer(Trainer trainer)");
     	Trainer newTrainer = new Trainer("Mark", "Fleres", "mfleres@gmail.com", "Dr.");
     	log.trace("newTrainer = " + newTrainer);
     	Trainer savedTrainer = trainerService.newTrainer(newTrainer);
-    	log.trace("savedTrainer = " + savedTrainer);
+    	log.info("savedTrainer = " + savedTrainer);
     	assertNotEquals(0, savedTrainer.getUserId());
     	assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
     	assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
+    	log.info("received in testNewTrainer: " + receive(Trainer.class));
+    	
     }
     
     /**

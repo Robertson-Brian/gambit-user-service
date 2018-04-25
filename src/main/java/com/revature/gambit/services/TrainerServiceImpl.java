@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.User;
+import com.revature.gambit.messaging.Sender;
 import com.revature.gambit.repositories.TrainerRepository;
 import com.revature.gambit.repositories.UserRepository;
 
@@ -21,12 +22,16 @@ public class TrainerServiceImpl implements TrainerService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private Sender sender; // Use this to send messages to other services
 
 	private static final Logger log = Logger.getLogger(TrainerServiceImpl.class);
 
 	public void delete(Integer id) {
 		log.debug("Method called to delete a trainer.");
 		trainerRepository.delete(id);
+		sender.publish("trainer.delete.t", id);
 	}
 
 	public Trainer findById(Integer trainerId) {
@@ -42,7 +47,11 @@ public class TrainerServiceImpl implements TrainerService {
 				findTrainerByEmail(trainer.getEmail()) != null) {
 			return null;
 		}
-		return trainerRepository.save(trainer);
+		
+		Trainer savedTrainer = trainerRepository.save(trainer);
+		sender.publish("trainer.register.t", savedTrainer);
+		
+		return savedTrainer;
 	}
 
 	public Trainer promoteToTrainer(User user, String title) {
@@ -68,7 +77,9 @@ public class TrainerServiceImpl implements TrainerService {
 		log.debug("Method called to update a trainer first name, last name, email, and title");
 		Trainer updatingTrainer = trainerRepository.findByUserId(trainer.getUserId());
 		BeanUtils.copyProperties(trainer, updatingTrainer,"userId");
-		return trainerRepository.save(updatingTrainer);
+		Trainer savedTrainer =  trainerRepository.save(updatingTrainer);
+		sender.publish("trainer.update.t", savedTrainer);
+		return savedTrainer;
 	}
 	
 
