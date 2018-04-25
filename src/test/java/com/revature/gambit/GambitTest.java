@@ -40,9 +40,6 @@ import com.revature.gambit.messaging.Sender;
 @Sql(scripts = "/tear-down.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
 @DirtiesContext
 public class GambitTest {
-	
-	@Autowired
-	private Sender sender;
 
 	private KafkaMessageListenerContainer<String, String> container;
 
@@ -51,8 +48,8 @@ public class GambitTest {
 	private ObjectMapper mapper = new ObjectMapper();
 
 	@ClassRule
-	public static KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, 
-			2, "trainer.register.t", "trainer.update.t");
+	public static KafkaEmbedded embeddedKafka = 
+		new KafkaEmbedded(1, true, 3);
 
 	@Before
 	public void setUp() throws Exception {
@@ -66,7 +63,7 @@ public class GambitTest {
 
 		// set the topic that needs to be consumed
 		ContainerProperties containerProperties = new ContainerProperties(
-				"trainer.register.t", "trainer.update.t");
+				"trainer.register.t", "trainer.update.t", "trainer.delete.t");
 
 		// create a Kafka MessageListenerContainer
 		container = new KafkaMessageListenerContainer<>(consumerFactory, containerProperties);

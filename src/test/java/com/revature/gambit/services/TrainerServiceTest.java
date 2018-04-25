@@ -105,7 +105,8 @@ public class TrainerServiceTest extends GambitTest {
     	assertNotEquals(0, savedTrainer.getUserId());
     	assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
     	assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
-    	log.info("received in testNewTrainer: " + receive(Trainer.class));
+    	Trainer trainer = (Trainer)receive(Trainer.class);
+    	trainer.getUserId();
     	
     }
     
