@@ -38,7 +38,7 @@ public class SenderTest extends GambitTest{
 
 	@ClassRule
 	public static KafkaEmbedded embeddedKafka = 
-		new KafkaEmbedded(1, true, 3);
+		new KafkaEmbedded(1, true, 6);
 
 	@Before
 	public void setUp() throws Exception {
@@ -93,5 +93,31 @@ public class SenderTest extends GambitTest{
 			return null;
 		}  
 	}
-
+	
+	public Object receive(String topic, Class<?> clazz) {
+		// Use this to receive object from mock kafka server. It will unmarshalled the json.
+		BlockingQueue<ConsumerRecord<String, String>> backupRecords = new LinkedBlockingQueue<>();
+		ConsumerRecord<String, String> received = null;
+		try {
+			while((received = records.poll(10, TimeUnit.SECONDS)) != null) {
+				if(received.topic().equals(topic)) {
+					//Cleanup
+					backupRecords.addAll(records);
+					records = backupRecords;
+					try {
+						return mapper.readValue(received.value(), clazz);
+					} catch (Exception e) {
+						return null;
+					}  
+				} else {
+					backupRecords.put(received);
+				}
+			}
+		} catch (InterruptedException e) {
+			backupRecords.addAll(records);
+			records = backupRecords;
+			return null;
+		}
+		return null;
+	}
 }

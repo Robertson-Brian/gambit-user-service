@@ -41,13 +41,10 @@ public class TraineeServiceImpl implements TraineeService {
 		} else {
 			Trainee savedTrainee = traineeRepository.save(trainee);
 			if(savedTrainee != null) {
-				sender.publish(TOPIC_REGISTER_TRAINEE, trainee);
+				sender.publish(TOPIC_REGISTER_TRAINEE, savedTrainee);
 			}
 			return savedTrainee;
-			
 		}
-		
-		
 	}
 
 	@Transactional
