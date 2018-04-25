@@ -15,16 +15,16 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.User;
+import com.revature.gambit.messaging.SenderTest;
 
 /**
  * 
  * Tests for inserting, updating, retrieving and deleting Trainers.
  *
  */
-public class TrainerServiceTest extends GambitTest {
+public class TrainerServiceTest extends SenderTest {
 
     private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
 
@@ -96,15 +96,18 @@ public class TrainerServiceTest extends GambitTest {
      * @author Mark Fleres
      */
     @Test 
-    public void testNewTrainer() {
+    public void testNewTrainer() throws InterruptedException {
     	log.debug("Testing trainerService.newTrainer(Trainer trainer)");
     	Trainer newTrainer = new Trainer("Mark", "Fleres", "mfleres@gmail.com", "Dr.");
     	log.trace("newTrainer = " + newTrainer);
     	Trainer savedTrainer = trainerService.newTrainer(newTrainer);
-    	log.trace("savedTrainer = " + savedTrainer);
+    	log.info("savedTrainer = " + savedTrainer);
     	assertNotEquals(0, savedTrainer.getUserId());
     	assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
     	assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
+    	Trainer trainer = (Trainer)receive(Trainer.class);
+    	trainer.getUserId();
+    	
     }
     
     /**

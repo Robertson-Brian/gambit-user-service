@@ -1,6 +1,5 @@
 package com.revature.gambit.services;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -10,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.entities.TrainingStatus;
+import com.revature.gambit.messaging.Sender;
 import com.revature.gambit.repositories.TraineeRepository;
 
 @Service("traineeService")
@@ -19,6 +19,9 @@ public class TraineeServiceImpl implements TraineeService {
 
 	@Autowired
 	private TraineeRepository traineeRepository;
+	
+	@Autowired
+	private Sender sender; // Use this to send messages to other services.
 
 	@Transactional
 	public Trainee save(Trainee trainee) {
