@@ -1,9 +1,5 @@
 package com.revature.gambit.controllers;
 
-import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
-
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -64,7 +60,6 @@ public class TraineeControllerImpl implements TraineeController {
 		log.debug("Trainee Controller received request: Creating trainee: " + trainee);
 		Trainee newTrainee = traineeService.save(trainee);
 		if (newTrainee != null) {
-			sender.publish(TOPIC_REGISTER_TRAINEE,newTrainee);
 			return new ResponseEntity<>(newTrainee, HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
@@ -74,7 +69,6 @@ public class TraineeControllerImpl implements TraineeController {
 	@PutMapping
 	public ResponseEntity<Trainee> updateTrainee(@RequestBody Trainee trainee) {
 		log.debug("Trainee Controller received request: Updating trainee: " + trainee);
-		sender.publish(TOPIC_UPDATE_TRAINEE,trainee);
 		return new ResponseEntity<>(traineeService.update(trainee), HttpStatus.NO_CONTENT);
 	}
 
@@ -82,7 +76,6 @@ public class TraineeControllerImpl implements TraineeController {
 	public ResponseEntity<?> deleteTrainee(@RequestBody Trainee trainee) {
 		log.debug("TraineeControllerImpl.deleteTrainee: " + trainee);		
 		traineeService.delete(trainee);
-		sender.publish(TOPIC_DELETE_TRAINEE, trainee);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 

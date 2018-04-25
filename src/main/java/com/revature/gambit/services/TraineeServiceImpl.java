@@ -12,6 +12,10 @@ import com.revature.gambit.entities.TrainingStatus;
 import com.revature.gambit.messaging.Sender;
 import com.revature.gambit.repositories.TraineeRepository;
 
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
+
 @Service("traineeService")
 public class TraineeServiceImpl implements TraineeService {
 
@@ -35,8 +39,11 @@ public class TraineeServiceImpl implements TraineeService {
 		if (preexisting != null) {
 			return null;
 		} else {
-			
-			return traineeRepository.save(trainee);
+			Trainee savedTrainee = traineeRepository.save(trainee);
+			if(savedTrainee != null) {
+				sender.publish(TOPIC_REGISTER_TRAINEE, trainee);
+			}
+			return savedTrainee;
 			
 		}
 		
@@ -58,7 +65,11 @@ public class TraineeServiceImpl implements TraineeService {
 			log.trace("setting resourceId for trainee as: " + preexisting.getResourceId());
 			trainee.setResourceId(preexisting.getResourceId());
 			trainee.setUserId(preexisting.getUserId());
-			return traineeRepository.save(trainee);
+			Trainee updatedTrainee = traineeRepository.save(trainee);
+			if(updatedTrainee != null) {
+				sender.publish(TOPIC_UPDATE_TRAINEE, updatedTrainee);
+			}
+			return updatedTrainee;
 		}
 		return null;
 	}
@@ -67,6 +78,7 @@ public class TraineeServiceImpl implements TraineeService {
 	public void delete(Trainee trainee) {
 		log.debug("TraineeServiceImpl.delete" + trainee);
 		traineeRepository.delete(trainee);
+		sender.publish(TOPIC_DELETE_TRAINEE, trainee);
 	}
 
 	@Transactional
