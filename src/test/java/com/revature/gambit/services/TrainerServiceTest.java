@@ -15,16 +15,16 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.User;
+import com.revature.gambit.messaging.SenderTest;
 
 /**
  * 
  * Tests for inserting, updating, retrieving and deleting Trainers.
  *
  */
-public class TrainerServiceTest extends GambitTest {
+public class TrainerServiceTest extends SenderTest {
 
     private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
 
