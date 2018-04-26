@@ -265,7 +265,45 @@ public class TraineeControllerTest extends GambitTest {
 			.assertThat()
 			.statusCode(HttpStatus.BAD_REQUEST_400);
 	}
+//-------------------------------------------------------------------------------------------------	
+	/**
+	 * Tests finding a trainee by batch.
+	 * Asserts that Status Code 200 - OK is returned.
+	 * 
+	 * @author Alejandro Iparraguirre
+	 */
+	@Test
+	public void getByBatch() {
+		log.debug("getByBatch unit test starts here.");
+		given()
+			.port(port)
+			.basePath(BASE_URI + "/batch/1")
+			.when()
+			.get()
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.OK_200);
+	}
 	
+	/**
+	 * Tests finding a trainee by an invalid id.
+	 * Asserts that Status Code 400 - BAD REQUEST is returned.
+	 * 
+	 * @author Alejandro Iparraguirre
+	 */
+	@Test
+	public void getByBatchAndBadId() {
+		log.debug("getByBatch unit test starts here.");
+		given()
+			.port(port)
+			.basePath(BASE_URI + "/batch/notRealId")
+			.when()
+			.get()
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.BAD_REQUEST_400);
+	}
+		
 	/**
 	 * Two Tests:
 	 * First:  Tests updating a trainee's first name.

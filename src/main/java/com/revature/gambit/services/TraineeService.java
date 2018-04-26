@@ -58,6 +58,15 @@ public interface TraineeService {
 	 * @return - List of all trainees in that batch number with the specified status.
 	 */
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status);
+	
+	/**
+	 * Find all trainees given their batchId.
+	 * 
+	 * @param batchId
+	 * @author Alejandro Iparraguirre
+	 * @return - List of all trainees with that batch number.
+	 */
+	public List<Trainee> findAllByBatch(int batchId);
 
 	/**
 	 * Find all of the trainees without restriction.

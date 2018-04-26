@@ -36,8 +36,6 @@ public class TraineeServiceImpl implements TraineeService {
 			return traineeRepository.save(trainee);
 			
 		}
-		
-		
 	}
 
 	@Transactional
@@ -77,6 +75,12 @@ public class TraineeServiceImpl implements TraineeService {
 		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,TrainingStatus.valueOf(status));
 	}
 
+	@Transactional
+	public List<Trainee> findAllByBatch(int batchId) {
+		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId);
+		return traineeRepository.findAllByBatch(batchId);
+	}
+	
 	@Transactional
 	public List<Trainee> getAll() {
 		log.debug("findAll Trainees.");
