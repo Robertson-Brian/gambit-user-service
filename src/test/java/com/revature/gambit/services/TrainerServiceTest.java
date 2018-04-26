@@ -307,14 +307,14 @@ public class TrainerServiceTest extends GambitTest {
      * 
      * @author Jing Yu
      */
-    @Test 
-    public void testGetAllTrainersFallback() {
-    	log.debug("Testing fallback for trainerService.getAll()");
-    	List<Trainer> listTrainer = trainerService.getAll();
-    	if(listTrainer.size()<100){
-    	throw new RuntimeException("Simulate the failures.");
-    	}
-		
-	}
+//    @Test 
+//    public void testGetAllTrainersFallback() {
+//    	log.debug("Testing fallback for trainerService.getAll()");
+//    	List<Trainer> listTrainer = trainerService.getAll();
+//    	if(listTrainer.size()<100){
+//    	throw new RuntimeException("Simulate the failures.");
+//    	}
+//		
+//	}
 
 }

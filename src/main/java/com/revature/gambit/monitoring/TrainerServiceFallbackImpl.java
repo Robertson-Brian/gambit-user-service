@@ -58,10 +58,14 @@ public class TrainerServiceFallbackImpl implements TrainerServiceFallback {
 	  }
 	  
 	  public Trainer findTrainerByEmailFallback(String email){
-		  log.info("This is the fallback method for TrainerService.findTrainerByEmailFallback()."
-			  		+ "A list of trainers will be returned back.");		
-		  return null;
-	  }
+			log.debug("This is the fallback method for TrainerService.findTrainerByEmailFallback()."
+				  		+ "A list of trainers will be returned back.");		
+			return  trainers
+					.stream()
+					.filter((trainer)->email.equals(trainer.getEmail()))
+					.findAny()
+					.orElse(null);
+		  }
 	  
 	  public Trainer findByNameFallback(String firstName, String lastName){
 		  log.info("This is the fallback method for TrainerService.findByName()."

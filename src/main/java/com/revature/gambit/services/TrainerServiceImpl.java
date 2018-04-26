@@ -1,6 +1,8 @@
 package com.revature.gambit.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
@@ -38,6 +40,7 @@ public class TrainerServiceImpl implements TrainerService {
 		trainerRepository.delete(id);
 	}
 
+	@HystrixCommand(fallbackMethod = "findByIdFallback")
 	public Trainer findById(Integer trainerId) {
 		log.debug("Method called to find Trainer by ID with id: " + trainerId);
 		return trainerRepository.findByUserId(trainerId);
@@ -80,13 +83,16 @@ public class TrainerServiceImpl implements TrainerService {
 		return trainerRepository.save(updatingTrainer);
 	}
 	
-
+	@HystrixCommand(fallbackMethod = "findTrainerByEmailFallback")
 	public Trainer findTrainerByEmail(String email) {
 		log.debug("Method called to findTrainerByEmail with email: " + email);
+		if(email !=null)
+			throw new RuntimeException("break it");
 		return trainerRepository.findByEmail(email);
 
 	}
-
+    
+	@HystrixCommand(fallbackMethod = "getTitlesFallback")
 	public List<String> getAllTitles() {
 		log.debug("Method called to list all titles.");
 		return trainerRepository.findDistinctTitle();
@@ -94,14 +100,20 @@ public class TrainerServiceImpl implements TrainerService {
 
 	@HystrixCommand(fallbackMethod = "getAllFallback")
 	public List<Trainer> getAll() {
-		log.debug("Method called to get all trainers.");
+		log.debug("Method called to get all trainers.");	
 		return trainerRepository.findAll();
 	}
-
+	
+    @HystrixCommand(fallbackMethod = "findByNameFallback")
 	public Trainer findByName(String firstName, String lastName) {
 		log.debug("Method called to get findByName.");
 		return trainerRepository.findTrainerByFirstNameAndLastName(firstName, lastName);
 	}
+	
+	
+	/*
+	 * Below are all fallback methods
+	 */
 	
 	@SuppressWarnings("unused")
 	private List<Trainer> getAllFallback(){
@@ -109,5 +121,48 @@ public class TrainerServiceImpl implements TrainerService {
 		  		+ "A list of trainers will be returned back.");		  
 		return trainers;
 	  }
-
+   
+	public List<String> getTitlesFallback(){
+		log.debug("This is the fallback method for TrainerService.getAllTitles()."
+			  		+ "A list of titles will be returned back.");
+		List<String> titles = new ArrayList<>();
+		  for(Trainer trainer : trainers){
+			  titles.add(trainer.getTitle());
+		  }
+		return titles;
+	  }
+	
+	public Trainer findByIdFallback(Integer trainerId){
+		log.debug("This is the fallback method for TrainerService.findById()."
+			  		+ "A list of trainers will be returned back.");		    
+		return  trainers
+				.stream()
+	            .filter((trainer)->trainerId == trainer.getUserId())
+	            .findAny()
+	            .orElse(null);
+	  }
+	  
+	  public Trainer findTrainerByEmailFallback(String email){
+		log.debug("This is the fallback method for TrainerService.findTrainerByEmailFallback()."
+			  		+ "A list of trainers will be returned back.");		
+		return  trainers
+				.stream()
+				.filter((trainer)->email.equals(trainer.getEmail()))
+				.findAny()
+				.orElse(null);
+	  }
+	  
+	  public Trainer findByNameFallback(String firstName, String lastName){
+		log.debug("This is the fallback method for TrainerService.findByName()."
+			  		+ "A list of trainers will be returned back.");		
+		return  trainers
+				.stream()
+				.filter(
+				(trainer)->
+				(firstName+lastName)
+				.equals
+				(trainer.getFirstName()+trainer.getLastName()))
+				.findAny()
+				.orElse(null);
+	  }
 }
