@@ -21,7 +21,18 @@ public interface TraineeController {
 	 * @return The list of trainees within that batch with the given batchId.
 	 */
 	ResponseEntity<List<Trainee>> findAllByBatchAndStatus(Integer id, String status);
-
+	
+	/**
+	 * Returns all trainees from a batch that has the input batch id.
+	 * 
+	 * Creating this mapping from scratch. 
+	 * 
+	 * @param batchId
+	 * @author Alejandro Iparraguirre
+	 * @return The list of trainees within that batch with the given batchId.
+	 */
+	ResponseEntity<List<Trainee>> findAllByBatch(Integer id);
+	
 	/**
 	 * Find all of the trainees without restriction.
 	 * 
