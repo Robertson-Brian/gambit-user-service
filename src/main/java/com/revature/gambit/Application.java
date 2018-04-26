@@ -12,6 +12,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.entities.Trainer;
@@ -44,21 +45,21 @@ public class Application implements CommandLineRunner {
 		return new Docket(DocumentationType.SWAGGER_2).select()
 				.apis(RequestHandlerSelectors.basePackage("com.revature.gambit")).paths(PathSelectors.any()).build();
 	}
-
+	@Transactional
 	@Override
 	public void run(String... arg0) throws Exception {
 //		UserService bean = context.getBean(UserService.class);
 //		List<User> allUsers = bean.getAllUsers();
 //		log.info("Getting All Users: "+allUsers);
 		
-		 TrainerService bean = context.getBean(TrainerService.class);
-		  List<Trainer> all = bean.getAll();
-		  log.info("Getting All tainer:" +all);
-		  log.info("Getting All tainer size :" +all.size());
+//		 TrainerService bean = context.getBean(TrainerService.class);
+//		  List<Trainer> all = bean.getAll();
+//		  log.info("Getting All tainer:" +all);
+//		  log.info("Getting All tainer size :" +all.size());
 
 		  
 		  
-	  
+//	  
 //	  TraineeService traineeService = context.getBean(TraineeService.class);
 //	  List<Trainee> getAllTrainee = traineeService.getAll();
 //		  log.info("Getting All trainee " +getAllTrainee );

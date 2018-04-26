@@ -1,6 +1,5 @@
 package com.revature.gambit.services;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.entities.TrainingStatus;
 import com.revature.gambit.repositories.TraineeRepository;
@@ -21,6 +21,7 @@ public class TraineeServiceImpl implements TraineeService {
 	private TraineeRepository traineeRepository;
 
 	@Transactional
+//	@HystrixCommand(fallbackMethod="saveFallBack")
 	public Trainee save(Trainee trainee) {
 		log.debug("save trainee: " + trainee);
 		if(trainee.getFirstName() == "" || trainee.getLastName() == "" || trainee.getEmail() == "") {
@@ -67,6 +68,7 @@ public class TraineeServiceImpl implements TraineeService {
 	}
 
 	@Transactional
+	@HystrixCommand(fallbackMethod="findAllByBatchAndStatusFallBack")
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status) {
 		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId + " with status: " + status);
 		try {
@@ -78,12 +80,15 @@ public class TraineeServiceImpl implements TraineeService {
 	}
 
 	@Transactional
+//	@HystrixCommand(fallbackMethod="getAllFallBack")
+
 	public List<Trainee> getAll() {
 		log.debug("findAll Trainees.");
 		return traineeRepository.findAll();
 	}
 
 	@Transactional
+	@HystrixCommand(fallbackMethod="findByEmailFallBack")
 	public Trainee findByEmail(String email) {
 		log.trace("findByEmail: " + email);
 		if(traineeRepository.findByEmail(email)!=null)
