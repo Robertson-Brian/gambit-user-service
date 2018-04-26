@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.revature.gambit.entities.User;
+import com.revature.gambit.entities.UserRole;
 
 public interface UserController {
 
@@ -22,7 +23,7 @@ public interface UserController {
 	 * @param User to update
 	 * @return http status success but no content
 	 */
-	ResponseEntity<Void> updateUser(User user);
+	ResponseEntity<User> updateUser(User user);
 
 	/**
 	 * Finds the user by matching email address.
@@ -45,7 +46,7 @@ public interface UserController {
 	 * 
 	 * @return List<String> of all the roles a User can be.
 	 */
-	ResponseEntity<List<String>> getAllUserRoles();
+	ResponseEntity<List<UserRole>> getAllUserRoles();
 
 	/**
 	 * Retrieves all users from the User table.
@@ -70,5 +71,5 @@ public interface UserController {
 	 * @return user with the associated first/last name
 	 */
 	ResponseEntity<User> findByName(String firstName, String lastName);
-
+	
 }
