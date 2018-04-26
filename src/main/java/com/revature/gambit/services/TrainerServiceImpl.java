@@ -68,9 +68,11 @@ public class TrainerServiceImpl implements TrainerService {
 				return null;
 			}
 		}
-		userRepository.delete(baseUser.getUserId());
-		Trainer userToPromote = new Trainer(baseUser,title);
-		return this.newTrainer(userToPromote);
+		
+		this.delete(baseUser.getUserId());
+		Trainer promotedUser = new Trainer(baseUser,title);
+		promotedUser = this.newTrainer(promotedUser);
+		return promotedUser;
 	}
 
 	public Trainer update(Trainer trainer) {
