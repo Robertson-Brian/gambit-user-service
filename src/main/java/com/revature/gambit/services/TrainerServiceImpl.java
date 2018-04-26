@@ -24,9 +24,6 @@ public class TrainerServiceImpl implements TrainerService {
 	private UserRepository userRepository;
 	
 	@Autowired
-	private UserService userService;
-	
-	@Autowired
 	private Sender sender; // Use this to send messages to other services
 
 	private static final Logger log = Logger.getLogger(TrainerServiceImpl.class);
@@ -72,9 +69,9 @@ public class TrainerServiceImpl implements TrainerService {
 			}
 		}
 		
-		userService.delete(baseUser.getUserId());
+		userRepository.delete(baseUser.getUserId());
 		Trainer promotedUser = new Trainer(baseUser,title);
-		promotedUser = this.newTrainer(promotedUser);
+		promotedUser = trainerRepository.save(promotedUser);
 		return promotedUser;
 	}
 
