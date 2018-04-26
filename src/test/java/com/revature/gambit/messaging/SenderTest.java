@@ -1,5 +1,12 @@
 package com.revature.gambit.messaging;
 
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINER;
+
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -7,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
@@ -21,13 +29,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.gambit.GambitTest;
 
-import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINER;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINER;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINER;
-
 @DirtiesContext
 public class SenderTest extends GambitTest{
 	private static KafkaMessageListenerContainer<String, String> container;
@@ -39,6 +40,11 @@ public class SenderTest extends GambitTest{
 	@ClassRule
 	public static KafkaEmbedded embeddedKafka =
 		new KafkaEmbedded(1, true, 6);
+	
+	@Before
+	public void resetQueue() {
+		records = new LinkedBlockingQueue<>();
+	}
 
 	@BeforeClass
 	public static void setUp() throws Exception {
@@ -60,7 +66,7 @@ public class SenderTest extends GambitTest{
 		container = new KafkaMessageListenerContainer<>(consumerFactory, containerProperties);
 
 		// create a thread safe queue to store the received message
-		records = new LinkedBlockingQueue<>();
+		// records = new LinkedBlockingQueue<>();
 
 		// setup a Kafka message listener
 		container.setupMessageListener(new MessageListener<String, String>() {
