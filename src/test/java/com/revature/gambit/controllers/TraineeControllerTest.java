@@ -9,13 +9,11 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 
-import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainee;
+import com.revature.gambit.messaging.SenderTest;
 import com.revature.gambit.services.TraineeService;
 
-import io.restassured.http.ContentType;
-
-public class TraineeControllerTest extends GambitTest {
+public class TraineeControllerTest extends SenderTest {
 	
 	@LocalServerPort
 	private int port;
