@@ -1,0 +1,7 @@
+#Service Configuration
+spring:
+  application:
+    name: user-service
+  cloud:
+    config:
+      uri: ${CONFIG_HOME}
