@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainee;
+import com.revature.gambit.messaging.Sender;
 import com.revature.gambit.services.TraineeService;
+
 /**
  * Handles all Janus requests for Trainee resources.
  *
@@ -33,7 +34,7 @@ public class TraineeControllerImpl implements TraineeController {
 	private TraineeService traineeService;
 	
 	@Autowired
-	private KafkaTemplate<String,String> template;
+	private Sender sender;
 
 	@GetMapping("batch/{id}/status/{status}")
 	public ResponseEntity<List<Trainee>> findAllByBatchAndStatus(@PathVariable Integer id,
@@ -59,7 +60,7 @@ public class TraineeControllerImpl implements TraineeController {
 		log.debug("Trainee Controller received request: Creating trainee: " + trainee);
 		Trainee newTrainee = traineeService.save(trainee);
 		if (newTrainee != null) {
-			return new ResponseEntity<>(newTrainee, HttpStatus.CREATED); 
+			return new ResponseEntity<>(newTrainee, HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
 		}

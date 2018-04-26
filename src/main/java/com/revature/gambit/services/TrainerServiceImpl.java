@@ -24,7 +24,7 @@ public class TrainerServiceImpl implements TrainerService {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private Sender sender; // Use this to send messages to other services
 
@@ -50,12 +50,12 @@ public class TrainerServiceImpl implements TrainerService {
 				findTrainerByEmail(trainer.getEmail()) != null) {
 			return null;
 		}
-		
+
 		Trainer savedTrainer = trainerRepository.save(trainer);
 		if (savedTrainer != null) {
 			sender.publish(TOPIC_REGISTER_TRAINER, savedTrainer);
 		}
-		
+
 		return savedTrainer;
 	}
 
@@ -73,9 +73,11 @@ public class TrainerServiceImpl implements TrainerService {
 				return null;
 			}
 		}
-		userRepository.delete(baseUser.getUserId());
-		Trainer userToPromote = new Trainer(baseUser,title);
-		return userRepository.save(userToPromote);
+
+		this.delete(baseUser.getUserId());
+		Trainer promotedUser = new Trainer(baseUser,title);
+		promotedUser = this.newTrainer(promotedUser);
+		return promotedUser;
 	}
 
 	public Trainer update(Trainer trainer) {
@@ -86,7 +88,7 @@ public class TrainerServiceImpl implements TrainerService {
 		sender.publish(TOPIC_UPDATE_TRAINER, savedTrainer);
 		return savedTrainer;
 	}
-	
+
 
 	public Trainer findTrainerByEmail(String email) {
 		log.debug("Method called to findTrainerByEmail with email: " + email);

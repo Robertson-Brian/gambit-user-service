@@ -21,16 +21,23 @@ import org.springframework.test.annotation.DirtiesContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.gambit.GambitTest;
 
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINER;
+
 @DirtiesContext
 public class SenderTest extends GambitTest{
 	private static KafkaMessageListenerContainer<String, String> container;
 
 	private static BlockingQueue<ConsumerRecord<String, String>> records;
-  
+
 	private static ObjectMapper mapper = new ObjectMapper();
 
 	@ClassRule
-	public static KafkaEmbedded embeddedKafka = 
+	public static KafkaEmbedded embeddedKafka =
 		new KafkaEmbedded(1, true, 6);
 
 	@BeforeClass
@@ -45,8 +52,9 @@ public class SenderTest extends GambitTest{
 
 		// set the topic that needs to be consumed
 		ContainerProperties containerProperties = new ContainerProperties(
-				"trainer.register.t", "trainer.update.t", "trainer.delete.t",
-				"trainee.register.t", "trainee.update.t", "trainee.delete.t");
+				TOPIC_DELETE_TRAINEE, TOPIC_DELETE_TRAINER,
+				TOPIC_REGISTER_TRAINEE, TOPIC_REGISTER_TRAINER,
+				TOPIC_UPDATE_TRAINEE, TOPIC_UPDATE_TRAINER);
 
 		// create a Kafka MessageListenerContainer
 		container = new KafkaMessageListenerContainer<>(consumerFactory, containerProperties);
@@ -75,7 +83,7 @@ public class SenderTest extends GambitTest{
 		// stop the container
 		container.stop();
 	}
-  
+
 	public Object receive(Class<?> clazz) throws InterruptedException{
 		// Use this to receive object from mock kafka server. It will unmarshalled the json.
 		ConsumerRecord<String, String> received = records.poll(10, TimeUnit.SECONDS);
@@ -83,7 +91,33 @@ public class SenderTest extends GambitTest{
 			return mapper.readValue(received.value(), clazz);
 		} catch (Exception e) {
 			return null;
-		}  
+		}
 	}
 
+	public Object receive(String topic, Class<?> clazz) {
+		// Use this to receive object from mock kafka server. It will unmarshalled the json.
+		BlockingQueue<ConsumerRecord<String, String>> backupRecords = new LinkedBlockingQueue<>();
+		ConsumerRecord<String, String> received = null;
+		try {
+			while((received = records.poll(10, TimeUnit.SECONDS)) != null) {
+				if(received.topic().equals(topic)) {
+					//Cleanup
+					backupRecords.addAll(records);
+					records = backupRecords;
+					try {
+						return mapper.readValue(received.value(), clazz);
+					} catch (Exception e) {
+						return null;
+					}
+				} else {
+					backupRecords.put(received);
+				}
+			}
+		} catch (InterruptedException e) {
+			backupRecords.addAll(records);
+			records = backupRecords;
+			return null;
+		}
+		return null;
+	}
 }
