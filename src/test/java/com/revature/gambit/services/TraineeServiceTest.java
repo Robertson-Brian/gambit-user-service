@@ -149,6 +149,32 @@ public class TraineeServiceTest extends GambitTest {
 		int currentSize = traineeService.getAll().size();
 		assertNotEquals(initialSize,currentSize);
 	}
+	
+	/**
+	 * Checks for trainees in Batch.
+	 * Current database only has 15 trainees in batch 1.
+	 * 
+	 * @author Alejandro Iparraguirre
+	 */
+	@Test
+	public void findAllTraineeByBatch(){
+		log.debug("Testing find all by batch.");
+		List<Trainee> result = traineeService.findAllByBatch(1);
+		assertEquals(15, result.size());	
+	}
+
+	/**
+	 * Check for trainees in a batch that doesn't exist so it contains no trainees.
+	 * This should return a list of length 0.
+	 * 
+	 * @author Alejandro Iparraguirre
+	 */
+	@Test
+	public void findAllTraineeByBadBatch(){
+		log.debug("Testing find all by batch using non-existant batch number");
+		assertEquals(0,traineeService.findAllByBatch(20).size());
+	}
+	
 	/**
 	 * Checks for trainees in Batch  with a trainingStatus of 'training'.
 	 * Current database only has one trainee that matches those specifications.
@@ -173,7 +199,6 @@ public class TraineeServiceTest extends GambitTest {
 		log.debug("Testing find all by batch and status using unused batch number");
 		assertEquals(0,traineeService.findAllByBatchAndStatus(3, "Training").size());
 	}
-
 	/**
 	 * Checks for trainees with an invalid training status.
 	 * The returned list should return null.

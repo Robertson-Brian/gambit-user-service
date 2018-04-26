@@ -265,7 +265,7 @@ public class TraineeControllerTest extends GambitTest {
 			.assertThat()
 			.statusCode(HttpStatus.BAD_REQUEST_400);
 	}
-//-------------------------------------------------------------------------------------------------	
+
 	/**
 	 * Tests finding a trainee by batch.
 	 * Asserts that Status Code 200 - OK is returned.
