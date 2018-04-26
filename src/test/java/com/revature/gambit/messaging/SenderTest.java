@@ -6,8 +6,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.KafkaMessageListenerContainer;
@@ -23,18 +23,18 @@ import com.revature.gambit.GambitTest;
 
 @DirtiesContext
 public class SenderTest extends GambitTest{
-	private KafkaMessageListenerContainer<String, String> container;
+	private static KafkaMessageListenerContainer<String, String> container;
 
-	private BlockingQueue<ConsumerRecord<String, String>> records;
+	private static BlockingQueue<ConsumerRecord<String, String>> records;
   
-	private ObjectMapper mapper = new ObjectMapper();
+	private static ObjectMapper mapper = new ObjectMapper();
 
 	@ClassRule
 	public static KafkaEmbedded embeddedKafka = 
-		new KafkaEmbedded(1, true, 3);
+		new KafkaEmbedded(1, true, 6);
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() throws Exception {
 		// set up the Kafka consumer properties
 		Map<String, Object> consumerProperties =
 				KafkaTestUtils.consumerProps("sender", "false", embeddedKafka);
@@ -45,7 +45,8 @@ public class SenderTest extends GambitTest{
 
 		// set the topic that needs to be consumed
 		ContainerProperties containerProperties = new ContainerProperties(
-				"trainer.register.t", "trainer.update.t", "trainer.delete.t");
+				"trainer.register.t", "trainer.update.t", "trainer.delete.t",
+				"trainee.register.t", "trainee.update.t", "trainee.delete.t");
 
 		// create a Kafka MessageListenerContainer
 		container = new KafkaMessageListenerContainer<>(consumerFactory, containerProperties);
@@ -69,8 +70,8 @@ public class SenderTest extends GambitTest{
 		ContainerTestUtils.waitForAssignment(container, embeddedKafka.getPartitionsPerTopic());
 	}
 
-	@After
-	public void tearDown() {
+	@AfterClass
+	public static void tearDown() {
 		// stop the container
 		container.stop();
 	}

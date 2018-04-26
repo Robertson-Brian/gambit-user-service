@@ -7,6 +7,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.revature.gambit.util.MessagingUtil.*;
+
 import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.User;
 import com.revature.gambit.messaging.Sender;
@@ -30,8 +32,9 @@ public class TrainerServiceImpl implements TrainerService {
 
 	public void delete(Integer id) {
 		log.debug("Method called to delete a trainer.");
+		Trainer deletedTrainer = trainerRepository.findByUserId(id);
 		trainerRepository.delete(id);
-		sender.publish("trainer.delete.t", id);
+		sender.publish(TOPIC_DELETE_TRAINER, deletedTrainer);
 	}
 
 	public Trainer findById(Integer trainerId) {
@@ -49,7 +52,9 @@ public class TrainerServiceImpl implements TrainerService {
 		}
 		
 		Trainer savedTrainer = trainerRepository.save(trainer);
-		sender.publish("trainer.register.t", savedTrainer);
+		if (savedTrainer != null) {
+			sender.publish(TOPIC_REGISTER_TRAINER, savedTrainer);
+		}
 		
 		return savedTrainer;
 	}
@@ -70,7 +75,7 @@ public class TrainerServiceImpl implements TrainerService {
 		}
 		userRepository.delete(baseUser.getUserId());
 		Trainer userToPromote = new Trainer(baseUser,title);
-		return this.newTrainer(userToPromote);
+		return userRepository.save(userToPromote);
 	}
 
 	public Trainer update(Trainer trainer) {
@@ -78,7 +83,7 @@ public class TrainerServiceImpl implements TrainerService {
 		Trainer updatingTrainer = trainerRepository.findByUserId(trainer.getUserId());
 		BeanUtils.copyProperties(trainer, updatingTrainer,"userId");
 		Trainer savedTrainer =  trainerRepository.save(updatingTrainer);
-		sender.publish("trainer.update.t", savedTrainer);
+		sender.publish(TOPIC_UPDATE_TRAINER, savedTrainer);
 		return savedTrainer;
 	}
 	

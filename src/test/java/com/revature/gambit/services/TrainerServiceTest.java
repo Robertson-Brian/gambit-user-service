@@ -105,9 +105,8 @@ public class TrainerServiceTest extends SenderTest {
     	assertNotEquals(0, savedTrainer.getUserId());
     	assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
     	assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
-    	Trainer trainer = (Trainer)receive(Trainer.class);
-    	trainer.getUserId();
-    	
+    	Trainer registeredTrainer = (Trainer)receive(Trainer.class);
+    	assertEquals(registeredTrainer.getUserId(), savedTrainer.getUserId());	
     }
     
     /**
@@ -142,11 +141,13 @@ public class TrainerServiceTest extends SenderTest {
      * @author Raymond Xia
      */
     @Test 
-    public void testDeleteTrainer() {
+    public void testDeleteTrainer() throws InterruptedException {
     	log.debug("Testing trainerService.delete()");
     	int patrickId = trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId();
     	trainerService.delete(patrickId);
     	assertNull(trainerService.findById(patrickId));
+    	Trainer deletedTrainer = (Trainer)receive(Trainer.class);
+    	assertEquals(deletedTrainer.getUserId(), patrickId);
     }
 
     /**
@@ -261,7 +262,7 @@ public class TrainerServiceTest extends SenderTest {
 	 * @author Nikhil Pious
 	 */
     @Test 
-	public void testUpdate(){
+	public void testUpdate() throws InterruptedException {
 		log.debug("Testing trainer update)");
 		Trainer targetTrainer = trainerService.findById(trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId());
 		log.trace("targetTrainer ="+targetTrainer);
@@ -273,14 +274,22 @@ public class TrainerServiceTest extends SenderTest {
 		log.trace("updateTargetTrainer = " + updateTargetTrainer);
 		List<String> updatedList = Arrays.asList("Patrick","Walsh","np4@hotmail.com","Technology Manager");
 		assertThat(updatedList,CoreMatchers.hasItems(updateTargetTrainer.getFirstName(),updateTargetTrainer.getLastName(),updateTargetTrainer.getEmail(),updateTargetTrainer.getTitle()));
+		Trainer receivedTrainer = (Trainer)receive(Trainer.class);
+		assertEquals(receivedTrainer.getUserId(), updateTargetTrainer.getUserId());
+		assertEquals(receivedTrainer.getEmail(), updateTargetTrainer.getEmail());
+		assertEquals(receivedTrainer.getTitle(), updateTargetTrainer.getTitle());
 	
 		updateTargetTrainer.setFirstName("Steve");
 		updateTargetTrainer.setLastName("Johns");
-		trainerService.update(updateTargetTrainer);
+		Trainer trainer = trainerService.update(updateTargetTrainer);
 		log.trace("updateTargetTrainer second time = " + updateTargetTrainer);
 		List<String> newUpdatedList = Arrays.asList("Steve","Johns","np4@hotmail.com","Technology Manager");
-		assertThat(newUpdatedList,CoreMatchers.hasItems(updateTargetTrainer.getFirstName(),updateTargetTrainer.getLastName(),updateTargetTrainer.getEmail(),updateTargetTrainer.getTitle()));
-		assertNotEquals("steves",updateTargetTrainer.getFirstName());
+		assertThat(newUpdatedList,CoreMatchers.hasItems(trainer.getFirstName(), trainer.getLastName(),trainer.getEmail(),trainer.getTitle()));
+		assertNotEquals("steves",trainer.getFirstName());
+		receivedTrainer = (Trainer)receive(Trainer.class);
+		assertEquals(receivedTrainer.getUserId(), trainer.getUserId());
+		assertEquals(receivedTrainer.getFirstName(), trainer.getFirstName());
+		assertEquals(receivedTrainer.getLastName(), trainer.getLastName());
 	}
     
     @Test
