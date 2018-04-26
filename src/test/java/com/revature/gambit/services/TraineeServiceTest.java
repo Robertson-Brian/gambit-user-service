@@ -228,4 +228,6 @@ public class TraineeServiceTest extends GambitTest {
 		// userId must not exist
 		assertNull(trainee);
 	}
+	
+	 
 }

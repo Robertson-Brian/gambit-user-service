@@ -1,6 +1,7 @@
 package com.revature.gambit.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,15 @@ public class TraineeServiceImpl implements TraineeService {
 	@Autowired
 	private TraineeRepository traineeRepository;
 
+	public List<Trainee>  traineeList;
+
+	public void init(){
+		log.debug("Loading All Trainees when Application loads");
+		traineeList = traineeRepository.findAll();
+		log.info("All Trainer information"+ traineeList);
+	}
+
 	@Transactional
-//	@HystrixCommand(fallbackMethod="saveFallBack")
 	public Trainee save(Trainee trainee) {
 		log.debug("save trainee: " + trainee);
 		if(trainee.getFirstName() == "" || trainee.getLastName() == "" || trainee.getEmail() == "") {
@@ -33,12 +41,12 @@ public class TraineeServiceImpl implements TraineeService {
 		if (preexisting != null) {
 			return null;
 		} else {
-			
+
 			return traineeRepository.save(trainee);
-			
+
 		}
-		
-		
+
+
 	}
 
 	@Transactional
@@ -76,11 +84,12 @@ public class TraineeServiceImpl implements TraineeService {
 		} catch (IllegalArgumentException e) {
 			return null;
 		}
+		//		throw new RuntimeException();
 		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,TrainingStatus.valueOf(status));
 	}
 
 	@Transactional
-//	@HystrixCommand(fallbackMethod="getAllFallBack")
+	@HystrixCommand(fallbackMethod="getAllFallBack")
 
 	public List<Trainee> getAll() {
 		log.debug("findAll Trainees.");
@@ -88,12 +97,51 @@ public class TraineeServiceImpl implements TraineeService {
 	}
 
 	@Transactional
-	@HystrixCommand(fallbackMethod="findByEmailFallBack")
+	@HystrixCommand(fallbackMethod="findByEmailFallBack"
+	//			commandProperties = {
+	//				      @HystrixProperty(name="execution.isolation.strategy", value="SEMAPHORE")
+	//				    }
+			)
 	public Trainee findByEmail(String email) {
 		log.trace("findByEmail: " + email);
 		if(traineeRepository.findByEmail(email)!=null)
+			//          throw new RuntimeException();
 			return traineeRepository.findByEmail(email);
 		else
 			return null;
 	}
+
+
+	/* FallBack methods for Read Operation */
+
+	public List<Trainee> findAllByBatchAndStatusFallBack(int batchId, String status){
+		log.info("FallBack Method For findAllByBatchAndStatus");
+		return traineeList.stream()
+				.filter(
+						(trainee)->	
+						(trainee.getBatches().contains(batchId))
+						&&
+						(TrainingStatus.valueOf(status)).equals(trainee.getTrainingStatus()))
+				.collect(Collectors.toList());
+
+	}
+
+
+	public List<Trainee> getAllFallBack(){
+		log.debug("If getAll goes wrong, this Fallback executes");
+		return traineeList;
+	}
+
+	public Trainee findByEmailFallBack(String email){
+		log.debug("FallBack for find trainee by Email");
+
+		return traineeList.stream()
+				.filter(
+						(trainee)->
+						email.equals(trainee.getEmail()))
+				.findAny()
+				.orElse(null);
+	}
+
+
 }
