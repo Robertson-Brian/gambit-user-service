@@ -7,5 +7,5 @@ public class MessagingUtil {
 	public static final String TOPIC_REGISTER_TRAINEE = "trainee.register.t";
 	public static final String TOPIC_UPDATE_TRAINEE = "trainee.update.t";
 	public static final String TOPIC_DELETE_TRAINEE = "trainee.delete.t";
-	public static final String TOPIC_PROMOTE_USER_TO_TRAINER = "user.promote_to_trainer.t";
+	public static final String TOPIC_PROMOTE_USER_TO_TRAINER = "trainer.promote.t";
 }

@@ -47,7 +47,7 @@ public class TrainerServiceTest extends SenderTest {
     	
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
     	
-    	User receivedUser = (User)receive(User.class);
+    	Trainer receivedUser = (Trainer)receive(Trainer.class);
     	assertEquals(receivedUser.getFirstName(), userToPromote.getFirstName()); 
     	assertEquals(receivedUser.getLastName(), userToPromote.getLastName());
     	assertEquals(receivedUser.getEmail(), userToPromote.getEmail()); 
@@ -69,7 +69,7 @@ public class TrainerServiceTest extends SenderTest {
     	
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
     	
-    	User receivedUser = (User)receive(User.class);
+    	Trainer receivedUser = (Trainer)receive(Trainer.class);
     	assertEquals(receivedUser.getEmail(), userToPromote.getEmail()); 
     }
     
@@ -89,7 +89,7 @@ public class TrainerServiceTest extends SenderTest {
     	
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
     	
-    	User receivedUser = (User)receive(User.class);
+    	Trainer receivedUser = (Trainer)receive(Trainer.class);
     	assertEquals(receivedUser.getFirstName(), userToPromote.getFirstName()); 
     	assertEquals(receivedUser.getLastName(), userToPromote.getLastName());
     }

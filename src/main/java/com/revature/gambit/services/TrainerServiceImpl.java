@@ -63,7 +63,6 @@ public class TrainerServiceImpl implements TrainerService {
 		return savedTrainer;
 	}
 
-	@Transactional
 	public Trainer promoteToTrainer(User user, String title) {
 		log.debug("Method called to promote a user to a trainer.");
 		if(user == null) {
@@ -78,11 +77,11 @@ public class TrainerServiceImpl implements TrainerService {
 				return null;
 			}
 		}
-
+		
 		userRepository.delete(baseUser.getUserId());
 		Trainer promotedUser = new Trainer(baseUser,title);
 		promotedUser = trainerRepository.save(promotedUser);
-		sender.publish(TOPIC_PROMOTE_USER_TO_TRAINER, baseUser);
+		sender.publish(TOPIC_PROMOTE_USER_TO_TRAINER, promotedUser);
 		return promotedUser;
 	}
 

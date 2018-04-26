@@ -6,6 +6,7 @@ import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINER;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_PROMOTE_USER_TO_TRAINER;
 
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -39,7 +40,7 @@ public class SenderTest extends GambitTest{
 
 	@ClassRule
 	public static KafkaEmbedded embeddedKafka =
-		new KafkaEmbedded(1, true, 6);
+		new KafkaEmbedded(1, true, 7);
 	
 	@Before
 	public void resetQueue() {
@@ -60,7 +61,8 @@ public class SenderTest extends GambitTest{
 		ContainerProperties containerProperties = new ContainerProperties(
 				TOPIC_DELETE_TRAINEE, TOPIC_DELETE_TRAINER,
 				TOPIC_REGISTER_TRAINEE, TOPIC_REGISTER_TRAINER,
-				TOPIC_UPDATE_TRAINEE, TOPIC_UPDATE_TRAINER);
+				TOPIC_UPDATE_TRAINEE, TOPIC_UPDATE_TRAINER,
+				TOPIC_PROMOTE_USER_TO_TRAINER);
 
 		// create a Kafka MessageListenerContainer
 		container = new KafkaMessageListenerContainer<>(consumerFactory, containerProperties);
