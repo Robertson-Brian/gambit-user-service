@@ -32,7 +32,7 @@ public class TrainerServiceTest extends SenderTest {
     private TrainerService trainerService;
 
     @Test
-    public void testPromoteTrainer() {
+    public void testPromoteTrainer() throws InterruptedException {
     	String title = "Trainer";
     	User userToPromote = new User("Laut","Daniel","dlaut1@hotmail.com");
     	log.trace("trainerToPromote.id = " + userToPromote.getUserId());
@@ -46,10 +46,15 @@ public class TrainerServiceTest extends SenderTest {
     	assertEquals(promotedTrainer.getFirstName(),userToPromote.getFirstName());
     	
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
+    	
+    	User receivedUser = (User)receive(User.class);
+    	assertEquals(receivedUser.getFirstName(), userToPromote.getFirstName()); 
+    	assertEquals(receivedUser.getLastName(), userToPromote.getLastName());
+    	assertEquals(receivedUser.getEmail(), userToPromote.getEmail()); 
     }
     
     @Test
-    public void testPromoteTrainerWithOnlyEmail() {
+    public void testPromoteTrainerWithOnlyEmail() throws InterruptedException{
     	String title = "Trainer";
     	User userToPromote = new User("","","dlaut1@hotmail.com");
     	log.trace("trainerToPromote.id = " + userToPromote.getUserId());
@@ -63,10 +68,13 @@ public class TrainerServiceTest extends SenderTest {
     	assertEquals("Laut",promotedTrainer.getFirstName());
     	
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
+    	
+    	User receivedUser = (User)receive(User.class);
+    	assertEquals(receivedUser.getEmail(), userToPromote.getEmail()); 
     }
     
     @Test
-    public void testPromoteTrainerWithOnlyName() {
+    public void testPromoteTrainerWithOnlyName() throws InterruptedException{
     	String title = "Trainer";
     	User userToPromote = new User("Laut","Daniel","");
     	log.trace("trainerToPromote.id = " + userToPromote.getUserId());
@@ -80,6 +88,10 @@ public class TrainerServiceTest extends SenderTest {
     	assertEquals(promotedTrainer.getFirstName(),userToPromote.getFirstName());
     	
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
+    	
+    	User receivedUser = (User)receive(User.class);
+    	assertEquals(receivedUser.getFirstName(), userToPromote.getFirstName()); 
+    	assertEquals(receivedUser.getLastName(), userToPromote.getLastName());
     }
     
     @Test

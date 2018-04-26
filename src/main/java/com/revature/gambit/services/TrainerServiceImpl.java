@@ -1,13 +1,17 @@
 package com.revature.gambit.services;
 
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_PROMOTE_USER_TO_TRAINER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINER;
+
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import static com.revature.gambit.util.MessagingUtil.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.User;
@@ -59,6 +63,7 @@ public class TrainerServiceImpl implements TrainerService {
 		return savedTrainer;
 	}
 
+	@Transactional
 	public Trainer promoteToTrainer(User user, String title) {
 		log.debug("Method called to promote a user to a trainer.");
 		if(user == null) {
@@ -77,6 +82,7 @@ public class TrainerServiceImpl implements TrainerService {
 		userRepository.delete(baseUser.getUserId());
 		Trainer promotedUser = new Trainer(baseUser,title);
 		promotedUser = trainerRepository.save(promotedUser);
+		sender.publish(TOPIC_PROMOTE_USER_TO_TRAINER, baseUser);
 		return promotedUser;
 	}
 
