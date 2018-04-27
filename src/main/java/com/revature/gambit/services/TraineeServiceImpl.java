@@ -1,6 +1,5 @@
 package com.revature.gambit.services;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -32,12 +31,8 @@ public class TraineeServiceImpl implements TraineeService {
 		if (preexisting != null) {
 			return null;
 		} else {
-			
 			return traineeRepository.save(trainee);
-			
 		}
-		
-		
 	}
 
 	@Transactional
@@ -82,13 +77,16 @@ public class TraineeServiceImpl implements TraineeService {
 		log.debug("findAll Trainees.");
 		return traineeRepository.findAll();
 	}
+	
+	@Transactional
+	public Trainee findByUserId(int userId) {
+		log.debug("Finding Trainee by userId: " + userId);
+		return traineeRepository.findByUserId(userId);
+	}
 
 	@Transactional
 	public Trainee findByEmail(String email) {
 		log.trace("findByEmail: " + email);
-		if(traineeRepository.findByEmail(email)!=null)
-			return traineeRepository.findByEmail(email);
-		else
-			return null;
+		return traineeRepository.findByEmail(email);
 	}
 }

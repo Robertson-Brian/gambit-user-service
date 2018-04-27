@@ -66,6 +66,13 @@ public interface TraineeService {
 	 * @return a List of all trainees
 	 */
 	public List<Trainee> getAll();
+	
+	/**
+	 * Find a trainee by userId
+	 * 
+	 * @return trainee with the corresponding userId
+	 */
+	public Trainee findByUserId(int userId);
 
 	/**
 	 * Find a trainee by providing their email.

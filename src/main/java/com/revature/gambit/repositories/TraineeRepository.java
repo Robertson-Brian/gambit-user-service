@@ -23,6 +23,8 @@ public interface TraineeRepository extends JpaRepository<Trainee, Integer> {
 	 */
 	List<Trainee> findAllByBatchesAndTrainingStatus(Integer batchId, TrainingStatus trainingStatus);
 	
+	Trainee findByUserId(int userId);
+	
 	Trainee findByEmail(String trainee);
 	
 	Trainee findOneByResourceId(String resourceId);

@@ -49,6 +49,16 @@ public class TraineeControllerImpl implements TraineeController {
 		log.debug("Trainee Controller received request: getAll trainees");
 		return new ResponseEntity<List<Trainee>>(traineeService.getAll(), HttpStatus.OK);
 	}
+	
+	@GetMapping("/{userId}")
+	public ResponseEntity<Trainee> findByUserId(@PathVariable int userId) {
+		Trainee trainee = traineeService.findByUserId(userId);
+		if (trainee != null) {
+			return new ResponseEntity<Trainee>(trainee, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Trainee>(HttpStatus.NOT_FOUND);
+		}
+	}
 
 	@PostMapping
 	public ResponseEntity<Trainee> createTrainee(@RequestBody Trainee trainee) {
