@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +27,7 @@ public class TraineeServiceImpl implements TraineeService {
 	public void init(){
 		log.debug("Loading All Trainees when Application loads");
 		traineeList = traineeRepository.findAll();
-		log.info("All Trainer information"+ traineeList);
+		log.info("All Trainee information"+ traineeList);
 	}
 
 	@Transactional
@@ -102,10 +103,11 @@ public class TraineeServiceImpl implements TraineeService {
 	//				      @HystrixProperty(name="execution.isolation.strategy", value="SEMAPHORE")
 	//				    }
 			)
+	
 	public Trainee findByEmail(String email) {
 		log.trace("findByEmail: " + email);
 		if(traineeRepository.findByEmail(email)!=null)
-			//          throw new RuntimeException();
+//			          throw new RuntimeException();
 			return traineeRepository.findByEmail(email);
 		else
 			return null;

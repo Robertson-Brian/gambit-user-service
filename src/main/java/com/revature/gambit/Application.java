@@ -7,11 +7,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.revature.gambit.controllers.UserControllerImpl;
 import com.revature.gambit.services.TraineeServiceImpl;
+import com.revature.gambit.services.UserServiceImpl;
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -23,6 +26,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableCircuitBreaker
+
+@EnableFeignClients
 public class Application implements CommandLineRunner {
 	  private static Logger log =Logger.getLogger(Application.class);
 
@@ -43,6 +48,9 @@ public class Application implements CommandLineRunner {
 		log.debug("Loading All Trainees Information");
 		TraineeServiceImpl traineeService = context.getBean(TraineeServiceImpl.class);
 		traineeService.init();
+		log.debug("Loading All User Information");
+		UserServiceImpl userService = context.getBean(UserServiceImpl.class);
+		userService.init();
 		        
 	}
 }
