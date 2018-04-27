@@ -1,13 +1,14 @@
 package com.revature.gambit.services;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.entities.TrainingStatus;
 import com.revature.gambit.repositories.TraineeRepository;
@@ -20,6 +21,14 @@ public class TraineeServiceImpl implements TraineeService {
 	@Autowired
 	private TraineeRepository traineeRepository;
 
+    public List<Trainee>  traineeList;
+    
+    public void init(){
+        log.debug("Loading All Trainees when Application loads");
+        traineeList = traineeRepository.findAll();
+        log.info("All Trainer information"+ traineeList);
+    }
+    
 	@Transactional
 	public Trainee save(Trainee trainee) {
 		log.debug("save trainee: " + trainee);
@@ -67,6 +76,7 @@ public class TraineeServiceImpl implements TraineeService {
 	}
 
 	@Transactional
+	//@HystrixCommand(fallbackMethod="findAllByBatchAndStatusFallBack")
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status) {
 		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId + " with status: " + status);
 		try {
@@ -78,12 +88,14 @@ public class TraineeServiceImpl implements TraineeService {
 	}
 
 	@Transactional
+	//@HystrixCommand(fallbackMethod="getAllFallBack")
 	public List<Trainee> getAll() {
 		log.debug("findAll Trainees.");
 		return traineeRepository.findAll();
 	}
 
 	@Transactional
+	@HystrixCommand(fallbackMethod="findByEmailFallBack")
 	public Trainee findByEmail(String email) {
 		log.trace("findByEmail: " + email);
 		if(traineeRepository.findByEmail(email)!=null)
@@ -91,4 +103,35 @@ public class TraineeServiceImpl implements TraineeService {
 		else
 			return null;
 	}
+	
+	/*
+	 * Below are fall back methods
+	 */
+	public List<Trainee> findAllByBatchAndStatusFallBack(int batchId, String status){
+        log.debug("FallBack Method For findAllByBatchAndStatus");
+        return traineeList.stream()
+                        .filter(
+                         (trainee)->    
+                        (trainee.getBatches().contains(batchId))
+                        &&
+                        (TrainingStatus.valueOf(status)).equals(trainee.getTrainingStatus()))
+                        .collect(Collectors.toList());
+
+    }
+    
+    
+    public List<Trainee> getAllFallBack(){
+        log.debug("If getAll goes wrong, this Fallback executes");
+        return traineeList;
+    }
+    
+    public Trainee findByEmailFallBack(String email){
+        log.debug("FallBack for find trainee by Email");        
+        return traineeList.stream()
+                          .filter(
+                           (trainee)->
+                           email.equals(trainee.getEmail()))
+                           .findAny()
+                           .orElse(null);
+    }
 }

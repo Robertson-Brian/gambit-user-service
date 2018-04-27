@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.User;
+import com.revature.gambit.exception.InvalidInputException;
 import com.revature.gambit.services.TrainerService;
+import static com.revature.gambit.util.FinalUtil.*;
 
 /**
  * Controller to retrieve Trainer information.
@@ -40,7 +42,7 @@ public class TrainerControllerImpl implements TrainerController {
 		if(registeredTrainer != null) {
 			return new ResponseEntity<>(registeredTrainer, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			throw new InvalidInputException(INCOMPLETED_FIELD_DATA);
 		}
 	}
 
@@ -51,7 +53,7 @@ public class TrainerControllerImpl implements TrainerController {
 		if(promotedTrainer != null) {
 			return new ResponseEntity<>(promotedTrainer, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			throw new InvalidInputException(INVALID_USER_DATA); 
 		}
 	}
 

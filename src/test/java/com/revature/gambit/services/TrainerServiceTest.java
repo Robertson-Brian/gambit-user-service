@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 
 import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
@@ -24,6 +25,8 @@ import com.revature.gambit.entities.User;
  * Tests for inserting, updating, retrieving and deleting Trainers.
  *
  */
+
+@EnableCircuitBreaker
 public class TrainerServiceTest extends GambitTest {
 
     private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
@@ -307,14 +310,14 @@ public class TrainerServiceTest extends GambitTest {
      * 
      * @author Jing Yu
      */
-//    @Test 
-//    public void testGetAllTrainersFallback() {
-//    	log.debug("Testing fallback for trainerService.getAll()");
-//    	List<Trainer> listTrainer = trainerService.getAll();
-//    	if(listTrainer.size()<100){
-//    	throw new RuntimeException("Simulate the failures.");
-//    	}
-//		
-//	}
+    @Test 
+    public void testGetAllTrainersFallback() {
+    	log.debug("Testing fallback for trainerService.getAll()");
+    	List<Trainer> listTrainer = trainerService.getAll();
+    	if(listTrainer.size()<100){
+    	throw new RuntimeException("Simulate the failures.");
+    	}
+		
+	}
 
 }

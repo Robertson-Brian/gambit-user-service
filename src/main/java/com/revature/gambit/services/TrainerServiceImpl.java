@@ -86,8 +86,6 @@ public class TrainerServiceImpl implements TrainerService {
 	@HystrixCommand(fallbackMethod = "findTrainerByEmailFallback")
 	public Trainer findTrainerByEmail(String email) {
 		log.debug("Method called to findTrainerByEmail with email: " + email);
-		if(email !=null)
-			throw new RuntimeException("break it");
 		return trainerRepository.findByEmail(email);
 
 	}

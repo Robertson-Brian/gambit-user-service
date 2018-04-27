@@ -10,6 +10,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+import com.revature.gambit.services.TraineeServiceImpl;
 import com.revature.gambit.services.TrainerServiceImpl;
 
 import springfox.documentation.builders.PathSelectors;
@@ -45,6 +46,9 @@ public class Application implements CommandLineRunner{
 		log.debug("Running init methods for all fallback classes");
 		TrainerServiceImpl trainerService = context.getBean(TrainerServiceImpl.class);
 		trainerService.init();
+		
+		TraineeServiceImpl traineeService = context.getBean(TraineeServiceImpl.class);
+		traineeService.init();
 
 	}
 }
