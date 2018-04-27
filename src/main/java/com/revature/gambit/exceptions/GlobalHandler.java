@@ -1,4 +1,4 @@
-package com.revature.gambit.exception;
+package com.revature.gambit.exceptions;
 
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ public class GlobalHandler {
 	}
 	
 	@ExceptionHandler(InvalidInputException.class)
-	public ResponseEntity<ClientMessage>  handhandleInvalidInputException(InvalidInputException e){
+	public ResponseEntity<ClientMessage>  handleInvalidInputException(InvalidInputException e){
 		logger.error("Invalid Input"+e);
 		
 		return new ResponseEntity<>(new ClientMessage("INVALID INPUT"),HttpStatus.BAD_REQUEST);

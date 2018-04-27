@@ -1,4 +1,4 @@
-package com.revature.gambit.exception;
+package com.revature.gambit.exceptions;
 
 public class InvalidInputException extends RuntimeException{
 

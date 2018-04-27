@@ -85,7 +85,7 @@ public class TraineeServiceImpl implements TraineeService {
 		} catch (IllegalArgumentException e) {
 			return null;
 		}
-		//		throw new RuntimeException();
+//				throw new RuntimeException();
 		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,TrainingStatus.valueOf(status));
 	}
 
@@ -98,11 +98,7 @@ public class TraineeServiceImpl implements TraineeService {
 	}
 
 	@Transactional
-	@HystrixCommand(fallbackMethod="findByEmailFallBack"
-	//			commandProperties = {
-	//				      @HystrixProperty(name="execution.isolation.strategy", value="SEMAPHORE")
-	//				    }
-			)
+	@HystrixCommand(fallbackMethod="findByEmailFallBack")
 	
 	public Trainee findByEmail(String email) {
 		log.trace("findByEmail: " + email);
@@ -123,7 +119,8 @@ public class TraineeServiceImpl implements TraineeService {
 						(trainee)->	
 						(trainee.getBatches().contains(batchId))
 						&&
-						(TrainingStatus.valueOf(status)).equals(trainee.getTrainingStatus()))
+						(TrainingStatus.valueOf(status))
+						.equals(trainee.getTrainingStatus()))
 				.collect(Collectors.toList());
 
 	}

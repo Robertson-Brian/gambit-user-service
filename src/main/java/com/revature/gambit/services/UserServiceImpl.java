@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 	}
-
+	@HystrixCommand(fallbackMethod="getAllUsersFallBack")
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
 	}
@@ -79,12 +79,12 @@ public class UserServiceImpl implements UserService {
 		return userRepository.save(user);
 	}
 	
-//	@HystrixCommand(fallbackMethod="findByRoleFallBack")
+	@HystrixCommand(fallbackMethod="findByRoleFallBack")
 	public List<User> findByRole(UserRole role) {
 		return userRepository.findByRole(role);
 	}
 	
-//	@HystrixCommand(fallbackMethod="findUserRoleByNameFallBack")
+	@HystrixCommand(fallbackMethod="findUserRoleByNameFallBack")
 	public UserRole findUserRoleByName(String roleName) {
 		if(roleName != null) {
 			return userRoleRepository.findByRole(roleName);
@@ -93,8 +93,14 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	
+	public List<User> getAllUsersFallBack(){
+		log.info("Executing  getAllUsersFallBack");
+		return userRepository.findAll();
+	}
+	
 	
 	public User findUserByEmailFallBack(String email) {
+		log.info("Executing Find User By Email  Fall Back");
 		return userList.stream()
 				.filter(user -> email.equals(user.getEmail()))
 				.findAny()
@@ -102,10 +108,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public List<UserRole> getAllRolesFallBack() {
+		log.info("Executing getAllRolesFallBack " );
 		return  userRoleRepository.findAll();
 	}
 	
 	public User findUserByIdFallBack(Integer id){
+		log.info("Executing findUserByIdFallBack " );
+
 		return  userList.stream()
 				.filter(user -> id==user.getUserId())
 				.findAny()
@@ -113,6 +122,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public User findByNameFallBack(String firstName, String lastName){
+		log.info("Executing findByNameFallBack " );
+
 		return userList.stream()
 				.filter(user -> firstName.equals(user.getFirstName())
 						&&lastName.equals(user.getLastName()))
@@ -120,7 +131,9 @@ public class UserServiceImpl implements UserService {
 				.orElse(null);
 	}
 	
-/*	public List<User> findByRoleFallBack(UserRole role){
+	public List<User> findByRoleFallBack(UserRole role){
+		log.info("Executing findByRoleFallBack " );
+
 		return userList.stream()
 				.filter(user -> role.getRole()
 						.equals(user.getRole().getRole()))
@@ -128,7 +141,18 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public UserRole findUserRoleByNameFallBack(String roleName){
-		return null;
 		
-	}*/
+		log.info("Executing findUserRoleByNameFallBack " );
+           for(User users : userList){
+        	  if(users.getRole().getRole().equals(roleName)){
+        		  return users.getRole();
+        	  }
+           }
+           return null;
+//		return userList.stream()
+//				.filter(user -> user.getRole().getRole().equals(roleName))
+//				.findAny()
+//				.orElse(null);
+		
+	}
 }
