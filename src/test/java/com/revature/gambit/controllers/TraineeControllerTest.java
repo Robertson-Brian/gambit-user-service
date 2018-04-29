@@ -296,7 +296,6 @@ public class TraineeControllerTest extends KafkaTest {
 			log.trace("Updated trainee: " + trainee);
 		
 		log.debug("Trainee Controller test: Update a nonexistent trainee");
-		Trainee nullTrainee = new Trainee("Howard", "Stern", "filler@hmail.com");
 		given()
 			.port(port)
 			.basePath(BASE_URI)
