@@ -40,12 +40,16 @@ public interface TrainerService {
 	Trainer newTrainer(Trainer trainer);
 
 	/**
-	 * Converts a trainee user to a trainer user.
-	 *
-	 * @author Mark Fleres
-	 * @param User, String
-	 * @return Trainer
+	 * Converts a User to a Trainer. The promotion is performed by removing the User
+	 * from the database, then registering it as a new Trainer. As a result, the User's
+	 * userId will NOT be preserved.
 	 * 
+	 * @author Mark Fleres
+	 * @param user
+	 *            - which contains the pre-existing user information
+	 * @param title
+	 * 			  - The title of the new Trainer
+	 * @return new Trainer - that was created from given user and new trainer
 	 */
 	Trainer promoteToTrainer(User user, String title);
 

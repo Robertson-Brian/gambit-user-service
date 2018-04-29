@@ -1,6 +1,5 @@
 package com.revature.gambit.services;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -10,7 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.entities.TrainingStatus;
+import com.revature.gambit.messaging.Sender;
 import com.revature.gambit.repositories.TraineeRepository;
+
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
 
 @Service("traineeService")
 public class TraineeServiceImpl implements TraineeService {
@@ -19,6 +23,9 @@ public class TraineeServiceImpl implements TraineeService {
 
 	@Autowired
 	private TraineeRepository traineeRepository;
+	
+	@Autowired
+	private Sender sender; // Use this to send messages to other services.
 
 	@Transactional
 	public Trainee save(Trainee trainee) {
@@ -32,12 +39,12 @@ public class TraineeServiceImpl implements TraineeService {
 		if (preexisting != null) {
 			return null;
 		} else {
-			
-			return traineeRepository.save(trainee);
-			
+			Trainee savedTrainee = traineeRepository.save(trainee);
+			if(savedTrainee != null) {
+				sender.publish(TOPIC_REGISTER_TRAINEE, savedTrainee);
+			}
+			return savedTrainee;
 		}
-		
-		
 	}
 
 	@Transactional
@@ -55,7 +62,11 @@ public class TraineeServiceImpl implements TraineeService {
 			log.trace("setting resourceId for trainee as: " + preexisting.getResourceId());
 			trainee.setResourceId(preexisting.getResourceId());
 			trainee.setUserId(preexisting.getUserId());
-			return traineeRepository.save(trainee);
+			Trainee updatedTrainee = traineeRepository.save(trainee);
+			if(updatedTrainee != null) {
+				sender.publish(TOPIC_UPDATE_TRAINEE, updatedTrainee);
+			}
+			return updatedTrainee;
 		}
 		return null;
 	}
@@ -64,16 +75,12 @@ public class TraineeServiceImpl implements TraineeService {
 	public void delete(Trainee trainee) {
 		log.debug("TraineeServiceImpl.delete" + trainee);
 		traineeRepository.delete(trainee);
+		sender.publish(TOPIC_DELETE_TRAINEE, trainee);
 	}
 
 	@Transactional
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status) {
 		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId + " with status: " + status);
-		try {
-			TrainingStatus trainingStatus = TrainingStatus.valueOf(status);
-		} catch (IllegalArgumentException e) {
-			return null;
-		}
 		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,TrainingStatus.valueOf(status));
 	}
 

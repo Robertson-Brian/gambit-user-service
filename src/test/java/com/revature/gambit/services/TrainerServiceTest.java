@@ -15,14 +15,14 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.User;
+import com.revature.gambit.messaging.KafkaTest;
 
 /**
  * Tests for inserting, updating, retrieving and deleting Trainers.
  */
-public class TrainerServiceTest extends GambitTest {
+public class TrainerServiceTest extends KafkaTest {
 
     private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
 
@@ -276,7 +276,7 @@ public class TrainerServiceTest extends GambitTest {
 	 * @author Nikhil Pious
 	 */
     @Test 
-	public void testUpdate(){
+	public void testUpdate() {
 		log.debug("Testing trainer update)");
 		Trainer targetTrainer = trainerService.findById(trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId());
 		log.trace("targetTrainer ="+targetTrainer);
@@ -291,11 +291,11 @@ public class TrainerServiceTest extends GambitTest {
 	
 		updateTargetTrainer.setFirstName("Steve");
 		updateTargetTrainer.setLastName("Johns");
-		trainerService.update(updateTargetTrainer);
+		Trainer trainer = trainerService.update(updateTargetTrainer);
 		log.trace("updateTargetTrainer second time = " + updateTargetTrainer);
 		List<String> newUpdatedList = Arrays.asList("Steve","Johns","np4@hotmail.com","Technology Manager");
-		assertThat(newUpdatedList,CoreMatchers.hasItems(updateTargetTrainer.getFirstName(),updateTargetTrainer.getLastName(),updateTargetTrainer.getEmail(),updateTargetTrainer.getTitle()));
-		assertNotEquals("steves",updateTargetTrainer.getFirstName());
+		assertThat(newUpdatedList,CoreMatchers.hasItems(trainer.getFirstName(), trainer.getLastName(),trainer.getEmail(),trainer.getTitle()));
+		assertNotEquals("steves",trainer.getFirstName());
 	}
     
     /**
