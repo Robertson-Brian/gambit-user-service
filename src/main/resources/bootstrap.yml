@@ -1,0 +1,8 @@
+#Spring Configuration
+spring:
+  application:
+    name: skills-service
+  cloud:
+    config:
+      uri: ${CONFIG_HOME}
+      fail-fast: true
