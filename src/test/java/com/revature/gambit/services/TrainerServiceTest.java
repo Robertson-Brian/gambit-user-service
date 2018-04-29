@@ -17,14 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.User;
-import com.revature.gambit.messaging.SenderTest;
+import com.revature.gambit.messaging.KafkaTest;
 
 /**
  * 
  * Tests for inserting, updating, retrieving and deleting Trainers.
  *
  */
-public class TrainerServiceTest extends SenderTest {
+public class TrainerServiceTest extends KafkaTest {
 
     private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
 
@@ -46,11 +46,6 @@ public class TrainerServiceTest extends SenderTest {
     	assertEquals(promotedTrainer.getFirstName(),userToPromote.getFirstName());
     	
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
-    	
-    	Trainer receivedUser = (Trainer)receive(Trainer.class);
-    	assertEquals(receivedUser.getFirstName(), userToPromote.getFirstName()); 
-    	assertEquals(receivedUser.getLastName(), userToPromote.getLastName());
-    	assertEquals(receivedUser.getEmail(), userToPromote.getEmail()); 
     }
     
     @Test
@@ -68,9 +63,6 @@ public class TrainerServiceTest extends SenderTest {
     	assertEquals("Laut",promotedTrainer.getFirstName());
     	
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
-    	
-    	Trainer receivedUser = (Trainer)receive(Trainer.class);
-    	assertEquals(receivedUser.getEmail(), userToPromote.getEmail()); 
     }
     
     @Test
@@ -88,10 +80,6 @@ public class TrainerServiceTest extends SenderTest {
     	assertEquals(promotedTrainer.getFirstName(),userToPromote.getFirstName());
     	
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
-    	
-    	Trainer receivedUser = (Trainer)receive(Trainer.class);
-    	assertEquals(receivedUser.getFirstName(), userToPromote.getFirstName()); 
-    	assertEquals(receivedUser.getLastName(), userToPromote.getLastName());
     }
     
     @Test
@@ -117,8 +105,6 @@ public class TrainerServiceTest extends SenderTest {
     	assertNotEquals(0, savedTrainer.getUserId());
     	assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
     	assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
-    	Trainer registeredTrainer = (Trainer)receive(Trainer.class);
-    	assertEquals(registeredTrainer.getUserId(), savedTrainer.getUserId());	
     }
     
     /**
@@ -158,8 +144,6 @@ public class TrainerServiceTest extends SenderTest {
     	int patrickId = trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId();
     	trainerService.delete(patrickId);
     	assertNull(trainerService.findById(patrickId));
-    	Trainer deletedTrainer = (Trainer)receive(Trainer.class);
-    	assertEquals(deletedTrainer.getUserId(), patrickId);
     }
 
     /**
@@ -286,10 +270,6 @@ public class TrainerServiceTest extends SenderTest {
 		log.trace("updateTargetTrainer = " + updateTargetTrainer);
 		List<String> updatedList = Arrays.asList("Patrick","Walsh","np4@hotmail.com","Technology Manager");
 		assertThat(updatedList,CoreMatchers.hasItems(updateTargetTrainer.getFirstName(),updateTargetTrainer.getLastName(),updateTargetTrainer.getEmail(),updateTargetTrainer.getTitle()));
-		Trainer receivedTrainer = (Trainer)receive(Trainer.class);
-		assertEquals(receivedTrainer.getUserId(), updateTargetTrainer.getUserId());
-		assertEquals(receivedTrainer.getEmail(), updateTargetTrainer.getEmail());
-		assertEquals(receivedTrainer.getTitle(), updateTargetTrainer.getTitle());
 	
 		updateTargetTrainer.setFirstName("Steve");
 		updateTargetTrainer.setLastName("Johns");
@@ -298,10 +278,6 @@ public class TrainerServiceTest extends SenderTest {
 		List<String> newUpdatedList = Arrays.asList("Steve","Johns","np4@hotmail.com","Technology Manager");
 		assertThat(newUpdatedList,CoreMatchers.hasItems(trainer.getFirstName(), trainer.getLastName(),trainer.getEmail(),trainer.getTitle()));
 		assertNotEquals("steves",trainer.getFirstName());
-		receivedTrainer = (Trainer)receive(Trainer.class);
-		assertEquals(receivedTrainer.getUserId(), trainer.getUserId());
-		assertEquals(receivedTrainer.getFirstName(), trainer.getFirstName());
-		assertEquals(receivedTrainer.getLastName(), trainer.getLastName());
 	}
     
     @Test

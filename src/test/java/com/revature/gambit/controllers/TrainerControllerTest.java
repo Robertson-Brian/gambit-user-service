@@ -18,8 +18,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 
-import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
+import com.revature.gambit.messaging.KafkaTest;
 import com.revature.gambit.services.TrainerService;
 
 import io.restassured.http.ContentType;
@@ -30,7 +30,7 @@ import io.restassured.http.ContentType;
  * from HTTP Requests.
  *
  */
-public class TrainerControllerTest extends GambitTest {
+public class TrainerControllerTest extends KafkaTest {
 
     private static final Logger log = Logger.getLogger(TrainerControllerTest.class);
 

@@ -15,15 +15,15 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 
-import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.User;
 import com.revature.gambit.entities.UserRole;
+import com.revature.gambit.messaging.KafkaTest;
 import com.revature.gambit.services.UserService;
 
 import io.restassured.http.ContentType;
 
 
-public class UserControllerTest extends GambitTest {
+public class UserControllerTest extends KafkaTest {
 	
 
     private static final Logger log = Logger.getLogger(UserControllerTest.class);

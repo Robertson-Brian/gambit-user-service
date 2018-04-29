@@ -17,19 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.entities.TrainingStatus;
-import com.revature.gambit.messaging.SenderTest;
-
-import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
+import com.revature.gambit.messaging.KafkaTest;
 
 /**
  * Test methods for inserting, updating, retrieving, and deleting.
  * 
  */
-
 @Transactional
-public class TraineeServiceTest extends SenderTest {
+public class TraineeServiceTest extends KafkaTest {
 
 	private static final Logger log = Logger.getLogger(TraineeServiceTest.class);
 
@@ -53,14 +48,8 @@ public class TraineeServiceTest extends SenderTest {
 		trainee = traineeService.save(trainee);
 		assertNotEquals(0, trainee.getUserId());
 		log.trace("Trainee saved! " + trainee);
-		
-		//Kafka Test
-		Trainee kafkaTrainee = (Trainee)receive(TOPIC_REGISTER_TRAINEE,Trainee.class);
-		assertNotNull(kafkaTrainee);
-		assertEquals(trainee.getUserId(),kafkaTrainee.getUserId());
 
 		log.debug("Testing trainee save (no batch)");
-
 		// Candidate has been scheduled for the technical discussion
 		Trainee candidate = new Trainee("Howard", "Johnson", "howard.johnson@brooks.net", "ajsy1b173h29479w",
 				TrainingStatus.Scheduled, "Edward Jones");
@@ -84,10 +73,6 @@ public class TraineeServiceTest extends SenderTest {
 		// Checks that if email exists, it returns null
 		assertEquals(null, traineeService.save(trainee));
 		log.trace("Trainee could not register because of existing email");
-		
-		//Kafka Test
-		Trainee kafkaTrainee = (Trainee) receive(TOPIC_REGISTER_TRAINEE,Trainee.class);
-		assertNull(kafkaTrainee);
 	}
 
 	/**
@@ -162,11 +147,6 @@ public class TraineeServiceTest extends SenderTest {
 		traineeService.delete(test);
 		int currentSize = traineeService.getAll().size();
 		assertNotEquals(initialSize,currentSize);
-		
-		//Kafka Test
-		Trainee kafkaTrainee = (Trainee) receive(TOPIC_DELETE_TRAINEE,Trainee.class);
-		assertNotNull(kafkaTrainee);
-		assertEquals(test.getUserId(), kafkaTrainee.getUserId());
 	}
 	/**
 	 * Checks for trainees in Batch  with a trainingStatus of 'training'.
@@ -223,11 +203,6 @@ public class TraineeServiceTest extends SenderTest {
 		log.trace("updateTargetTrainee = " + updateTargetTrainee);
 		List<String> updatedList = Arrays.asList("Tommy","Daniel","mrpickles@gmail.com");
 		assertThat(updatedList,CoreMatchers.hasItems(updateTargetTrainee.getFirstName(),updateTargetTrainee.getLastName(),updateTargetTrainee.getEmail()));
-	
-		//Kafka Test
-		Trainee kafkaTrainee = (Trainee)receive(TOPIC_UPDATE_TRAINEE,Trainee.class);
-		assertNotNull(kafkaTrainee);
-		assertEquals(updateTargetTrainee.getUserId(),kafkaTrainee.getUserId());
 		
 		updateTargetTrainee.setFirstName("Steve");
 		updateTargetTrainee.setLastName("Johns");
@@ -236,11 +211,6 @@ public class TraineeServiceTest extends SenderTest {
 		List<String> newUpdatedList = Arrays.asList("Steve","Johns","mrpickles@gmail.com");
 		assertThat(newUpdatedList,CoreMatchers.hasItems(updateTargetTrainee.getFirstName(),updateTargetTrainee.getLastName(),updateTargetTrainee.getEmail()));
 		assertNotEquals("Tommy",updateTargetTrainee.getFirstName());
-		
-		//Kafka Test Again
-		kafkaTrainee = (Trainee)receive(TOPIC_UPDATE_TRAINEE,Trainee.class);
-		assertNotNull(kafkaTrainee);
-		assertEquals(updateTargetTrainee.getUserId(),kafkaTrainee.getUserId());
 	}
 
 	/**
@@ -256,9 +226,5 @@ public class TraineeServiceTest extends SenderTest {
 		trainee = traineeService.update(trainee);
 		// userId must not exist
 		assertNull(trainee);
-		
-		//Kafka Test
-		Trainee kafkaTrainee = (Trainee)receive(TOPIC_UPDATE_TRAINEE,Trainee.class);
-		assertNull(kafkaTrainee);
 	}
 }
