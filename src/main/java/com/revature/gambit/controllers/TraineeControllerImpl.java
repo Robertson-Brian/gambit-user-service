@@ -44,6 +44,18 @@ public class TraineeControllerImpl implements TraineeController {
 			return new ResponseEntity<>(trainees, HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@GetMapping("batch/{id}")
+	public ResponseEntity<List<Trainee>> findAllByBatch(@PathVariable Integer id) {
+		log.debug("Trainee Controller received request: Finding all trainees for batch: " 
+			+ id);
+		List<Trainee> trainees = traineeService.findAllByBatch(id);
+		if(trainees != null) {
+			return new ResponseEntity<>(trainees, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(trainees, HttpStatus.BAD_REQUEST);
+		}
+	}
 
 	@GetMapping
 	public ResponseEntity<List<Trainee>> getAll() {
