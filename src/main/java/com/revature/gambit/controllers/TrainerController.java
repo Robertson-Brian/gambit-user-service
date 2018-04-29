@@ -17,8 +17,8 @@ public interface TrainerController {
 	/**
 	 * Inserts a new Trainer.
 	 * 
-	 * @param Trainer
 	 * @author Mark Fleres
+	 * @param Trainer
 	 * @return trainer and HTTP Status 200 "OK" or HTTP Status 400 "Bad Request".
 	 */
 	ResponseEntity<Trainer> registerTrainer(Trainer trainer);
@@ -26,8 +26,8 @@ public interface TrainerController {
 	/**
 	 * Converts a trainee user to a trainer user.
 	 * 
-	 * @param Trainer
 	 * @author Mark Fleres
+	 * @param Trainer
 	 * @return trainer and HTTP Status 200 "OK".
 	 */
 	ResponseEntity<Trainer> promote(Trainer trainer);
@@ -35,8 +35,8 @@ public interface TrainerController {
 	/**
 	 * Update Trainer information.
 	 * 
-	 * @param Trainer
 	 * @author Nikhil Pious
+	 * @param Trainer
 	 * @return trainer and HTTP Status 200 "OK".
 	 * 
 	 */
@@ -45,8 +45,8 @@ public interface TrainerController {
 	/**
 	 * Retrieves Trainer by email.
 	 * 
-	 * @param String of Email
 	 * @author Jeffrey Reyes
+	 * @param String of Email
 	 * @return trainer and HTTP Status 200 "OK".
 	 * 
 	 */
@@ -55,8 +55,8 @@ public interface TrainerController {
 	/**
 	 * Retrieve Trainer by Id
 	 * 
-	 * @param Integer id
 	 * @author Junyu Chen
+	 * @param Integer id
 	 * @return trainer and HTTP Status 200 "OK".
 	 */
 	ResponseEntity<Trainer> findTrainerById(Integer id);
@@ -80,8 +80,8 @@ public interface TrainerController {
 	/**
 	 * Retrieves a Trainer by first and last name.
 	 * 
-	 * @param String firstName, String lastName
 	 * @author Jeffrey Reyes
+	 * @param String firstName, String lastName
 	 * @return trainer
 	 */
 	ResponseEntity<Trainer> findByName(String firstName, String lastName);
@@ -89,8 +89,8 @@ public interface TrainerController {
 	/**
 	 * Delete Trainer by ID
 	 * 
-	 * @param Integer id
 	 * @author Raymond Xia
+	 * @param Integer id
 	 * @return HTTP Status 200
 	 */
 	ResponseEntity<?> deleteByTrainerId(Integer id);
