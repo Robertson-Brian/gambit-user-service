@@ -1,7 +1,7 @@
 #Spring Configuration
 spring:
   application:
-    name: skills-service
+    name: user-service
   cloud:
     config:
       uri: ${CONFIG_HOME}
