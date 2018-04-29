@@ -94,7 +94,7 @@ public class SenderTest extends GambitTest{
 
 	public Object receive(Class<?> clazz) throws InterruptedException{
 		// Use this to receive object from mock kafka server. It will unmarshalled the json.
-		ConsumerRecord<String, String> received = records.poll(30, TimeUnit.SECONDS);
+		ConsumerRecord<String, String> received = records.poll(20, TimeUnit.SECONDS);
 		try {
 			return mapper.readValue(received.value(), clazz);
 		} catch (Exception e) {
@@ -107,7 +107,7 @@ public class SenderTest extends GambitTest{
 		BlockingQueue<ConsumerRecord<String, String>> backupRecords = new LinkedBlockingQueue<>();
 		ConsumerRecord<String, String> received = null;
 		try {
-			while((received = records.poll(10, TimeUnit.SECONDS)) != null) {
+			while((received = records.poll(20, TimeUnit.SECONDS)) != null) {
 				if(received.topic().equals(topic)) {
 					//Cleanup
 					backupRecords.addAll(records);
