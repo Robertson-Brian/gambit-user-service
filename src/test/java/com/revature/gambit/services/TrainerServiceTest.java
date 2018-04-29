@@ -15,22 +15,25 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.User;
+import com.revature.gambit.messaging.KafkaTest;
 
 /**
- * 
  * Tests for inserting, updating, retrieving and deleting Trainers.
- *
  */
-public class TrainerServiceTest extends GambitTest {
+public class TrainerServiceTest extends KafkaTest {
 
     private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
 
     @Autowired
     private TrainerService trainerService;
 
+    /**
+     * Tests that a trainee can be promoted to trainer.
+     * 
+     * @author Mark Fleres
+     */
     @Test
     public void testPromoteTrainer() {
     	String title = "Trainer";
@@ -48,6 +51,11 @@ public class TrainerServiceTest extends GambitTest {
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
     }
     
+    /**
+     * Tests that a trainee can be promoted using only email.
+     * 
+     * @author Mark Fleres
+     */
     @Test
     public void testPromoteTrainerWithOnlyEmail() {
     	String title = "Trainer";
@@ -65,6 +73,11 @@ public class TrainerServiceTest extends GambitTest {
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
     }
     
+    /**
+     * Tests that a trainee can be promoted to trainer with only name.
+     * 
+     * @author Mark Fleres
+     */
     @Test
     public void testPromoteTrainerWithOnlyName() {
     	String title = "Trainer";
@@ -82,6 +95,11 @@ public class TrainerServiceTest extends GambitTest {
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
     }
     
+    /**
+     * Tests that a null trainee cannot be promoted.
+     * 
+     * @author Mark Fleres
+     */
     @Test
     public void testPromoteEmptyTrainer() {
     	String title = "Trainer";
@@ -258,7 +276,7 @@ public class TrainerServiceTest extends GambitTest {
 	 * @author Nikhil Pious
 	 */
     @Test 
-	public void testUpdate(){
+	public void testUpdate() {
 		log.debug("Testing trainer update)");
 		Trainer targetTrainer = trainerService.findById(trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId());
 		log.trace("targetTrainer ="+targetTrainer);
@@ -273,13 +291,18 @@ public class TrainerServiceTest extends GambitTest {
 	
 		updateTargetTrainer.setFirstName("Steve");
 		updateTargetTrainer.setLastName("Johns");
-		trainerService.update(updateTargetTrainer);
+		Trainer trainer = trainerService.update(updateTargetTrainer);
 		log.trace("updateTargetTrainer second time = " + updateTargetTrainer);
 		List<String> newUpdatedList = Arrays.asList("Steve","Johns","np4@hotmail.com","Technology Manager");
-		assertThat(newUpdatedList,CoreMatchers.hasItems(updateTargetTrainer.getFirstName(),updateTargetTrainer.getLastName(),updateTargetTrainer.getEmail(),updateTargetTrainer.getTitle()));
-		assertNotEquals("steves",updateTargetTrainer.getFirstName());
+		assertThat(newUpdatedList,CoreMatchers.hasItems(trainer.getFirstName(), trainer.getLastName(),trainer.getEmail(),trainer.getTitle()));
+		assertNotEquals("steves",trainer.getFirstName());
 	}
     
+    /**
+     * Tests trainer retrieval by name.
+     * 
+     * @author Jeffrey Reyes
+     */
     @Test
     public void testFindByName() {
     	log.debug("Testing findByName with valid trainer.");
@@ -288,6 +311,11 @@ public class TrainerServiceTest extends GambitTest {
     	assertEquals(trainer.getLastName(), "Kelsey");
     }
     
+    /**
+     * Tests trainer retrieval fails with an invalid trainer .
+     * 
+     * @author Jeffrey Reyes
+     */
     @Test
     public void testFindByNameInvalidTrainer() {
     	log.debug("Testing findByName with invalid trainer.");
@@ -295,6 +323,11 @@ public class TrainerServiceTest extends GambitTest {
     	assertEquals(trainer, null);
     }
     
+    /**
+     * Tests trainer retrieval fails with trainee input.
+     * 
+     * @author Jeffrey Reyes
+     */
     @Test
     public void testFindByNameNonTrainer() {
     	log.debug("Testing findByName with non trainer.");

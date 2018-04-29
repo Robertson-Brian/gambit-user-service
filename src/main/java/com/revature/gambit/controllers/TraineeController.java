@@ -16,12 +16,23 @@ public interface TraineeController {
 	 * In Caliber the old urls were: "${context}all/trainee?batch=${batchId}" and
 	 * "${context}all/trainee/dropped?batch=${batchId}".
 	 * 
-	 * @param batchId, status
 	 * @author Brian Ethier
+	 * @param batchId, status
 	 * @return The list of trainees within that batch with the given batchId.
 	 */
 	ResponseEntity<List<Trainee>> findAllByBatchAndStatus(Integer id, String status);
-
+	
+	/**
+	 * Returns all trainees from a batch that has the input batch id.
+	 * 
+	 * Creating this mapping from scratch. 
+	 * 
+	 * @param batchId
+	 * @author Alejandro Iparraguirre
+	 * @return The list of trainees within that batch with the given batchId.
+	 */
+	ResponseEntity<List<Trainee>> findAllByBatch(Integer id);
+	
 	/**
 	 * Find all of the trainees without restriction.
 	 * 
@@ -41,8 +52,8 @@ public interface TraineeController {
 	 * Creates a new trainee. The old endpoint url was: "/all/trainee/create" In
 	 * Caliber the old url was: "${context}all/trainee/create".
 	 * 
-	 * @param trainee
 	 * @author Shaleen Anwar
+	 * @param trainee
 	 * @return The newly created trainee.
 	 */
 	ResponseEntity<Trainee> createTrainee(Trainee trainee);
@@ -53,8 +64,8 @@ public interface TraineeController {
 	 * The old endpoint url was: "/all/trainee/update" in Caliber the old url was:
 	 * "${context}all/trainee/update".
 	 * 
-	 * @param trainee
 	 * @author Ismael Khalil
+	 * @param trainee
 	 * @return A response entity signifying a successful update.
 	 */
 	ResponseEntity<Trainee> updateTrainee(Trainee trainee);
@@ -65,8 +76,8 @@ public interface TraineeController {
 	 * The old endpoint url was: "/all/trainee/delete/{id}" In Caliber the old url
 	 * was: "${context}all/trainee/delete/${traineeId}"
 	 *
-	 * @param trainee
 	 * @author Joseph Arbelaez
+	 * @param trainee
 	 * @return A 204 status code: "No Content"
 	 */
 	ResponseEntity<?> deleteTrainee(Trainee trainee);
@@ -76,8 +87,8 @@ public interface TraineeController {
 	 * a 404 error code is returned.
 	 * The old endpoint url was: "/{email}".
 	 * 
-	 * @param email - Receives the email to be searched.
 	 * @author Joel DeJesus
+	 * @param email - Receives the email to be searched.
 	 * @return The trainee associated with the email or a 404.
 	 */
 	ResponseEntity<Trainee> findByEmail(String email);

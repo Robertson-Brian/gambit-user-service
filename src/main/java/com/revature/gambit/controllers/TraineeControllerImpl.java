@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.services.TraineeService;
+
 /**
  * Handles all Janus requests for Trainee resources.
  *
@@ -37,6 +38,18 @@ public class TraineeControllerImpl implements TraineeController {
 		log.debug("Trainee Controller received request: Finding trainees for batch: " 
 			+ id + " with status: " + status);
 		List<Trainee> trainees = traineeService.findAllByBatchAndStatus(id, status);
+		if(trainees != null) {
+			return new ResponseEntity<>(trainees, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(trainees, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("batch/{id}")
+	public ResponseEntity<List<Trainee>> findAllByBatch(@PathVariable Integer id) {
+		log.debug("Trainee Controller received request: Finding all trainees for batch: " 
+			+ id);
+		List<Trainee> trainees = traineeService.findAllByBatch(id);
 		if(trainees != null) {
 			return new ResponseEntity<>(trainees, HttpStatus.OK);
 		} else {
@@ -65,7 +78,7 @@ public class TraineeControllerImpl implements TraineeController {
 		log.debug("Trainee Controller received request: Creating trainee: " + trainee);
 		Trainee newTrainee = traineeService.save(trainee);
 		if (newTrainee != null) {
-			return new ResponseEntity<>(newTrainee, HttpStatus.CREATED); 
+			return new ResponseEntity<>(newTrainee, HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
 		}
