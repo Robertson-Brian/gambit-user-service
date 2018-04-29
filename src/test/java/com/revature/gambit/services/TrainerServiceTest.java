@@ -32,7 +32,7 @@ public class TrainerServiceTest extends KafkaTest {
     private TrainerService trainerService;
 
     @Test
-    public void testPromoteTrainer() throws InterruptedException {
+    public void testPromoteTrainer() {
     	String title = "Trainer";
     	User userToPromote = new User("Laut","Daniel","dlaut1@hotmail.com");
     	log.trace("trainerToPromote.id = " + userToPromote.getUserId());
@@ -49,7 +49,7 @@ public class TrainerServiceTest extends KafkaTest {
     }
     
     @Test
-    public void testPromoteTrainerWithOnlyEmail() throws InterruptedException{
+    public void testPromoteTrainerWithOnlyEmail() {
     	String title = "Trainer";
     	User userToPromote = new User("","","dlaut1@hotmail.com");
     	log.trace("trainerToPromote.id = " + userToPromote.getUserId());
@@ -66,7 +66,7 @@ public class TrainerServiceTest extends KafkaTest {
     }
     
     @Test
-    public void testPromoteTrainerWithOnlyName() throws InterruptedException{
+    public void testPromoteTrainerWithOnlyName() {
     	String title = "Trainer";
     	User userToPromote = new User("Laut","Daniel","");
     	log.trace("trainerToPromote.id = " + userToPromote.getUserId());
@@ -96,7 +96,7 @@ public class TrainerServiceTest extends KafkaTest {
      * @author Mark Fleres
      */
     @Test 
-    public void testNewTrainer() throws InterruptedException {
+    public void testNewTrainer() {
     	log.debug("Testing trainerService.newTrainer(Trainer trainer)");
     	Trainer newTrainer = new Trainer("Mark", "Fleres", "mfleres@gmail.com", "Dr.");
     	log.trace("newTrainer = " + newTrainer);
@@ -139,7 +139,7 @@ public class TrainerServiceTest extends KafkaTest {
      * @author Raymond Xia
      */
     @Test 
-    public void testDeleteTrainer() throws InterruptedException {
+    public void testDeleteTrainer() {
     	log.debug("Testing trainerService.delete()");
     	int patrickId = trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId();
     	trainerService.delete(patrickId);
@@ -258,7 +258,7 @@ public class TrainerServiceTest extends KafkaTest {
 	 * @author Nikhil Pious
 	 */
     @Test 
-	public void testUpdate() throws InterruptedException {
+	public void testUpdate() {
 		log.debug("Testing trainer update)");
 		Trainer targetTrainer = trainerService.findById(trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId());
 		log.trace("targetTrainer ="+targetTrainer);

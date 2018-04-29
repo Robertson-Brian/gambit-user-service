@@ -8,10 +8,3 @@ spring:
     password:
   kafka:
     bootstrap-servers: ${spring.embedded.kafka.brokers}
-#    topic:
-#      trainer.register: trainer.register.t
-#      trainer.update: trainer.update.t
-#      trainer.delete: trainer.delete.t
-#      trainee.register: trainee.register.t
-#      trainee.update: trainee.update.t
-#      trainee.delete: trainee.delete.t
