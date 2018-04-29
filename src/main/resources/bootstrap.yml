@@ -1,0 +1,16 @@
+
+#Service Configuration
+
+spring:
+
+  application:
+
+    name: user-service
+
+  cloud:
+
+    config:
+
+      uri: http://localhost:8888
+
+      fail-fast: true

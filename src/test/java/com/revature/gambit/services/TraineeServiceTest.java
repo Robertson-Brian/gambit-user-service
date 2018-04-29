@@ -24,7 +24,6 @@ import com.revature.gambit.entities.TrainingStatus;
  * 
  */
 
-@Transactional
 public class TraineeServiceTest extends GambitTest {
 
 	private static final Logger log = Logger.getLogger(TraineeServiceTest.class);
@@ -191,7 +190,9 @@ public class TraineeServiceTest extends GambitTest {
 	 * 
 	 * @author Ismael Khalil
 	 */
+	
 	@Test
+	@Transactional
 	public void testUpdate() {
 		log.debug("Testing trainee update)");
 		Trainee targetTrainee = traineeService.findByEmail("dlaut1@hotmail.com");
@@ -228,4 +229,6 @@ public class TraineeServiceTest extends GambitTest {
 		// userId must not exist
 		assertNull(trainee);
 	}
+	
+	 
 }

@@ -1,5 +1,8 @@
 package com.revature.gambit.controllers;
 
+import static com.revature.gambit.util.FinalUtil.INCOMPLETED_FIELD_DATA;
+import static com.revature.gambit.util.FinalUtil.INVALID_USER_DATA;
+
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -18,9 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.User;
-import com.revature.gambit.exception.InvalidInputException;
+import com.revature.gambit.exceptions.InvalidInputException;
 import com.revature.gambit.services.TrainerService;
-import static com.revature.gambit.util.FinalUtil.*;
 
 /**
  * Controller to retrieve Trainer information.

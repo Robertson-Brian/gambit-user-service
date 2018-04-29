@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.User;
+import com.revature.gambit.entities.UserRole;
+import com.revature.gambit.exceptions.AuthUserException;
 import com.revature.gambit.services.UserService;
 
 /**
@@ -37,15 +38,23 @@ public class UserControllerImpl implements UserController {
 	@PostMapping
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		log.info("User Controller received request: create User: " + user);
-		User persisted = userService.makeUser(user);
-		return new ResponseEntity<>(persisted, HttpStatus.CREATED);
+		User persisted;
+		if((persisted = userService.makeUser(user)) != null){
+			return new ResponseEntity<>(persisted, HttpStatus.CREATED);
+		} else {
+			throw new AuthUserException("User not added", HttpStatus.UNAUTHORIZED);
+		}
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> updateUser(@Valid @RequestBody User user) {
+	public ResponseEntity<User> updateUser(@Valid @RequestBody User user) {
 		log.info("User Controller received request: Update user " + user);
-		userService.update(user);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		User updatedUser = userService.update(user);
+		if(updatedUser != null) {
+			return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+		} else {
+			throw new AuthUserException("User not updated/available", HttpStatus.UNAUTHORIZED);
+		}
 
 	}
 
@@ -57,19 +66,17 @@ public class UserControllerImpl implements UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
-	@DeleteMapping
+	@PutMapping("/inactivate")
 	public ResponseEntity<Void> makeInactive(@RequestBody User user) {
-		log.info("User Controller received request: Updating user: " + user);
-		//Logic here should be getting the role from the DB.
-		//user.setRole("INACTIVE");
-		userService.update(user);
+		log.info("User Controller received request: Inactivating user: " + user);
+		userService.delete(user.getUserId());
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@GetMapping("roles")
-	public ResponseEntity<List<String>> getAllUserRoles() {
+	@GetMapping("/roles")
+	public ResponseEntity<List<UserRole>> getAllUserRoles() {
 		log.info("User Controller received request: Fetching all user roles");
-		List<String> roles = userService.getAllRoles();
+		List<UserRole> roles = userService.getAllRoles();
 		return new ResponseEntity<>(roles, HttpStatus.OK);
 
 	}
@@ -82,7 +89,7 @@ public class UserControllerImpl implements UserController {
 
 	}
 
-	@GetMapping("id/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<User> findUserById(@PathVariable Integer id) {
 		log.info("User Controller received request: find user by id.");
 		User user = userService.findUserById(id);
@@ -96,5 +103,4 @@ public class UserControllerImpl implements UserController {
 		User user = userService.findByName(firstName, lastName);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
-
 }

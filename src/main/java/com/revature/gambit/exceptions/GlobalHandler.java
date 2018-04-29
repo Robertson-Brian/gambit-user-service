@@ -1,4 +1,5 @@
-package com.revature.gambit.exception;
+package com.revature.gambit.exceptions;
+
 
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
