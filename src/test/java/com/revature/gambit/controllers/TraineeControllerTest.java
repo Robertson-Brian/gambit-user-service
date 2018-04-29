@@ -2,8 +2,6 @@ package com.revature.gambit.controllers;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.http.HttpStatus;

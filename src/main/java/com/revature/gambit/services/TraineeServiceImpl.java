@@ -81,7 +81,13 @@ public class TraineeServiceImpl implements TraineeService {
 	@Transactional
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status) {
 		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId + " with status: " + status);
-		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,TrainingStatus.valueOf(status));
+		TrainingStatus trainingStatus;
+		try {
+			trainingStatus = TrainingStatus.valueOf(status);
+		} catch (Exception e) {
+			return null;
+		}
+		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,trainingStatus);
 	}
 
 	@Transactional
