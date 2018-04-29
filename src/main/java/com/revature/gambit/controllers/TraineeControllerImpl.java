@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainee;
+import com.revature.gambit.messaging.Sender;
 import com.revature.gambit.services.TraineeService;
+
 /**
  * Handles all Janus requests for Trainee resources.
  *
@@ -30,6 +32,9 @@ public class TraineeControllerImpl implements TraineeController {
 
 	@Autowired
 	private TraineeService traineeService;
+	
+	@Autowired
+	private Sender sender;
 
 	@GetMapping("batch/{id}/status/{status}")
 	public ResponseEntity<List<Trainee>> findAllByBatchAndStatus(@PathVariable Integer id,
@@ -55,7 +60,7 @@ public class TraineeControllerImpl implements TraineeController {
 		log.debug("Trainee Controller received request: Creating trainee: " + trainee);
 		Trainee newTrainee = traineeService.save(trainee);
 		if (newTrainee != null) {
-			return new ResponseEntity<>(newTrainee, HttpStatus.CREATED); 
+			return new ResponseEntity<>(newTrainee, HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
 		}

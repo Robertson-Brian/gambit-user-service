@@ -15,17 +15,16 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.entities.TrainingStatus;
+import com.revature.gambit.messaging.KafkaTest;
 
 /**
  * Test methods for inserting, updating, retrieving, and deleting.
  * 
  */
-
 @Transactional
-public class TraineeServiceTest extends GambitTest {
+public class TraineeServiceTest extends KafkaTest {
 
 	private static final Logger log = Logger.getLogger(TraineeServiceTest.class);
 
@@ -51,14 +50,14 @@ public class TraineeServiceTest extends GambitTest {
 		log.trace("Trainee saved! " + trainee);
 
 		log.debug("Testing trainee save (no batch)");
-
 		// Candidate has been scheduled for the technical discussion
 		Trainee candidate = new Trainee("Howard", "Johnson", "howard.johnson@brooks.net", "ajsy1b173h29479w",
 				TrainingStatus.Scheduled, "Edward Jones");
 		candidate = traineeService.save(candidate);
 		assertNotEquals(0, candidate.getUserId());
 		log.trace("Trainee saved! " + candidate);
-
+		
+		
 	}
 
 	/**
@@ -143,7 +142,7 @@ public class TraineeServiceTest extends GambitTest {
 		log.debug("TraineeServiceTest.delete()");
 		Trainee test = new Trainee("TestTrainDelete", "TestTrainDelete", "TestTrainDelete@brooks.net", "ajsy1b173h29479w",
 				TrainingStatus.Scheduled, "TestTrainDelete");
-		traineeService.save(test);
+		test = traineeService.save(test);
 		int initialSize = traineeService.getAll().size();
 		traineeService.delete(test);
 		int currentSize = traineeService.getAll().size();
@@ -204,7 +203,7 @@ public class TraineeServiceTest extends GambitTest {
 		log.trace("updateTargetTrainee = " + updateTargetTrainee);
 		List<String> updatedList = Arrays.asList("Tommy","Daniel","mrpickles@gmail.com");
 		assertThat(updatedList,CoreMatchers.hasItems(updateTargetTrainee.getFirstName(),updateTargetTrainee.getLastName(),updateTargetTrainee.getEmail()));
-	
+		
 		updateTargetTrainee.setFirstName("Steve");
 		updateTargetTrainee.setLastName("Johns");
 		traineeService.update(updateTargetTrainee);

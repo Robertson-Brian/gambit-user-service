@@ -1,4 +1,4 @@
-#Service Configuration
+#Spring Configuration
 spring:
   application:
     name: user-service

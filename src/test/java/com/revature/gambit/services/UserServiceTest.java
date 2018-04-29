@@ -17,11 +17,11 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.User;
 import com.revature.gambit.entities.UserRole;
+import com.revature.gambit.messaging.KafkaTest;
 
-public class UserServiceTest extends GambitTest {
+public class UserServiceTest extends KafkaTest {
 	
 	private static Logger log = Logger.getLogger(UserServiceTest.class);
 	
