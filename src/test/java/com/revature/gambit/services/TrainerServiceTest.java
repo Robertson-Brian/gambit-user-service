@@ -101,7 +101,7 @@ public class TrainerServiceTest extends KafkaTest {
     	Trainer newTrainer = new Trainer("Mark", "Fleres", "mfleres@gmail.com", "Dr.");
     	log.trace("newTrainer = " + newTrainer);
     	Trainer savedTrainer = trainerService.newTrainer(newTrainer);
-    	log.info("savedTrainer = " + savedTrainer);
+    	log.trace("savedTrainer = " + savedTrainer);
     	assertNotEquals(0, savedTrainer.getUserId());
     	assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
     	assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
