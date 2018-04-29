@@ -95,13 +95,16 @@ public class TraineeServiceImpl implements TraineeService {
 		log.debug("findAll Trainees.");
 		return traineeRepository.findAll();
 	}
+	
+	@Transactional
+	public Trainee findByUserId(int userId) {
+		log.debug("Finding Trainee by userId: " + userId);
+		return traineeRepository.findByUserId(userId);
+	}
 
 	@Transactional
 	public Trainee findByEmail(String email) {
 		log.trace("findByEmail: " + email);
-		if(traineeRepository.findByEmail(email)!=null)
-			return traineeRepository.findByEmail(email);
-		else
-			return null;
+		return traineeRepository.findByEmail(email);
 	}
 }

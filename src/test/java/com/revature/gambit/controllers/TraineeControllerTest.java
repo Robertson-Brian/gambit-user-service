@@ -2,6 +2,8 @@ package com.revature.gambit.controllers;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 
 import com.revature.gambit.entities.Trainee;
+import com.revature.gambit.entities.TrainingStatus;
 import com.revature.gambit.messaging.KafkaTest;
 import com.revature.gambit.services.TraineeService;
 
@@ -346,5 +349,40 @@ public class TraineeControllerTest extends KafkaTest {
 			.assertThat()
 			.statusCode(HttpStatus.BAD_REQUEST_400);
 			log.trace("Trainee does not exist.");
-	}	
+	}
+	
+	/**
+	 * Test findByUserId method in TraineeController with a valid userId
+	 */
+	@Test
+	public void findByUserId() {
+		log.debug("Test valid findByUserId");
+		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
+				TrainingStatus.Training, 1, "Extensure");
+		trainee = traineeService.save(trainee);
+		given()
+			.port(port)
+			.basePath(BASE_URI + "/" + trainee.getUserId())
+			.when()
+			.get()
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.OK_200);
+	}
+	
+	/**
+	 * Test findByUserId method in TraineeController with an invalid userId
+	 */
+	@Test
+	public void findByInvalidUserId() {
+		log.debug("Test valid findByUserId");
+		given()
+			.port(port)
+			.basePath(BASE_URI + "/99999999")
+			.when()
+			.get()
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.NOT_FOUND_404);
+	}
 }

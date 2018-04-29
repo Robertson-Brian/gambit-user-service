@@ -251,4 +251,25 @@ public class TraineeServiceTest extends KafkaTest {
 		// userId must not exist
 		assertNull(trainee);
 	}
+	
+	/**
+	 * Test findByUserId method in TraineeService with a valid userId
+	 */
+	@Test
+	public void findByUserId() {
+		log.debug("Test valid findByUserId");
+		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
+				TrainingStatus.Training, 1, "Extensure");
+		trainee = traineeService.save(trainee);
+		assertNotNull(traineeService.findByUserId(trainee.getUserId()));
+	}
+	
+	/**
+	 * Test findByUserId method in TraineeService with an invalid userId
+	 */
+	@Test
+	public void findByInvalidUserId() {
+		log.debug("Test valid findByUserId");
+		assertNull(traineeService.findByUserId(9999999));
+	}
 }

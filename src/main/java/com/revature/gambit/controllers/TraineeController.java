@@ -40,6 +40,13 @@ public interface TraineeController {
 	 * @return a List of all trainees
 	 */
 	ResponseEntity<List<Trainee>> getAll();
+	
+	/**
+	 * Find a trainee by userId
+	 * 
+	 * @return trainee with the corresponding userId
+	 */
+	ResponseEntity<Trainee> findByUserId(int userId);
 
 	/**
 	 * Creates a new trainee. The old endpoint url was: "/all/trainee/create" In
