@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
 	}
 	@HystrixCommand(fallbackMethod="getAllUsersFallBack")
 	public List<User> getAllUsers() {
+//		throw new RuntimeException();
 		return userRepository.findAll();
 	}
 
@@ -58,7 +59,9 @@ public class UserServiceImpl implements UserService {
 	}
 	@HystrixCommand(fallbackMethod="getAllRolesFallBack")
 	public List<UserRole> getAllRoles() {
-		return userRoleRepository.findAll();
+		throw new RuntimeException();
+
+//		return userRoleRepository.findAll();
 	}
 	@HystrixCommand(fallbackMethod="findUserByIdFallBack")
 	public User findUserById(Integer id) {
@@ -95,7 +98,7 @@ public class UserServiceImpl implements UserService {
 	
 	public List<User> getAllUsersFallBack(){
 		log.info("Executing  getAllUsersFallBack");
-		return userRepository.findAll();
+		return userList;
 	}
 	
 	
@@ -109,7 +112,11 @@ public class UserServiceImpl implements UserService {
 
 	public List<UserRole> getAllRolesFallBack() {
 		log.info("Executing getAllRolesFallBack " );
-		return  userRoleRepository.findAll();
+		return userList.stream()
+				 .filter(user ->user.getRole()!=null)
+                 .map(User::getRole)
+                 .distinct()
+				.collect(Collectors.toList());
 	}
 	
 	public User findUserByIdFallBack(Integer id){
@@ -149,10 +156,7 @@ public class UserServiceImpl implements UserService {
         	  }
            }
            return null;
-//		return userList.stream()
-//				.filter(user -> user.getRole().getRole().equals(roleName))
-//				.findAny()
-//				.orElse(null);
+
 		
 	}
 }

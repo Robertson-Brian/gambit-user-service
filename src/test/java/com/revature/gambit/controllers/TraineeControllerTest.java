@@ -13,8 +13,6 @@ import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.services.TraineeService;
 
-import io.restassured.http.ContentType;
-
 public class TraineeControllerTest extends GambitTest {
 	
 	@LocalServerPort
@@ -298,7 +296,6 @@ public class TraineeControllerTest extends GambitTest {
 			log.trace("Updated trainee: " + trainee);
 		
 		log.debug("Trainee Controller test: Update a nonexistent trainee");
-		Trainee nullTrainee = new Trainee("Howard", "Stern", "filler@hmail.com");
 		given()
 			.port(port)
 			.basePath(BASE_URI)

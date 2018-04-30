@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainee;
+import com.revature.gambit.exceptions.GlobalHandler;
+import com.revature.gambit.exceptions.InvalidInputException;
 import com.revature.gambit.services.TraineeService;
+import static com.revature.gambit.util.MessagingUtil.*;
 /**
  * Handles all Janus requests for Trainee resources.
  *
@@ -57,14 +60,20 @@ public class TraineeControllerImpl implements TraineeController {
 		if (newTrainee != null) {
 			return new ResponseEntity<>(newTrainee, HttpStatus.CREATED); 
 		} else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+//			return new ResponseEntity<>(INVALID_INPUT,HttpStatus.BAD_REQUEST); 
+			throw new InvalidInputException(INVALID_INPUT,HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@PutMapping
 	public ResponseEntity<Trainee> updateTrainee(@RequestBody Trainee trainee) {
 		log.debug("Trainee Controller received request: Updating trainee: " + trainee);
-		return new ResponseEntity<>(traineeService.update(trainee), HttpStatus.NO_CONTENT);
+//		return new ResponseEntity<>(traineeService.update(trainee), HttpStatus.NO_CONTENT);
+		Trainee updatedTrainer = traineeService.update(trainee);
+		if(updatedTrainer!=null){
+			return new ResponseEntity<>(updatedTrainer,HttpStatus.OK);
+		}
+		throw new InvalidInputException(INVALID_INPUT, HttpStatus.BAD_REQUEST);
 	}
 
 	@DeleteMapping

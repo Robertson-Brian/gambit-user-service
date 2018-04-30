@@ -80,13 +80,14 @@ public class TraineeServiceImpl implements TraineeService {
 	@HystrixCommand(fallbackMethod="findAllByBatchAndStatusFallBack")
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status) {
 		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId + " with status: " + status);
+		TrainingStatus trainingStatus; 
 		try {
-			TrainingStatus trainingStatus = TrainingStatus.valueOf(status);
-		} catch (IllegalArgumentException e) {
+			trainingStatus = TrainingStatus.valueOf(status);
+		} catch (Exception  e) {
 			return null;
 		}
-//				throw new RuntimeException();
-		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,TrainingStatus.valueOf(status));
+				throw new RuntimeException();
+//		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,trainingStatus);
 	}
 
 	@Transactional
