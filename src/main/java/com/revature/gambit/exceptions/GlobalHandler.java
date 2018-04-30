@@ -18,7 +18,7 @@ public class GlobalHandler {
 	@ExceptionHandler(Throwable.class)
     public ResponseEntity<String> handleAnyException(Throwable t){
         logger.error("Fatal Exception");
-        return new ResponseEntity<>(SOMETHING_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(SOMETHING_WRONG,HttpStatus.BAD_REQUEST);
     }
 	
 	@ExceptionHandler(InvalidInputException.class)
@@ -33,6 +33,13 @@ public class GlobalHandler {
 		logger.error("Auth User Exception "+e);
 		
 		return new ResponseEntity<>(UNAUTHORIZED_USER,HttpStatus.UNAUTHORIZED);
+	}
+	
+	@ExceptionHandler(NumberFormatException.class)
+	public ResponseEntity<String>  handleNumberFormatException(NumberFormatException e){
+		logger.error("NumberFormatException "+e);
+		
+		return new ResponseEntity<>(INVALID_INPUT,HttpStatus.BAD_REQUEST);
 	}
 
 }
