@@ -99,14 +99,16 @@ public class TraineeServiceImpl implements TraineeService {
 		} catch (Exception e) {
 			return null;
 		}
-		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,TrainingStatus.valueOf(status));
+		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,trainingStatus);
 	}
 
 
 	@Transactional
+	@HystrixCommand(fallbackMethod="findAllByBatchFallBack")
 	public List<Trainee> findAllByBatch(int batchId) {
 		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId);
-		return traineeRepository.findAllByBatches(batchId);
+//		return traineeRepository.findAllByBatches(batchId);
+		throw new RuntimeException();
 	}
 	
 	@Transactional
@@ -146,6 +148,17 @@ public class TraineeServiceImpl implements TraineeService {
 						.equals(trainee.getTrainingStatus()))
 				.collect(Collectors.toList());
 
+	}
+	
+	public List<Trainee> findAllByBatchFallBack(int batchId){
+		log.debug("Excuting findAllByBatchFallBack");
+		return traineeList.stream()
+				        .filter(trainee ->
+				       trainee.getBatches()
+				       .contains(batchId))
+				       .collect(Collectors.toList());
+				
+		
 	}
 
 
