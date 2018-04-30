@@ -31,8 +31,9 @@ public class UserServiceTest extends KafkaTest {
 	
 	
 	/**
-     * Test to create a user successfully.
-	 *@author Nikhil	
+     * Tests to create a user successfully.
+     *
+	 * @author Nikhil Pious and Mark Fleres
      */
 	@Test
 	public void testMakeUser(){
@@ -46,7 +47,8 @@ public class UserServiceTest extends KafkaTest {
 	
 	/**
      * Test to get all users
-	 *@author Nikhil
+	 * 
+	 * @author Nikhil Pious
      */
 	@Test
 	public void testGetAllUsers(){
@@ -60,7 +62,8 @@ public class UserServiceTest extends KafkaTest {
 	
 	/**
      * Test to update a trainer
-	 *@author Nikhil
+     * 
+	 * @author Nikhil Pious
      */
 	@Test
 	public void testUpdate(){
@@ -79,8 +82,9 @@ public class UserServiceTest extends KafkaTest {
 	}
 		
   	/**
-     *Test to find a user by his/her email.
-	 *@author Nikhil
+     * Test to find a user by his/her email.
+     *
+	 * @author Nikhil Pious
      */
 	@Test
 	public void testFindUserByEmail(){
@@ -95,7 +99,8 @@ public class UserServiceTest extends KafkaTest {
 
 	/**
      * Test to retrieve all user roles
-	 *@author Nikhil
+	 *
+	 * @author Nikhil Pious
      */
 	@Test
 	public void testGetAllRoles(){
@@ -106,7 +111,8 @@ public class UserServiceTest extends KafkaTest {
 	
 	/**
      * Test to find a user by his/her user id.
-	 *@author Nikhil
+     * 
+	 * @author Nikhil Pious
      */
 	@Test
 	public void testFindUserById(){
@@ -118,7 +124,8 @@ public class UserServiceTest extends KafkaTest {
 	
 	 /**
      * Test to find a user by his/her username.
-	 *@author Nikhil
+     * 
+	 * @author Nikhil Pious
      */
 	@Test
 	public void testFindByName(){
@@ -130,7 +137,8 @@ public class UserServiceTest extends KafkaTest {
 	
 	/**
      * Test to delete(make inactive) a user.
-	 *@author Nikhil
+     * 
+	 * @author Nikhil Pious and Mark Fleres
      */
 	@Test
 	public void testDelete(){
@@ -145,7 +153,8 @@ public class UserServiceTest extends KafkaTest {
 	
  	/**
      * Test to find user role by name.
-	 *@author Nikhil
+	 * 
+	 * @author Nikhil Pious
      */
 	@Test
 	public void testFindByRoleName(){
@@ -159,7 +168,8 @@ public class UserServiceTest extends KafkaTest {
 	
 	/**
      * Test to retrieve a user list with a specific user role.
-	 *@author Nikhil
+	 * 
+	 * @author Nikhil Pious
      */
 	@Test
 	public void findByRole(){

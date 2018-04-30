@@ -22,7 +22,12 @@ import com.revature.gambit.services.UserService;
 
 import io.restassured.http.ContentType;
 
-
+/**
+*
+* Tests for inserting, updating, retrieving and deleting Users
+* from HTTP Requests.
+*
+*/
 public class UserControllerTest extends KafkaTest {
 	
 
@@ -48,9 +53,10 @@ public class UserControllerTest extends KafkaTest {
     
     
     /**
+     * Tests creating a user.
      * 
-     * @author Nikhil
-     * 
+     * @author Nikhil Pious
+     * @return Status Code 201 upon success.
      */
 
 	@Test 
@@ -72,6 +78,12 @@ public class UserControllerTest extends KafkaTest {
 		
 	}
 	
+    /**
+     * Tests updating a user.
+     * 
+     * @author Nikhil Pious
+     * @return Status Code 200 upon success, 401 upon unauthorized update.
+     */
 	@Test 
 	public void testUpdateUser(){
 		log.debug("Testing update");
@@ -107,6 +119,12 @@ public class UserControllerTest extends KafkaTest {
 
 	}
 
+    /**
+     * Tests retrieving a user by their email.
+     * 
+     * @author Nikhil Pious
+     * @return Status Code 200 upon success.
+     */
 	@Test 
 	public void testFindUserByEmail(){
 		log.debug("Testing findUserByEmail");
@@ -122,7 +140,12 @@ public class UserControllerTest extends KafkaTest {
 
     }
 		
-
+    /**
+     * Tests retrieving all user roles.
+     * 
+     * @author Nikhil Pious
+     * @return Status Code 200 upon success.
+     */
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetAllUserRoles(){
@@ -143,6 +166,12 @@ public class UserControllerTest extends KafkaTest {
     	assertTrue(!userRoles.isEmpty());
 	}
 
+    /**
+     * Tests retrieving a user by their ID.
+     * 
+     * @author Nikhil Pious
+     * @return Status Code 200 upon success.
+     */
 	@Test 
 	public void testFindUserById(){
 		log.debug("Testing findUserById ");
@@ -163,6 +192,12 @@ public class UserControllerTest extends KafkaTest {
 		
 	}
 
+    /**
+     * Tests retrieving a user by their first and last name.
+     * 
+     * @author Nikhil Pious
+     * @return Status Code 200 upon success.
+     */
 	@Test
 	public void testFindUserByName(){
 		 log.debug("Testing findUserrByName with valid user name");
@@ -183,9 +218,15 @@ public class UserControllerTest extends KafkaTest {
 		
 	}
 
+    /**
+     * Tests changing user status to inactive.
+     * 
+     * @author Nikhil Pious
+     * @return Status Code 204 upon success.
+     */
 	@Test
 	public void testmakeUserInactive(){
-		log.debug("Testng delete to make a user inactive");
+		log.debug("Testing delete to make a user inactive");
 		given()
 		   .contentType(ContentType.JSON)
 		   .body(userService.findUserByEmail("osher.y.cohen@gmail.com"))
@@ -198,6 +239,12 @@ public class UserControllerTest extends KafkaTest {
 		
 	}
 	
+    /**
+     * Tests to retrieve all users from the database.
+     * 
+     * @author Nikhil Pious
+     * @return Status Code 200 upon success.
+     */
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testFindAllUsers(){
