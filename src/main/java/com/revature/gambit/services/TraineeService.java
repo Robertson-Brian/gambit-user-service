@@ -10,7 +10,6 @@ import com.revature.gambit.entities.Trainee;
  * Our Trainee Service implementation class. Implements all of the methods
  * defined in the TraineeService interface.
  */
-@ExcludeFromCodeCoverage
 @Service
 public interface TraineeService {
 
