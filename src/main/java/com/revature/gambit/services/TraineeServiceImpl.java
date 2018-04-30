@@ -107,8 +107,7 @@ public class TraineeServiceImpl implements TraineeService {
 	@HystrixCommand(fallbackMethod="findAllByBatchFallBack")
 	public List<Trainee> findAllByBatch(int batchId) {
 		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId);
-//		return traineeRepository.findAllByBatches(batchId);
-		throw new RuntimeException();
+		return traineeRepository.findAllByBatches(batchId);
 	}
 	
 	@Transactional
