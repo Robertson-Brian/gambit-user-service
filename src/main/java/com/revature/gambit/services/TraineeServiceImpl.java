@@ -1,5 +1,9 @@
 package com.revature.gambit.services;
 
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -12,10 +16,6 @@ import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.entities.TrainingStatus;
 import com.revature.gambit.messaging.Sender;
 import com.revature.gambit.repositories.TraineeRepository;
-
-import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
 
 @Service("traineeService")
 public class TraineeServiceImpl implements TraineeService {

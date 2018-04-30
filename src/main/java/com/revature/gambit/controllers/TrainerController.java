@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.revature.gambit.entities.Trainer;
-import com.revature.gambit.entities.User;
 
 	/**
 	 * 

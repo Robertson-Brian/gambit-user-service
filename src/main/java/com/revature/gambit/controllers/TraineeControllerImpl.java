@@ -1,6 +1,5 @@
 package com.revature.gambit.controllers;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainee;
-import com.revature.gambit.entities.User;
 import com.revature.gambit.services.TraineeService;
 
 /**
