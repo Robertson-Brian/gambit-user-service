@@ -104,6 +104,7 @@ public class TraineeServiceImpl implements TraineeService {
 
 
 	@Transactional
+	@HystrixCommand(fallbackMethod="findAllByBatchFallBack")
 	public List<Trainee> findAllByBatch(int batchId) {
 		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId);
 		return traineeRepository.findAllByBatches(batchId);
@@ -146,6 +147,17 @@ public class TraineeServiceImpl implements TraineeService {
 						.equals(trainee.getTrainingStatus()))
 				.collect(Collectors.toList());
 
+	}
+	
+	public List<Trainee> findAllByBatchFallBack(int batchId){
+		log.debug("Excuting findAllByBatchFallBack");
+		return traineeList.stream()
+				        .filter(trainee ->
+				       trainee.getBatches()
+				       .contains(batchId))
+				       .collect(Collectors.toList());
+				
+		
 	}
 
 
