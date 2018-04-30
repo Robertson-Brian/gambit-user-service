@@ -1,7 +1,9 @@
 package com.revature.gambit.exceptions;
 
 
-import static com.revature.gambit.util.MessagingUtil.*;
+
+import static com.revature.gambit.util.MessagingUtil.INVALID_INPUT;
+import static com.revature.gambit.util.MessagingUtil.SOMETHING_WRONG;
 import static com.revature.gambit.util.MessagingUtil.UNAUTHORIZED_USER;
 
 import org.apache.log4j.Logger;
@@ -14,16 +16,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalHandler {
 	private static Logger logger = Logger.getLogger(GlobalHandler.class);
 	
-	
+
+
 	@ExceptionHandler(Throwable.class)
-
-	public ResponseEntity<String> handleAnyException(Throwable t){
-
-		logger.error("Fatal Exception");
-
-		return new ResponseEntity<>(SOMETHING_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
-
-	}
+    public ResponseEntity<String> handleAnyException(Throwable t){
+        logger.error("Fatal Exception");
+        return new ResponseEntity<>(SOMETHING_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+	
 	@ExceptionHandler(InvalidInputException.class)
 	public ResponseEntity<String>  handleInvalidInputException(InvalidInputException e){
 		logger.error("Invalid Input"+e);

@@ -124,9 +124,9 @@ public class TraineeServiceImpl implements TraineeService {
 	}
 
 	@Transactional
-	//@HystrixCommand(fallbackMethod="findByEmailFallBack")
+	@HystrixCommand(fallbackMethod="findByEmailFallBack")
 	public Trainee findByEmail(String email) {
-		log.trace("findByEmail: " + email);
+		log.debug("findByEmail: " + email);
 		if(traineeRepository.findByEmail(email)!=null)
 			return traineeRepository.findByEmail(email);
 		else
