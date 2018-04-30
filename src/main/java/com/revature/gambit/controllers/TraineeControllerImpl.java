@@ -38,7 +38,7 @@ public class TraineeControllerImpl implements TraineeController {
 		log.debug("Trainee Controller received request: Finding trainees for batch: " 
 			+ id + " with status: " + status);
 		List<Trainee> trainees = traineeService.findAllByBatchAndStatus(id, status);
-		if(trainees.size() != 0) {
+		if(trainees.isEmpty()) {
 			return new ResponseEntity<>(trainees, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(trainees, HttpStatus.BAD_REQUEST);
