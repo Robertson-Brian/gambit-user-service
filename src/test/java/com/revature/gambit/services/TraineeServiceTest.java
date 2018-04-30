@@ -25,7 +25,6 @@ import com.revature.gambit.messaging.KafkaTest;
 
 public class TraineeServiceTest extends KafkaTest {
 
-
 	private static final Logger log = Logger.getLogger(TraineeServiceTest.class);
 
 	@Autowired
@@ -215,7 +214,6 @@ public class TraineeServiceTest extends KafkaTest {
 	 * 
 	 * @author Ismael Khalil
 	 */
-	
 	@Test
 	@Transactional
 	public void testUpdate() {
@@ -275,5 +273,4 @@ public class TraineeServiceTest extends KafkaTest {
 		log.debug("Test valid findByUserId");
 		assertNull(traineeService.findByUserId(9999999));
 	}
-
 }
