@@ -47,12 +47,13 @@ public class Application implements CommandLineRunner{
 	public void run(String... arg0) throws Exception {
 
 		log.debug("Running init methods for all fallback classes");
+		log.trace("Loading All Trainers Information");
 		TrainerServiceImpl trainerService = context.getBean(TrainerServiceImpl.class);
 		trainerService.init();
-		log.debug("Loading All Trainees Information");
+		log.trace("Loading All Trainees Information");
 		TraineeServiceImpl traineeService = context.getBean(TraineeServiceImpl.class);
 		traineeService.init();
-		log.debug("Loading All User Information");
+		log.trace("Loading All User Information");
 		UserServiceImpl userService = context.getBean(UserServiceImpl.class);
 		userService.init();
 		        

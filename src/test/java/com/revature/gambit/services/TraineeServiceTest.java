@@ -217,7 +217,7 @@ public class TraineeServiceTest extends KafkaTest {
 	@Test
 	@Transactional
 	public void testUpdate() {
-		log.debug("Testing trainee update)");
+		log.debug("Testing trainee update");
 		Trainee targetTrainee = traineeService.findByEmail("dlaut1@hotmail.com");
 		log.trace("targetTrainee = " + targetTrainee);
 		assertEquals("Laut", targetTrainee.getFirstName());

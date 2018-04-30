@@ -41,7 +41,6 @@ public class TrainerServiceImpl implements TrainerService {
 	public void init(){
 		  log.debug("Load a list of all trainers when the application starts up.");
 		  trainers = trainerRepository.findAll();
-		  log.info("Static trainer list size: "+trainers);		
 	  }
 	
 	public void delete(Integer id) {
