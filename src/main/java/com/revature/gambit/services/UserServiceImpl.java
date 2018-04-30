@@ -24,9 +24,12 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRoleRepository userRoleRepository;
 	List<User> userList;
+	List<UserRole> userRoleList;
 	public void init(){
 		userList= userRepository.findAll();
-		log.info("All Users:" +userList);
+        userRoleList=userRoleRepository.findAll();        
+        log.trace("All Users:" +userList);        
+        log.trace("All UserRole:"+userRoleList);
 		
 	}
 
@@ -106,11 +109,7 @@ public class UserServiceImpl implements UserService {
 
 	public List<UserRole> getAllRolesFallBack() {
 		log.info("Executing getAllRolesFallBack " );
-		return userList.stream()
-				 .filter(user ->user.getRole()!=null)
-                 .map(User::getRole)
-                 .distinct()
-				.collect(Collectors.toList());
+		return userRoleList;
 	}
 	
 	public User findUserByIdFallBack(Integer id){

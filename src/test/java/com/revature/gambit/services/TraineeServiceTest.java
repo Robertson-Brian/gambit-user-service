@@ -23,7 +23,6 @@ import com.revature.gambit.messaging.KafkaTest;
  * Test methods for inserting, updating, retrieving, and deleting.
  */
 
-@Transactional
 public class TraineeServiceTest extends KafkaTest {
 
 
