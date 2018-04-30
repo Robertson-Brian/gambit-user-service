@@ -105,7 +105,7 @@ public class TrainerControllerImpl implements TrainerController {
 	}
 
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> deleteByTrainerId(@PathVariable("id") Integer id) {
+	public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id") Integer id) {
 		log.debug("Trainer Controller received request: deleteByTrainerId");
 		trainerService.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);

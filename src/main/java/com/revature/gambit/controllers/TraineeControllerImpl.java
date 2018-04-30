@@ -93,7 +93,7 @@ public class TraineeControllerImpl implements TraineeController {
 	}
 
 	@DeleteMapping
-	public ResponseEntity<User> deleteTrainee(@RequestBody Trainee trainee) {
+	public ResponseEntity<Void> deleteTrainee(@RequestBody Trainee trainee) {
 		log.debug("TraineeControllerImpl.deleteTrainee: " + trainee);		
 		traineeService.delete(trainee);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
