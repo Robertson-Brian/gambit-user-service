@@ -1,7 +1,6 @@
 package com.revature.gambit.exceptions;
 
 
-
 import static com.revature.gambit.util.MessagingUtil.INVALID_INPUT;
 import static com.revature.gambit.util.MessagingUtil.SOMETHING_WRONG;
 import static com.revature.gambit.util.MessagingUtil.UNAUTHORIZED_USER;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalHandler {
 	private static Logger logger = Logger.getLogger(GlobalHandler.class);
 	
-
-
 	@ExceptionHandler(Throwable.class)
     public ResponseEntity<String> handleAnyException(Throwable t){
         logger.error("Fatal Exception");
@@ -36,6 +33,13 @@ public class GlobalHandler {
 		logger.error("Auth User Exception "+e);
 		
 		return new ResponseEntity<>(UNAUTHORIZED_USER,HttpStatus.UNAUTHORIZED);
+	}
+	
+	@ExceptionHandler(NumberFormatException.class)
+	public ResponseEntity<String>  handleNumberFormatException(NumberFormatException e){
+		logger.error("NumberFormatException "+e);
+		
+		return new ResponseEntity<>(INVALID_INPUT,HttpStatus.BAD_REQUEST);
 	}
 
 }
