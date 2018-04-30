@@ -92,7 +92,7 @@ public class TraineeControllerImpl implements TraineeController {
 		log.debug("Trainee Controller received request: Updating trainee: " + trainee);
 		Trainee updatedTrainer = traineeService.update(trainee);
 		if(updatedTrainer!=null){
-			return new ResponseEntity<>(updatedTrainer,HttpStatus.OK);
+			return new ResponseEntity<>(updatedTrainer,HttpStatus.NO_CONTENT);
 		}
 		throw new InvalidInputException(INVALID_INPUT, HttpStatus.BAD_REQUEST);
 	}
