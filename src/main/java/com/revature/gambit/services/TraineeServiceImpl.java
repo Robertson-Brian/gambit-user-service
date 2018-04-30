@@ -1,11 +1,14 @@
 package com.revature.gambit.services;
 
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +17,6 @@ import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.entities.TrainingStatus;
 import com.revature.gambit.messaging.Sender;
 import com.revature.gambit.repositories.TraineeRepository;
-
-import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
 
 @Service("traineeService")
 public class TraineeServiceImpl implements TraineeService {

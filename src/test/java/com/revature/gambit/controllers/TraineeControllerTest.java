@@ -14,6 +14,7 @@ import com.revature.gambit.entities.TrainingStatus;
 import com.revature.gambit.messaging.KafkaTest;
 import com.revature.gambit.services.TraineeService;
 
+
 public class TraineeControllerTest extends KafkaTest {
 	
 	@LocalServerPort

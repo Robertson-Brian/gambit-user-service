@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 
 import com.revature.gambit.entities.Trainer;
 import com.revature.gambit.entities.User;

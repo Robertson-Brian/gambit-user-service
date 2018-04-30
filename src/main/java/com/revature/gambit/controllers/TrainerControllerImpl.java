@@ -1,7 +1,7 @@
 package com.revature.gambit.controllers;
 
-import static com.revature.gambit.util.FinalUtil.INCOMPLETED_FIELD_DATA;
-import static com.revature.gambit.util.FinalUtil.INVALID_USER_DATA;
+import static com.revature.gambit.util.MessagingUtil.INCOMPLETED_FIELD_DATA;
+import static com.revature.gambit.util.MessagingUtil.INVALID_USER_DATA;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class TrainerControllerImpl implements TrainerController {
 		if(registeredTrainer != null) {
 			return new ResponseEntity<>(registeredTrainer, HttpStatus.OK);
 		} else {
-			throw new InvalidInputException(INCOMPLETED_FIELD_DATA);
+			throw new InvalidInputException(INCOMPLETED_FIELD_DATA,HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -55,7 +55,7 @@ public class TrainerControllerImpl implements TrainerController {
 		if(promotedTrainer != null) {
 			return new ResponseEntity<>(promotedTrainer, HttpStatus.OK);
 		} else {
-			throw new InvalidInputException(INVALID_USER_DATA); 
+			throw new InvalidInputException(INVALID_USER_DATA,HttpStatus.BAD_REQUEST); 
 		}
 	}
 

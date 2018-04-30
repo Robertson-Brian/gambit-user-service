@@ -1,14 +1,25 @@
 package com.revature.gambit.exceptions;
 
-import com.revature.gambit.ajax.ClientMessage;
+import org.springframework.http.HttpStatus;
 
 public class InvalidInputException extends RuntimeException{
 
 
 	private static final long serialVersionUID = 4898166106104495770L;
 	
-	public InvalidInputException(ClientMessage clientMessage){
-		super(clientMessage.getMessage());
+	private HttpStatus status;
+	public InvalidInputException(String message, HttpStatus status){
+		super(message);
+		this.status=status;
 	}
+	
+	public HttpStatus getStatus() {
+		return status;
+	}
+	
+	public void setStatus(HttpStatus status) {
+		this.status = status;
+	}
+	
 
 }
