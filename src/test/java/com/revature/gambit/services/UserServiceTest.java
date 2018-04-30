@@ -21,6 +21,9 @@ import com.revature.gambit.entities.User;
 import com.revature.gambit.entities.UserRole;
 import com.revature.gambit.messaging.KafkaTest;
 
+/**
+ * Tests for inserting, updating, retrieving and deleting Users.
+ */
 public class UserServiceTest extends KafkaTest {
 	
 	private static Logger log = Logger.getLogger(UserServiceTest.class);

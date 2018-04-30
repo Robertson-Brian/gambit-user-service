@@ -81,7 +81,7 @@ public interface TraineeService {
 	 * Will return a 404 if email is null or not found.
 	 * 
 	 * @author Joel DeJesus
-	 * @param String email, 
+	 * @param String email
 	 * @return trainee if found, 404 if not found.
 	 */
 	public Trainee findByEmail(String email);

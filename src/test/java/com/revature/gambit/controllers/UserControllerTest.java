@@ -23,10 +23,8 @@ import com.revature.gambit.services.UserService;
 import io.restassured.http.ContentType;
 
 /**
-*
 * Tests for inserting, updating, retrieving and deleting Users
 * from HTTP Requests.
-*
 */
 public class UserControllerTest extends KafkaTest {
 	
