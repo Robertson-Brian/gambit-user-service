@@ -3,6 +3,7 @@ package com.revature.gambit.exceptions;
 
 import static com.revature.gambit.util.MessagingUtil.INVALID_INPUT;
 import static com.revature.gambit.util.MessagingUtil.SOMETHING_WRONG;
+import static com.revature.gambit.util.MessagingUtil.UNAUTHORIZED_USER;
 
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -26,5 +27,14 @@ public class GlobalHandler {
 		
 		return new ResponseEntity<>(INVALID_INPUT,HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(AuthUserException.class)
+	public ResponseEntity<String>  handleAuthUserException(AuthUserException e){
+		logger.error("Auth User Exception"+e);
+		
+		return new ResponseEntity<>(UNAUTHORIZED_USER,HttpStatus.UNAUTHORIZED);
+	}
+	
+	
 
 }
