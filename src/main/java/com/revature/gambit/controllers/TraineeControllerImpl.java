@@ -1,5 +1,6 @@
 package com.revature.gambit.controllers;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.gambit.entities.Trainee;
+import com.revature.gambit.entities.User;
 import com.revature.gambit.services.TraineeService;
 
 /**
@@ -38,7 +40,7 @@ public class TraineeControllerImpl implements TraineeController {
 		log.debug("Trainee Controller received request: Finding trainees for batch: " 
 			+ id + " with status: " + status);
 		List<Trainee> trainees = traineeService.findAllByBatchAndStatus(id, status);
-		if(trainees != null) {
+		if(trainees.size() != 0) {
 			return new ResponseEntity<>(trainees, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(trainees, HttpStatus.BAD_REQUEST);
@@ -60,16 +62,16 @@ public class TraineeControllerImpl implements TraineeController {
 	@GetMapping
 	public ResponseEntity<List<Trainee>> getAll() {
 		log.debug("Trainee Controller received request: getAll trainees");
-		return new ResponseEntity<List<Trainee>>(traineeService.getAll(), HttpStatus.OK);
+		return new ResponseEntity<>(traineeService.getAll(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{userId}")
 	public ResponseEntity<Trainee> findByUserId(@PathVariable int userId) {
 		Trainee trainee = traineeService.findByUserId(userId);
 		if (trainee != null) {
-			return new ResponseEntity<Trainee>(trainee, HttpStatus.OK);
+			return new ResponseEntity<>(trainee, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<Trainee>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
@@ -91,7 +93,7 @@ public class TraineeControllerImpl implements TraineeController {
 	}
 
 	@DeleteMapping
-	public ResponseEntity<?> deleteTrainee(@RequestBody Trainee trainee) {
+	public ResponseEntity<User> deleteTrainee(@RequestBody Trainee trainee) {
 		log.debug("TraineeControllerImpl.deleteTrainee: " + trainee);		
 		traineeService.delete(trainee);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

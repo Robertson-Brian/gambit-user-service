@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.revature.gambit.entities.Trainer;
+import com.revature.gambit.entities.User;
 
 	/**
 	 * 
@@ -93,6 +94,6 @@ public interface TrainerController {
 	 * @param Integer id
 	 * @return HTTP Status 200
 	 */
-	ResponseEntity<?> deleteByTrainerId(Integer id);
+	ResponseEntity<User> deleteByTrainerId(Integer id);
 
 }

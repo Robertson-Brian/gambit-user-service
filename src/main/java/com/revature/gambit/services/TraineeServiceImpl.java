@@ -1,5 +1,6 @@
 package com.revature.gambit.services;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -85,7 +86,7 @@ public class TraineeServiceImpl implements TraineeService {
 		try {
 			trainingStatus = TrainingStatus.valueOf(status);
 		} catch (Exception e) {
-			return null;
+			return Collections.emptyList();
 		}
 		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,trainingStatus);
 	}
