@@ -1,6 +1,5 @@
 package com.revature.gambit.util;
 
-import org.springframework.http.HttpStatus;
 public class MessagingUtil {
 	public static final String TOPIC_REGISTER_TRAINER = "trainer.register.t";
 	public static final String TOPIC_UPDATE_TRAINER = "trainer.update.t";

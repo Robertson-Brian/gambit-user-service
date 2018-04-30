@@ -118,6 +118,7 @@ public class TraineeServiceImpl implements TraineeService {
 	}
 	
 	@Transactional
+	@HystrixCommand(fallbackMethod="findByUserIdFallBack")
 	public Trainee findByUserId(int userId) {
 		log.debug("Finding Trainee by userId: " + userId);
 		return traineeRepository.findByUserId(userId);
@@ -165,6 +166,17 @@ public class TraineeServiceImpl implements TraineeService {
 		log.debug("If getAll goes wrong, this Fallback executes");
 		return traineeList;
 	}
+	
+	
+	public Trainee findByUserIdFallBack(int userId) {
+		log.debug("Executing findByUserIdFallBack ");
+		return traineeList.stream()
+				.filter(trainee->
+				     userId==trainee.getUserId())
+				.findAny()
+				.orElse(null);
+	}
+
 
 	public Trainee findByEmailFallBack(String email){
 		log.debug("FallBack for find trainee by Email");
