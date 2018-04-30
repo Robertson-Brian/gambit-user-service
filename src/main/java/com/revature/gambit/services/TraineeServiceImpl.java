@@ -46,7 +46,7 @@ public class TraineeServiceImpl implements TraineeService {
 		}
 		// check if trainee already exists
 		Trainee preexisting = traineeRepository.findByEmail(trainee.getEmail());
-		log.debug("Trainee exists: " + preexisting);
+		log.trace("Trainee exists: " + preexisting);
 		if (preexisting != null) {
 			return null;
 		} else {
@@ -60,7 +60,7 @@ public class TraineeServiceImpl implements TraineeService {
 
 	@Transactional
 	public Trainee update(Trainee trainee) {
-		log.trace("Testing update method for " + trainee);
+		log.debug("Testing update method for " + trainee);
 
 		Trainee preexisting = traineeRepository.findByEmail(trainee.getEmail());
 		log.trace("Trainee exists: " + preexisting);
@@ -123,7 +123,7 @@ public class TraineeServiceImpl implements TraineeService {
 	}
 
 	@Transactional
-	@HystrixCommand(fallbackMethod="findByEmailFallBack")
+	//@HystrixCommand(fallbackMethod="findByEmailFallBack")
 	public Trainee findByEmail(String email) {
 		log.trace("findByEmail: " + email);
 		if(traineeRepository.findByEmail(email)!=null)

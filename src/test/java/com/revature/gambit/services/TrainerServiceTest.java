@@ -24,7 +24,6 @@ import com.revature.gambit.messaging.KafkaTest;
  */
 public class TrainerServiceTest extends KafkaTest {
 
-
     private static final Logger log = Logger.getLogger(TrainerServiceTest.class);
 
     @Autowired
@@ -335,7 +334,5 @@ public class TrainerServiceTest extends KafkaTest {
     	Trainer trainer = trainerService.findByName("Chen", "Yan");
     	assertEquals(trainer, null);
     }
-    
-
 
 }
