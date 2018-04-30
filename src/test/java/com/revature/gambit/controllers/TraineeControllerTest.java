@@ -9,13 +9,12 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 
-import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainee;
+import com.revature.gambit.entities.TrainingStatus;
+import com.revature.gambit.messaging.KafkaTest;
 import com.revature.gambit.services.TraineeService;
 
-import io.restassured.http.ContentType;
-
-public class TraineeControllerTest extends GambitTest {
+public class TraineeControllerTest extends KafkaTest {
 	
 	@LocalServerPort
 	private int port;
@@ -76,6 +75,8 @@ public class TraineeControllerTest extends GambitTest {
 	/**
 	 * Tests that a new trainee canot be created if there are empty fields
 	 * and that status code returned is 400.
+	 * 
+	 * @author Brian Ethier
 	 */
 	  @Test
 	    public void saveEmptyTrainee() {
@@ -265,7 +266,45 @@ public class TraineeControllerTest extends GambitTest {
 			.assertThat()
 			.statusCode(HttpStatus.BAD_REQUEST_400);
 	}
+
+	/**
+	 * Tests finding a trainee by batch.
+	 * Asserts that Status Code 200 - OK is returned.
+	 * 
+	 * @author Alejandro Iparraguirre
+	 */
+	@Test
+	public void getByBatch() {
+		log.debug("getByBatch unit test starts here.");
+		given()
+			.port(port)
+			.basePath(BASE_URI + "/batch/1")
+			.when()
+			.get()
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.OK_200);
+	}
 	
+	/**
+	 * Tests finding a trainee by an invalid id.
+	 * Asserts that Status Code 400 - BAD REQUEST is returned.
+	 * 
+	 * @author Alejandro Iparraguirre
+	 */
+	@Test
+	public void getByBatchAndBadId() {
+		log.debug("getByBatch unit test starts here.");
+		given()
+			.port(port)
+			.basePath(BASE_URI + "/batch/notRealId")
+			.when()
+			.get()
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.BAD_REQUEST_400);
+	}
+		
 	/**
 	 * Two Tests:
 	 * First:  Tests updating a trainee's first name.
@@ -298,7 +337,6 @@ public class TraineeControllerTest extends GambitTest {
 			log.trace("Updated trainee: " + trainee);
 		
 		log.debug("Trainee Controller test: Update a nonexistent trainee");
-		Trainee nullTrainee = new Trainee("Howard", "Stern", "filler@hmail.com");
 		given()
 			.port(port)
 			.basePath(BASE_URI)
@@ -309,5 +347,40 @@ public class TraineeControllerTest extends GambitTest {
 			.assertThat()
 			.statusCode(HttpStatus.BAD_REQUEST_400);
 			log.trace("Trainee does not exist.");
-	}	
+	}
+	
+	/**
+	 * Test findByUserId method in TraineeController with a valid userId
+	 */
+	@Test
+	public void findByUserId() {
+		log.debug("Test valid findByUserId");
+		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
+				TrainingStatus.Training, 1, "Extensure");
+		trainee = traineeService.save(trainee);
+		given()
+			.port(port)
+			.basePath(BASE_URI + "/" + trainee.getUserId())
+			.when()
+			.get()
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.OK_200);
+	}
+	
+	/**
+	 * Test findByUserId method in TraineeController with an invalid userId
+	 */
+	@Test
+	public void findByInvalidUserId() {
+		log.debug("Test valid findByUserId");
+		given()
+			.port(port)
+			.basePath(BASE_URI + "/99999999")
+			.when()
+			.get()
+			.then()
+			.assertThat()
+			.statusCode(HttpStatus.NOT_FOUND_404);
+	}
 }

@@ -1,5 +1,4 @@
-
-#Service Configuration
+#Spring Configuration
 
 spring:
 
@@ -10,7 +9,6 @@ spring:
   cloud:
 
     config:
-
-      uri: http://localhost:8888
-
+      uri: ${CONFIG_HOME}
       fail-fast: true
+

@@ -12,7 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.entities.TrainingStatus;
+import com.revature.gambit.messaging.Sender;
 import com.revature.gambit.repositories.TraineeRepository;
+
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
 
 @Service("traineeService")
 public class TraineeServiceImpl implements TraineeService {
@@ -21,6 +26,9 @@ public class TraineeServiceImpl implements TraineeService {
 
 	@Autowired
 	private TraineeRepository traineeRepository;
+	
+	@Autowired
+	private Sender sender; // Use this to send messages to other services.
 
 	public List<Trainee>  traineeList;
 
@@ -43,12 +51,12 @@ public class TraineeServiceImpl implements TraineeService {
 		if (preexisting != null) {
 			return null;
 		} else {
-
-			return traineeRepository.save(trainee);
-
+			Trainee savedTrainee = traineeRepository.save(trainee);
+			if(savedTrainee != null) {
+				sender.publish(TOPIC_REGISTER_TRAINEE, savedTrainee);
+			}
+			return savedTrainee;
 		}
-
-
 	}
 
 	@Transactional
@@ -66,7 +74,11 @@ public class TraineeServiceImpl implements TraineeService {
 			log.trace("setting resourceId for trainee as: " + preexisting.getResourceId());
 			trainee.setResourceId(preexisting.getResourceId());
 			trainee.setUserId(preexisting.getUserId());
-			return traineeRepository.save(trainee);
+			Trainee updatedTrainee = traineeRepository.save(trainee);
+			if(updatedTrainee != null) {
+				sender.publish(TOPIC_UPDATE_TRAINEE, updatedTrainee);
+			}
+			return updatedTrainee;
 		}
 		return null;
 	}
@@ -75,26 +87,40 @@ public class TraineeServiceImpl implements TraineeService {
 	public void delete(Trainee trainee) {
 		log.debug("TraineeServiceImpl.delete" + trainee);
 		traineeRepository.delete(trainee);
+		sender.publish(TOPIC_DELETE_TRAINEE, trainee);
 	}
 
 	@Transactional
 	@HystrixCommand(fallbackMethod="findAllByBatchAndStatusFallBack")
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status) {
 		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId + " with status: " + status);
+		TrainingStatus trainingStatus;
 		try {
-			TrainingStatus trainingStatus = TrainingStatus.valueOf(status);
-		} catch (IllegalArgumentException e) {
+			trainingStatus = TrainingStatus.valueOf(status);
+		} catch (Exception e) {
 			return null;
 		}
-//				throw new RuntimeException();
 		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,TrainingStatus.valueOf(status));
 	}
 
+
+	@Transactional
+	public List<Trainee> findAllByBatch(int batchId) {
+		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId);
+		return traineeRepository.findAllByBatches(batchId);
+	}
+	
 	@Transactional
 	@HystrixCommand(fallbackMethod="getAllFallBack")
 	public List<Trainee> getAll() {
 		log.debug("findAll Trainees.");
 		return traineeRepository.findAll();
+	}
+	
+	@Transactional
+	public Trainee findByUserId(int userId) {
+		log.debug("Finding Trainee by userId: " + userId);
+		return traineeRepository.findByUserId(userId);
 	}
 
 	@Transactional
@@ -102,7 +128,6 @@ public class TraineeServiceImpl implements TraineeService {
 	public Trainee findByEmail(String email) {
 		log.trace("findByEmail: " + email);
 		if(traineeRepository.findByEmail(email)!=null)
-//			          throw new RuntimeException();
 			return traineeRepository.findByEmail(email);
 		else
 			return null;

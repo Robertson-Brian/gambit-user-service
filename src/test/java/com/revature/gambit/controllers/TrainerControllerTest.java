@@ -18,19 +18,19 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 
-import com.revature.gambit.GambitTest;
 import com.revature.gambit.entities.Trainer;
+import com.revature.gambit.messaging.KafkaTest;
 import com.revature.gambit.services.TrainerService;
 
 import io.restassured.http.ContentType;
 
 /**
- * 
+ *
  * Tests for inserting, updating, retrieving and deleting Trainers
  * from HTTP Requests.
  *
  */
-public class TrainerControllerTest extends GambitTest {	
+public class TrainerControllerTest extends KafkaTest {
 
     private static final Logger log = Logger.getLogger(TrainerControllerTest.class);
 
@@ -52,10 +52,10 @@ public class TrainerControllerTest extends GambitTest {
 
 
     /**
-     * Tests deleting a trainer.
+     * Tests promoting a user from trainee to trainer.
      * 
+     * @author Mark Fleres
      * @return Status Code 200 upon success.
-     * @author Raymond Xia
      */
     @Test
     public void testPromoteToTrainer() {
@@ -76,6 +76,12 @@ public class TrainerControllerTest extends GambitTest {
 		   .body("title", equalTo("Trainer"));
     }
 
+    /**
+     * Tests that promoting a user fails when the user is non-existent.
+     * 
+     * @author Mark Fleres
+     * @return Status Code 400 upon success.
+     */
     @Test
     public void testPromoteToNonExistantTrainer() {
     	log.debug("Promote to trainer test with a non-existant trainer.");
@@ -91,6 +97,12 @@ public class TrainerControllerTest extends GambitTest {
 		   .statusCode(HttpStatus.BAD_REQUEST_400);
     }
 
+    /**
+     * Tests promoting a user by name.
+     * 
+     * @author Mark Fleres
+     * @return Status Code 200 upon success.
+     */
     @Test
     public void testPromoteToTrainerWithOnlyName() {
     	log.debug("Promote to trainer test with a non-existant trainer.");
@@ -110,6 +122,12 @@ public class TrainerControllerTest extends GambitTest {
 		   .body("title", equalTo("Trainer"));
     }
 
+    /**
+     * Tests that promoting a user fails when the trainer is null.
+     * 
+     * @author Mark Fleres
+     * @return Status Code 400 upon success.
+     */
     @Test
     public void testPromoteToNoTrainer() {
     	log.debug("Promote to trainer test with empty fields.");
@@ -125,6 +143,12 @@ public class TrainerControllerTest extends GambitTest {
 		   .statusCode(HttpStatus.BAD_REQUEST_400);
     }
 
+    /**
+     * Tests deleting a trainer.
+     * 
+     * @author Raymond Xia
+     * @return Status Code 200 upon success.
+     */
     @Test
     public void testDeleteTrainer() {
     	log.debug("Deleting a Trainer");
@@ -139,9 +163,9 @@ public class TrainerControllerTest extends GambitTest {
 
     /**
      * Tests that a delete fails with a nonexistent trainer.
-     * 
-     * @return Status Code 500 upon success.
+     *
      * @author Raymond Xia
+     * @return Status Code 500 upon success.
      */
     @Test
     public void testDeleteNonexistentTrainer() {
@@ -157,9 +181,9 @@ public class TrainerControllerTest extends GambitTest {
 
     /**
      * Tests that a trainer retrieval from their email.
-     * 
-     * @return Status Code 200 upon success.
+     *
      * @author Jeffrey Reyes
+     * @return Status Code 200 upon success.
      */
     @Test
     public void findTrainerByEmail200() {
@@ -178,9 +202,9 @@ public class TrainerControllerTest extends GambitTest {
 
     /**
      * Tests that trainer retrieval fails with a invalid email.
-     * 
-     * @return Status Code 200
+     *
      * @author Jeffrey Reyes
+     * @return Status Code 404 upon success
      */
     @Test
     public void findTrainerByEmailInvalidTrainer() {
@@ -202,9 +226,9 @@ public class TrainerControllerTest extends GambitTest {
 
     /**
      * Tests that all titles for a trainer can be retrieved.
-     * 
-     * @return Status Code 200 upon success.
+     *
      * @author Jing Yu
+     * @return Status Code 200 upon success.
      */
     @Test
     public void testFindAllTitles() {
@@ -225,9 +249,9 @@ public class TrainerControllerTest extends GambitTest {
 
     /**
      * Tests trainer retrieval fails with a non-trainer email.
-     * 
-     * @return Status Code 200 upon success.
+     *
      * @author Jing Yu
+     * @return Status Code 404 upon success.
      */
     @Test
     public void findTrainerByEmailNonTrainer() {
@@ -249,9 +273,9 @@ public class TrainerControllerTest extends GambitTest {
 
     /**
      * Tests retrieval of all trainers.
-     * 
-     * @return Status Code 200 upon success.
+     *
      * @author Jing Yu
+     * @return Status Code 200 upon success.
      */
     @SuppressWarnings("unchecked")
     @Test
@@ -275,9 +299,9 @@ public class TrainerControllerTest extends GambitTest {
 
     /**
      * Tests that a trainer can be registered.
-     * 
-     * @return Status Code 200 upon success
+     *
      * @author Mark Fleres
+     * @return Status Code 200 upon success
      */
     @Test
     public void testRegisterTrainer() {
@@ -297,12 +321,12 @@ public class TrainerControllerTest extends GambitTest {
     		   .body("firstName", equalTo("Mark"));
     }
 
-    
+
     /**
      * Tests that a trainer cannot be registered when trainer already exists.
-     * 
-     * @return Status Code 400 upon success.
+     *
      * @author Mark Fleres
+     * @return Status Code 400 upon success.
      */
     @Test
     public void testRegisterExistingTrainer() {
@@ -318,12 +342,12 @@ public class TrainerControllerTest extends GambitTest {
 			   .assertThat()
 			   .statusCode(HttpStatus.BAD_REQUEST_400);
     }
-  
+
     /**
      * Tests that registering an empty trainer object cannot be registered.
-     * 
-     * @return Status Code 400 upon success.
+     *
      * @author Mark Fleres
+     * @return Status Code 400 upon success.
      */
     @Test
     public void testRegisterEmptyTrainer() {
@@ -339,12 +363,12 @@ public class TrainerControllerTest extends GambitTest {
 			   .statusCode(HttpStatus.BAD_REQUEST_400);
     }
 
-    
+
     /**
      * Test trainer retrieval by their ID.
-     * 
-     * @return Status Code 200 upon success.
+     *
      * @author Junyu Chen
+     * @return Status Code 200 upon success.
      */
     @Test
     public void testFindTrainerById(){
@@ -366,13 +390,16 @@ public class TrainerControllerTest extends GambitTest {
 
     }
 
-    
+
     /**
     * Test 1: Testing that a trainer cannot be updated if the trainer doesn't exist.
     * Test 2: Testing that a trainer ID can be updated.
     * Test 3: Testing that a trainer title can be updated.
+    * 
     * @author Nikhil Pious
-    * @return Status Code 500 upon success.
+    * @return Test 1: Status Code 500 upon success.
+    * @return Test 2: Status Code 200 upon success.
+    * @return Test 3: Status Code 200 upon success.
     */
    @Test
    public void testUpdateTrainer() {
@@ -425,6 +452,12 @@ public class TrainerControllerTest extends GambitTest {
 
 	}
 
+   /**
+    * Tests finding trainer by name
+    * 
+    * @author Jeffrey Reyes
+    * @return Status Code 200 upon success
+    */
    @Test
    public void findTrainerByName200() {
 	   log.debug("Testing findTrainerByName with valid trainer name");
@@ -445,6 +478,12 @@ public class TrainerControllerTest extends GambitTest {
 
 	}
 
+   /**
+    * Tests finding trainer by name fails with invalid Trainer.
+    * 
+    * @author Jeffrey Reyes
+    * @return Status Code 404 upon success
+    */
    @Test
    public void findTrainerByNameInavlidTrainer() {
 	   log.debug("Testing findTrainerByName with invalid user name");
@@ -463,7 +502,12 @@ public class TrainerControllerTest extends GambitTest {
 
 
 	}
-
+   /**
+    * Tests finding trainer by name fails with non-trainer.
+    * 
+    * @author Jeffrey Reyes
+    * @return Status Code 404 upon success
+    */
    @Test
    public void findTrainerByNameNonTrainer() {
 	   log.debug("Testing findByTrainerByName with valid user name, but who is not a trainer");

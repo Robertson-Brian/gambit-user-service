@@ -15,8 +15,8 @@ public interface TrainerService {
 	/**
 	 * Deletes a single Trainer from the database.
 	 * 
-	 * @param id
 	 * @author Raymond Xia
+	 * @param id
 	 * @return void
 	 */
 	void delete(Integer id);
@@ -24,8 +24,8 @@ public interface TrainerService {
 	/**
 	 * Retrieves a single Trainer by trainerId.
 	 *
-	 * @param trainerId
-	 * @author Junyu Chen      
+	 * @author Junyu Chen 
+	 * @param trainerId     
 	 * @return trainer
 	 */
 	Trainer findById(Integer trainerId);
@@ -33,29 +33,31 @@ public interface TrainerService {
 	/**
 	 * Inserts a new Trainer into the User database.
 	 * 
-	 * @param trainer
 	 * @author Mark Fleres
+	 * @param trainer
 	 * @return trainer
 	 */
 	Trainer newTrainer(Trainer trainer);
 
 	/**
-	 * Converts a trainee user to a trainer user.
+	 * Converts a User to a Trainer. The promotion is performed by removing the User
+	 * from the database, then registering it as a new Trainer. As a result, the User's
+	 * userId will NOT be preserved.
 	 * 
+	 * @author Mark Fleres
 	 * @param user
 	 *            - which contains the pre-existing user information
 	 * @param title
 	 * 			  - The title of the new Trainer
 	 * @return new Trainer - that was created from given user and new trainer
-	 * @author Mark Fleres
 	 */
 	Trainer promoteToTrainer(User user, String title);
 
 	/**
 	 * Updates Trainer information
 	 * 
-	 * @param Trainer
 	 * @author Nikhil Pious
+	 * @param Trainer
 	 * @return trainer
 	 */
 	Trainer update(Trainer trainer);
@@ -63,8 +65,8 @@ public interface TrainerService {
 	/**
 	 * Returns a single Trainer from the email.
 	 * 
-	 * @param String
 	 * @author Jeffrey Reyes
+	 * @param String
 	 * @return trainer
 	 */
 	Trainer findTrainerByEmail(String email);
@@ -87,8 +89,9 @@ public interface TrainerService {
 
 	/**
 	 * Retrieves a trainer by their full name.
-	 * @param String firstName, lastName
+	 * 
 	 * @author Jeffrey Reyes
+	 * @param String firstName, lastName
 	 * @return trainer
 	 */
 	Trainer findByName(String firstName, String lastName);
