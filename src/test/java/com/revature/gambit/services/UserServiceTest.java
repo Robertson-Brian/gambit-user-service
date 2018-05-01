@@ -146,19 +146,23 @@ public class UserServiceTest extends KafkaTest {
 	/**
      * Test to delete(make inactive) a user.
 	 *@author Nikhil
+	 *@author Mark Fleres
      */
 	@Test
 	public void testDelete(){
     	log.debug("Testing UserService delete()");
-    	assertNotNull(userService.findUserByEmail("wingz101@icloud.com"));
-    	User user= userService.findUserByEmail("wingz101@icloud.com");
-    	User inactiveUser=userService.delete(user.getUserId());
-    	userService.delete(user.getUserId());
+    	
+    	//Make a new User in the DB (Not a subclass of User)
+    	User user = userService.makeUser(newUser);
+    	assertNotNull(user);
+    	
+    	//Delete the user
+    	User inactiveUser = userService.delete(user.getUserId());
     	
     	//Kafka Test
     	User kafkaUser = (User) receive(TOPIC_DELETE_USER, User.class);
     	assertNotNull(kafkaUser);
-    	assertEquals(user.getUserId(),kafkaUser.getUserId());
+    	assertEquals(inactiveUser.getUserId(),kafkaUser.getUserId());
     	
     	assertEquals("INACTIVE",inactiveUser.getRole().getRole());
 		

@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
 		user.setRole(findUserRoleByName("INACTIVE"));
 		User inactivatedUser = userRepository.save(user);
 		if(inactivatedUser != null) {
-			sender.publish(TOPIC_DELETE_USER, user);
+			sender.publish(TOPIC_DELETE_USER, inactivatedUser);
 		}
 		return inactivatedUser;
 	}
