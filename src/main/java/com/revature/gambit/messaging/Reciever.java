@@ -1,22 +1,26 @@
 package com.revature.gambit.messaging;
 
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_BATCH;
+
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.gambit.entities.BatchDTO;
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.services.TraineeService;
 
+@Component
 public class Reciever {
 	
 	@Autowired
 	TraineeService traineeService;
 	
-	@KafkaListener(topics="${spring.kafka.topic.batch.delete}")
+	@KafkaListener(topics=TOPIC_DELETE_BATCH)
 	public void removeDeletedBatchFromTrainees(String payload) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		BatchDTO batch = null;
@@ -29,7 +33,7 @@ public class Reciever {
 				 return;
 			 }
 		}
-		
+
 		List<Trainee> affectedTrainees = traineeService.findAllByBatch(batch.getBatchId());
 		for(Trainee trainee : affectedTrainees){
 			Set<Integer> traineeBatches = trainee.getBatches();

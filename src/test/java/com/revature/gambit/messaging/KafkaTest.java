@@ -2,11 +2,12 @@ package com.revature.gambit.messaging;
 
 import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINER;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_PROMOTE_USER_TO_TRAINER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_PROMOTE_USER;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINER;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_BATCH;
 
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -47,7 +48,7 @@ public class KafkaTest extends GambitTest {
 
 	@ClassRule
 	public static KafkaEmbedded embeddedKafka =
-		new KafkaEmbedded(1, true, 7);
+		new KafkaEmbedded(1, true, 8);
 	
 	@Before
 	public void resetQueue() {
@@ -69,7 +70,7 @@ public class KafkaTest extends GambitTest {
 				TOPIC_DELETE_TRAINEE, TOPIC_DELETE_TRAINER,
 				TOPIC_REGISTER_TRAINEE, TOPIC_REGISTER_TRAINER,
 				TOPIC_UPDATE_TRAINEE, TOPIC_UPDATE_TRAINER,
-				TOPIC_PROMOTE_USER_TO_TRAINER);
+				TOPIC_PROMOTE_USER, TOPIC_DELETE_BATCH);
 
 		// create a Kafka MessageListenerContainer
 		container = new KafkaMessageListenerContainer<>(consumerFactory, containerProperties);
