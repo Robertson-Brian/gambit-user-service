@@ -1,5 +1,9 @@
 package com.revature.gambit.services;
 
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_USER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_USER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_USER;
+
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -8,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.gambit.entities.User;
 import com.revature.gambit.entities.UserRole;
+import com.revature.gambit.messaging.Sender;
 import com.revature.gambit.repositories.UserRepository;
 import com.revature.gambit.repositories.UserRoleRepository;
 
@@ -19,10 +24,15 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	UserRoleRepository userRoleRepository;
+	
+	@Autowired
+	private Sender sender; // Use this to send messages to other services
 
 	public User makeUser(User user) {
 		if(findUserByEmail(user.getEmail())==null){
-		return userRepository.save(user);
+			User savedUser = userRepository.save(user);
+			sender.publish(TOPIC_REGISTER_USER, savedUser);
+			return savedUser;
 		}
 		else{
 			return null;
@@ -39,7 +49,9 @@ public class UserServiceImpl implements UserService {
 		}
 		User updatingUser = userRepository.findByUserId(user.getUserId());
 		BeanUtils.copyProperties(user, updatingUser,"userId");
-		return userRepository.save(updatingUser);
+		User updatedUser = userRepository.save(updatingUser);
+		sender.publish(TOPIC_UPDATE_USER, updatedUser);
+		return updatedUser;
 	}
 	
 	public User findUserByEmail(String email) {
@@ -61,7 +73,9 @@ public class UserServiceImpl implements UserService {
 	public User delete(Integer id) {
 		User user = userRepository.findOne(id);
 		user.setRole(findUserRoleByName("INACTIVE"));
-		return userRepository.save(user);
+		User inactivatedUser = userRepository.save(user);
+		sender.publish(TOPIC_DELETE_USER, inactivatedUser);
+		return inactivatedUser;
 	}
 
 	public List<User> findByRole(UserRole role) {
