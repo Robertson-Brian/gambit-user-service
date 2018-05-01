@@ -1,5 +1,8 @@
 package com.revature.gambit.services;
 
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -48,6 +51,11 @@ public class TraineeServiceTest extends KafkaTest {
 		assertNotEquals(0, trainee.getUserId());
 		log.trace("Trainee saved! " + trainee);
 
+		//Kafka Test
+		Trainee kafkaTrainee = (Trainee) receive(TOPIC_REGISTER_TRAINEE, Trainee.class);
+		assertNotNull(kafkaTrainee);
+		assertEquals(trainee.getUserId(),kafkaTrainee.getUserId());
+
 		log.debug("Testing trainee save (no batch)");
 		// Candidate has been scheduled for the technical discussion
 		Trainee candidate = new Trainee("Howard", "Johnson", "howard.johnson@brooks.net", "ajsy1b173h29479w",
@@ -55,8 +63,6 @@ public class TraineeServiceTest extends KafkaTest {
 		candidate = traineeService.save(candidate);
 		assertNotEquals(0, candidate.getUserId());
 		log.trace("Trainee saved! " + candidate);
-		
-		
 	}
 
 	/**
@@ -72,6 +78,10 @@ public class TraineeServiceTest extends KafkaTest {
 		// Checks that if email exists, it returns null
 		assertEquals(null, traineeService.save(trainee));
 		log.trace("Trainee could not register because of existing email");
+		
+		//Kafka Test
+		Trainee kafkaTrainee = (Trainee) receive(TOPIC_REGISTER_TRAINEE,Trainee.class);
+		assertNull(kafkaTrainee);
 	}
 
 	/**
@@ -146,8 +156,13 @@ public class TraineeServiceTest extends KafkaTest {
 		traineeService.delete(test);
 		int currentSize = traineeService.getAll().size();
 		assertNotEquals(initialSize,currentSize);
+		
+		//Kafka Test
+		Trainee kafkaTrainee = (Trainee) receive(TOPIC_DELETE_TRAINEE,Trainee.class);
+		assertNotNull(kafkaTrainee);
+		assertEquals(test.getUserId(), kafkaTrainee.getUserId());
 	}
-	
+
 	/**
 	 * Checks for trainees in Batch.
 	 * Current database only has 15 trainees in batch 1.
@@ -172,7 +187,7 @@ public class TraineeServiceTest extends KafkaTest {
 		log.debug("Testing find all by batch using non-existant batch number");
 		assertEquals(0,traineeService.findAllByBatch(20).size());
 	}
-	
+
 	/**
 	 * Checks for trainees in Batch  with a trainingStatus of 'training'.
 	 * Current database only has one trainee that matches those specifications.
@@ -220,13 +235,18 @@ public class TraineeServiceTest extends KafkaTest {
 		Trainee targetTrainee = traineeService.findByEmail("dlaut1@hotmail.com");
 		log.trace("targetTrainee = " + targetTrainee);
 		assertEquals("Laut", targetTrainee.getFirstName());
-		
+
 		targetTrainee.setEmail("mrpickles@gmail.com");
 		targetTrainee.setFirstName("Tommy");
 		Trainee updateTargetTrainee = traineeService.update(targetTrainee);
 		log.trace("updateTargetTrainee = " + updateTargetTrainee);
 		List<String> updatedList = Arrays.asList("Tommy","Daniel","mrpickles@gmail.com");
 		assertThat(updatedList,CoreMatchers.hasItems(updateTargetTrainee.getFirstName(),updateTargetTrainee.getLastName(),updateTargetTrainee.getEmail()));
+
+		//Kafka Test
+		Trainee kafkaTrainee = (Trainee) receive(TOPIC_UPDATE_TRAINEE,Trainee.class);
+		assertNotNull(kafkaTrainee);
+		assertEquals(updateTargetTrainee.getUserId(),kafkaTrainee.getUserId());
 		
 		updateTargetTrainee.setFirstName("Steve");
 		updateTargetTrainee.setLastName("Johns");
@@ -235,6 +255,11 @@ public class TraineeServiceTest extends KafkaTest {
 		List<String> newUpdatedList = Arrays.asList("Steve","Johns","mrpickles@gmail.com");
 		assertThat(newUpdatedList,CoreMatchers.hasItems(updateTargetTrainee.getFirstName(),updateTargetTrainee.getLastName(),updateTargetTrainee.getEmail()));
 		assertNotEquals("Tommy",updateTargetTrainee.getFirstName());
+		
+		//Kafka Test Again
+		kafkaTrainee = (Trainee) receive(TOPIC_UPDATE_TRAINEE, Trainee.class);
+		assertNotNull(kafkaTrainee);
+		assertEquals(updateTargetTrainee.getUserId(),kafkaTrainee.getUserId());
 	}
 
 	/**
@@ -250,8 +275,12 @@ public class TraineeServiceTest extends KafkaTest {
 		trainee = traineeService.update(trainee);
 		// userId must not exist
 		assertNull(trainee);
+		
+		//Kafka Test
+		Trainee kafkaTrainee = (Trainee) receive(TOPIC_UPDATE_TRAINEE,Trainee.class);
+		assertNull(kafkaTrainee);
 	}
-	
+
 	/**
 	 * Test findByUserId method in TraineeService with a valid userId
 	 */
@@ -263,7 +292,7 @@ public class TraineeServiceTest extends KafkaTest {
 		trainee = traineeService.save(trainee);
 		assertNotNull(traineeService.findByUserId(trainee.getUserId()));
 	}
-	
+
 	/**
 	 * Test findByUserId method in TraineeService with an invalid userId
 	 */

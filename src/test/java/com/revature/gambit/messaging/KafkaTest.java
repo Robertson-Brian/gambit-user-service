@@ -11,6 +11,7 @@ import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINER;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.AfterClass;
@@ -22,8 +23,10 @@ import org.springframework.kafka.listener.KafkaMessageListenerContainer;
 import org.springframework.kafka.listener.MessageListener;
 import org.springframework.kafka.listener.config.ContainerProperties;
 import org.springframework.kafka.test.rule.KafkaEmbedded;
+import org.springframework.kafka.test.utils.ContainerTestUtils;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.gambit.GambitTest;
 
 /**
@@ -37,6 +40,10 @@ public class KafkaTest extends GambitTest {
 	private static KafkaMessageListenerContainer<String, String> container;
 
 	private static BlockingQueue<ConsumerRecord<String, String>> records;
+
+	private static final ObjectMapper mapper = new ObjectMapper();
+	
+	private static final int POLLING_TIMEOUT = 10;
 
 	@ClassRule
 	public static KafkaEmbedded embeddedKafka =
@@ -78,11 +85,51 @@ public class KafkaTest extends GambitTest {
 
 		// start the container and underlying message listener
 		container.start();
+
+		// wait until the container has the required number of assigned partitions
+		ContainerTestUtils.waitForAssignment(container, embeddedKafka.getPartitionsPerTopic());
 	}
 
 	@AfterClass
 	public static void tearDown() {
 		// stop the container
 		container.stop();
+	}
+
+	public Object receive(Class<?> clazz) {
+		try {
+			// Use this to receive object from mock kafka server. It will unmarshalled the json.
+			ConsumerRecord<String, String> received = records.poll(POLLING_TIMEOUT, TimeUnit.SECONDS);
+			return mapper.readValue(received.value(), clazz);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public Object receive(String topic, Class<?> clazz) {
+		// Use this to receive object from mock kafka server. It will unmarshalled the json.
+		BlockingQueue<ConsumerRecord<String, String>> backupRecords = new LinkedBlockingQueue<>();
+		ConsumerRecord<String, String> received = null;
+		try {
+			while((received = records.poll(POLLING_TIMEOUT, TimeUnit.SECONDS)) != null) {
+				if(received.topic().equals(topic)) {
+					//Cleanup
+					backupRecords.addAll(records);
+					records = backupRecords;
+					try {
+						return mapper.readValue(received.value(), clazz);
+					} catch (Exception e) {
+						return null;
+					}
+				} else {
+					backupRecords.put(received);
+				}
+			}
+		} catch (InterruptedException e) {
+			backupRecords.addAll(records);
+			records = backupRecords;
+			return null;
+		}
+		return null;
 	}
 }
