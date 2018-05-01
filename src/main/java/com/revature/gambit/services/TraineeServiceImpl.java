@@ -4,6 +4,7 @@ import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -97,7 +98,7 @@ public class TraineeServiceImpl implements TraineeService {
 		try {
 			trainingStatus = TrainingStatus.valueOf(status);
 		} catch (Exception e) {
-			return null;
+			return Collections.emptyList();
 		}
 		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,trainingStatus);
 	}

@@ -1,5 +1,6 @@
 package com.revature.gambit.util;
 
+
 public class MessagingUtil {
 	public static final String TOPIC_REGISTER_TRAINER = "trainer.register.t";
 	public static final String TOPIC_UPDATE_TRAINER = "trainer.update.t";
@@ -15,5 +16,8 @@ public class MessagingUtil {
 	public static final String INVALID_USER_DATA="INVALID USER DATA";
 	public static final String UNAUTHORIZED_USER="UNAUTHORIZED";
 	
-
+	
+	private MessagingUtil(){
+		throw new IllegalStateException("Utility class");
+	}
 }

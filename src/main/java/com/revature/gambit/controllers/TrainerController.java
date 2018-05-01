@@ -93,6 +93,6 @@ public interface TrainerController {
 	 * @param Integer id
 	 * @return HTTP Status 200
 	 */
-	ResponseEntity<?> deleteByTrainerId(Integer id);
+	ResponseEntity<Void> deleteByTrainerId(Integer id);
 
 }
