@@ -76,19 +76,19 @@ public class TrainerControllerImpl implements TrainerController {
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Trainer> findTrainerById(@PathVariable("id") Integer id) {
 		log.debug("Trainer Controller received request: findTrainerById");
-		return new ResponseEntity<Trainer>(trainerService.findById(id), HttpStatus.OK);
+		return new ResponseEntity<>(trainerService.findById(id), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/titles")
 	public ResponseEntity<List<String>> getAllTitles() {
 		log.debug("Trainer Controller received request: getTitles");
-		return new ResponseEntity<List<String>>(trainerService.getAllTitles(), HttpStatus.OK);
+		return new ResponseEntity<>(trainerService.getAllTitles(), HttpStatus.OK);
 	}
 
 	@GetMapping
 	public ResponseEntity<List<Trainer>> getAll() {
 		log.debug("Trainer Controller received request: getAll");
-		return new ResponseEntity<List<Trainer>>(trainerService.getAll(), HttpStatus.OK);
+		return new ResponseEntity<>(trainerService.getAll(), HttpStatus.OK);
 	}
 
 	@GetMapping("name/{firstName}/{lastName}")
@@ -100,12 +100,12 @@ public class TrainerControllerImpl implements TrainerController {
 			return ResponseEntity.notFound().build();
 		}
 		else {
-			return new ResponseEntity<Trainer>(trainer, HttpStatus.OK);
+			return new ResponseEntity<>(trainer, HttpStatus.OK);
 		}
 	}
 
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> deleteByTrainerId(@PathVariable("id") Integer id) {
+	public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id") Integer id) {
 		log.debug("Trainer Controller received request: deleteByTrainerId");
 		trainerService.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.revature.gambit.entities.Trainee;
 
+
 public interface TraineeController {
 
 	/**
@@ -80,7 +81,7 @@ public interface TraineeController {
 	 * @param trainee
 	 * @return A 204 status code: "No Content"
 	 */
-	ResponseEntity<?> deleteTrainee(Trainee trainee);
+	ResponseEntity<Void> deleteTrainee(Trainee trainee);
  
 	/**
 	 * Finds a trainee given the trainee's email. If the email is null or does not exist 
