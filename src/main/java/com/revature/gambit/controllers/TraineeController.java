@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.revature.gambit.entities.Trainee;
 
+
 public interface TraineeController {
 
 	/**

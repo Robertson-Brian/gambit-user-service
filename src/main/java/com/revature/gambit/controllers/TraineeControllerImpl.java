@@ -1,7 +1,6 @@
 package com.revature.gambit.controllers;
 
 import static com.revature.gambit.util.MessagingUtil.INVALID_INPUT;
-
 import java.util.List;
 
 import org.apache.log4j.Logger;
