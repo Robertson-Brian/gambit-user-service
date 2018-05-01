@@ -49,6 +49,10 @@ public class TrainerServiceTest extends KafkaTest {
     	assertEquals(promotedTrainer.getFirstName(),userToPromote.getFirstName());
     	
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
+    	
+    	//Kafka Test
+    	Trainer receivedUser = (Trainer) receive (Trainer.class);
+    	assertEquals(receivedUser.getEmail(), userToPromote.getEmail()); 
     }
     
     /**
@@ -71,6 +75,10 @@ public class TrainerServiceTest extends KafkaTest {
     	assertEquals("Laut",promotedTrainer.getFirstName());
     	
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
+    	
+    	//Kafka Test
+    	Trainer receivedUser = (Trainer) receive(Trainer.class);
+    	assertEquals(receivedUser.getEmail(), userToPromote.getEmail()); 
     }
     
     /**
@@ -93,6 +101,11 @@ public class TrainerServiceTest extends KafkaTest {
     	assertEquals(promotedTrainer.getFirstName(),userToPromote.getFirstName());
     	
     	assertNotEquals(null,trainerService.findTrainerByEmail("dlaut1@hotmail.com"));
+    	
+    	//Kafka Test
+    	Trainer receivedUser = (Trainer) receive(Trainer.class);
+    	assertEquals(receivedUser.getFirstName(), userToPromote.getFirstName()); 
+    	assertEquals(receivedUser.getLastName(), userToPromote.getLastName()); 
     }
     
     /**
@@ -123,6 +136,10 @@ public class TrainerServiceTest extends KafkaTest {
     	assertNotEquals(0, savedTrainer.getUserId());
     	assertEquals(newTrainer.getTitle(), savedTrainer.getTitle());
     	assertEquals(newTrainer.getFirstName(), savedTrainer.getFirstName());
+    	
+    	//Kafka test
+    	Trainer registeredTrainer = (Trainer) receive(Trainer.class);
+    	assertEquals(registeredTrainer.getEmail(), savedTrainer.getEmail());	
     }
     
     /**
@@ -162,6 +179,10 @@ public class TrainerServiceTest extends KafkaTest {
     	int patrickId = trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId();
     	trainerService.delete(patrickId);
     	assertNull(trainerService.findById(patrickId));
+    	
+    	//Kafka Test
+    	Trainer deletedTrainer = (Trainer)receive(Trainer.class);
+    	assertEquals(deletedTrainer.getUserId(), patrickId);
     }
 
     /**
@@ -288,7 +309,11 @@ public class TrainerServiceTest extends KafkaTest {
 		log.trace("updateTargetTrainer = " + updateTargetTrainer);
 		List<String> updatedList = Arrays.asList("Patrick","Walsh","np4@hotmail.com","Technology Manager");
 		assertThat(updatedList,CoreMatchers.hasItems(updateTargetTrainer.getFirstName(),updateTargetTrainer.getLastName(),updateTargetTrainer.getEmail(),updateTargetTrainer.getTitle()));
-	
+		
+		//Kafka Test
+		Trainer receivedTrainer = (Trainer)receive(Trainer.class);
+		assertEquals(receivedTrainer.getUserId(), updateTargetTrainer.getUserId());
+		
 		updateTargetTrainer.setFirstName("Steve");
 		updateTargetTrainer.setLastName("Johns");
 		Trainer trainer = trainerService.update(updateTargetTrainer);
@@ -296,6 +321,10 @@ public class TrainerServiceTest extends KafkaTest {
 		List<String> newUpdatedList = Arrays.asList("Steve","Johns","np4@hotmail.com","Technology Manager");
 		assertThat(newUpdatedList,CoreMatchers.hasItems(trainer.getFirstName(), trainer.getLastName(),trainer.getEmail(),trainer.getTitle()));
 		assertNotEquals("steves",trainer.getFirstName());
+		
+		//Kafka Test again
+		receivedTrainer = (Trainer)receive(Trainer.class);
+		assertEquals(receivedTrainer.getUserId(), updateTargetTrainer.getUserId());
 	}
     
     /**

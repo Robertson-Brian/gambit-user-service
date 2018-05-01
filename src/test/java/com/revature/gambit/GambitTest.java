@@ -23,10 +23,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DirtiesContext
 public class GambitTest {
 	
-	@ClassRule
-	public static KafkaEmbedded embeddedKafka =
-			new KafkaEmbedded(1, true, 1);
-	
 	@Test
 	public void run() {}
 }
