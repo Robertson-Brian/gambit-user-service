@@ -260,15 +260,6 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.7.9</version>
-                <!-- Exclude These Packages-->
-                <configuration>
-                    <excludes>
-                        <exclude>com.revature.gambit.entities.*</exclude>
-                        <exclude>com.revature.gambit.exceptions.*</exclude>
-                        <exclude>com.revature.gambit.swagger.*</exclude>
-                        <exclude>com.revature.gambit.util.*</exclude>
-                    </excludes>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>
