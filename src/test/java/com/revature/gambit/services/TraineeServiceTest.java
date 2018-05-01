@@ -10,6 +10,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -221,7 +222,7 @@ public class TraineeServiceTest extends KafkaTest {
 	@Test
 	public void findAllTraineeByBatchAndBadStatus(){
 		log.debug("Testing find all by batch and status using wrong status.");
-		assertNull(traineeService.findAllByBatchAndStatus(1, "invalid"));
+		assertEquals(traineeService.findAllByBatchAndStatus(1, "invalid"),Collections.emptyList());
 	}
 
 	/**
