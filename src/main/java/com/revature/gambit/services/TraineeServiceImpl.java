@@ -129,10 +129,11 @@ public class TraineeServiceImpl implements TraineeService {
 	@HystrixCommand(fallbackMethod="findByEmailFallBack")
 	public Trainee findByEmail(String email) {
 		log.debug("findByEmail: " + email);
-		if(traineeRepository.findByEmail(email)!=null)
+		System.out.println("This is not a fallback.Findbyemail:"+email);
+		//if(traineeRepository.findByEmail(email)!=null)
 			return traineeRepository.findByEmail(email);
-		else
-			return null;
+	//	else
+	//		return null;
 	}
 
 
@@ -181,7 +182,7 @@ public class TraineeServiceImpl implements TraineeService {
 
 	public Trainee findByEmailFallBack(String email){
 		log.debug("FallBack for find trainee by Email");
-
+        System.out.println("This is a fallback. Findbyemail:"+email);
 		return traineeList.stream()
 				.filter(
 						(trainee)->
