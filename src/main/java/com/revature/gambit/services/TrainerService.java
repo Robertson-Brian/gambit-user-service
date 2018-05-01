@@ -26,7 +26,7 @@ public interface TrainerService {
 	 *
 	 * @author Junyu Chen 
 	 * @param trainerId     
-	 * @return trainer
+	 * @return Trainer
 	 */
 	Trainer findById(Integer trainerId);
 
@@ -35,7 +35,7 @@ public interface TrainerService {
 	 * 
 	 * @author Mark Fleres
 	 * @param trainer
-	 * @return trainer
+	 * @return new Trainer
 	 */
 	Trainer newTrainer(Trainer trainer);
 
@@ -45,10 +45,8 @@ public interface TrainerService {
 	 * userId will NOT be preserved.
 	 * 
 	 * @author Mark Fleres
-	 * @param user
-	 *            - which contains the pre-existing user information
-	 * @param title
-	 * 			  - The title of the new Trainer
+	 * @param user - which contains the pre-existing user information
+	 * @param title - the title of the new Trainer
 	 * @return new Trainer - that was created from given user and new trainer
 	 */
 	Trainer promoteToTrainer(User user, String title);
@@ -57,17 +55,17 @@ public interface TrainerService {
 	 * Updates Trainer information
 	 * 
 	 * @author Nikhil Pious
-	 * @param Trainer
-	 * @return trainer
+	 * @param trainer
+	 * @return updated Trainer
 	 */
 	Trainer update(Trainer trainer);
 
 	/**
-	 * Returns a single Trainer from the email.
+	 * Returns a single Trainer with the given email.
 	 * 
 	 * @author Jeffrey Reyes
-	 * @param String
-	 * @return trainer
+	 * @param email
+	 * @return Trainer
 	 */
 	Trainer findTrainerByEmail(String email);
     
@@ -91,8 +89,8 @@ public interface TrainerService {
 	 * Retrieves a trainer by their full name.
 	 * 
 	 * @author Jeffrey Reyes
-	 * @param String firstName, lastName
-	 * @return trainer
+	 * @param firstName, lastName
+	 * @return Trainer
 	 */
 	Trainer findByName(String firstName, String lastName);
 

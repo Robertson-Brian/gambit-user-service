@@ -15,17 +15,17 @@ import com.revature.gambit.messaging.KafkaTest;
 import com.revature.gambit.services.TraineeService;
 
 public class TraineeControllerTest extends KafkaTest {
-	
+
 	@LocalServerPort
 	private int port;
-	
+
 	private static final Logger log = Logger.getLogger(TraineeControllerTest.class);
 
 	private static final String BASE_URI = "/trainees";
-	
+
 	@Autowired
 	private TraineeService traineeService;
-	
+
 	/**
 	 * Tests that trainee is successfully created.
 	 * Asserts that Status Code 201 - CREATED is returned.
@@ -37,18 +37,18 @@ public class TraineeControllerTest extends KafkaTest {
 		log.debug("Testing Trainee Insert");
 		Trainee trainee = new Trainee("John", "Smith", "example@gmail.com");
 		given()
-			.port(port)
-			.basePath(BASE_URI)
-			.header("Content-Type", "application/json")
-			.body(trainee)
-			.when()	
-			.post()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.CREATED_201);
+		.port(port)
+		.basePath(BASE_URI)
+		.header("Content-Type", "application/json")
+		.body(trainee)
+		.when()	
+		.post()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.CREATED_201);
 		log.trace("New trainee created");
 	}
-	
+
 	/**
 	 * Tests that a new trainee cannot be created if email already exists.
 	 * Asserts that Status Code 400 - BAD REQUEST is returned.
@@ -60,39 +60,83 @@ public class TraineeControllerTest extends KafkaTest {
 		log.debug("Testing that Trainee cannot register if email already exists");
 		Trainee trainee = new Trainee("Howard","Johnson","howard.johnson@hotmail.com");
 		given()
-			.port(port)
-			.basePath(BASE_URI)
-			.header("Content-Type", "application/json")
-			.body(trainee)
-			.when()	
-			.post()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.BAD_REQUEST_400);
+		.port(port)
+		.basePath(BASE_URI)
+		.header("Content-Type", "application/json")
+		.body(trainee)
+		.when()	
+		.post()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.BAD_REQUEST_400);
 		log.trace("Trainee could not register because of existing email");
 	}
-	
+
 	/**
-	 * Tests that a new trainee canot be created if there are empty fields
+	 * Tests that a new trainee cannot be created if there are empty fields
 	 * and that status code returned is 400.
 	 * 
 	 * @author Brian Ethier
 	 */
-	  @Test
-	    public void saveEmptyTrainee() {
-			Trainee emptyTrainee = new Trainee("","","");
-			given()
-			.port(port)
-			.basePath(BASE_URI)
-			.header("Content-Type", "application/json")
-			.body(emptyTrainee)
-			.when()	
-			.post()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.BAD_REQUEST_400);
+	@Test
+	public void saveEmptyTrainee() {
+		Trainee emptyTrainee = new Trainee("","","");
+		given()
+		.port(port)
+		.basePath(BASE_URI)
+		.header("Content-Type", "application/json")
+		.body(emptyTrainee)
+		.when()	
+		.post()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.BAD_REQUEST_400);
 		log.trace("Trainee could not register because it was empty");
-	    }
+	}
+
+	/**
+	 * Two Tests:
+	 * First:  Tests updating a trainee's first name.
+	 * 		   Asserts that Status Code 204 - NO CONTENT is returned.
+	 * Second: Tests updating a nonexistent trainee.
+	 * 		   Asserts that Status Code 400 - BAD REQUEST is returned.
+	 * 
+	 * @author Ismael Khalil
+	 */
+
+	@Test
+	public void testUpdate() {
+		log.debug("Trainee Controller test: Updating trainee's name");
+		Trainee trainee = new Trainee("Larry", "Miller", "larrymiller@gmail.com");
+		trainee.setUserId(13);
+		trainee.getBatches().add(2);
+		trainee.setFirstName("Howard");
+		trainee.setLastName("Johnson");
+		trainee.setEmail("howard.johnson@hotmail.com");
+		given()
+		.port(port)
+		.basePath(BASE_URI)
+		.header("Content-Type", "application/json")
+		.body(trainee)
+		.when()
+		.put()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.NO_CONTENT_204);
+		log.trace("Updated trainee: " + trainee);
+
+		log.debug("Trainee Controller test: Update a nonexistent trainee");
+		given()
+		.port(port)
+		.basePath(BASE_URI)
+		.header("Content-Type", "application/json")
+		.when()
+		.put()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.BAD_REQUEST_400);
+		log.trace("Trainee does not exist.");
+	}
 
 	/**
 	 * Tests deletion of a trainee.
@@ -105,15 +149,110 @@ public class TraineeControllerTest extends KafkaTest {
 		log.debug("TraineeControllerTest.deleteTest()");
 		Trainee trainee = traineeService.findByEmail("xinguang.huang1@gmail.com");
 		given()
-			.port(port)
-			.basePath(BASE_URI)
-			.header("Content-Type", "application/json")
-			.body(trainee)
-			.when()
-			.delete()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.NO_CONTENT_204);
+		.port(port)
+		.basePath(BASE_URI)
+		.header("Content-Type", "application/json")
+		.body(trainee)
+		.when()
+		.delete()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.NO_CONTENT_204);
+	}
+
+	/**
+	 * Tests finding a trainee by batch and training status.
+	 * Asserts that Status Code 200 - OK is returned.
+	 * 
+	 * @author Brian Ethier
+	 */
+	@Test
+	public void getByBatchAndStatus() {
+		log.debug("getByBatchAndStatus unit test starts here.");
+		given()
+		.port(port)
+		.basePath(BASE_URI + "/batch/1/status/Training")
+		.when()
+		.get()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.OK_200);
+	}
+
+	/**
+	 * Tests finding a trainee by an invalid training status.
+	 * Asserts that Status Code 400 - BAD REQUEST is returned.
+	 * 
+	 * @author Brian Ethier
+	 */
+	@Test
+	public void getByBatchAndBadStatus() {
+		log.debug("getByBatchAndStatus unit test starts here.");
+		given()
+		.port(port)
+		.basePath(BASE_URI + "/batch/1/status/Train")
+		.when()
+		.get()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.BAD_REQUEST_400);
+	}
+
+	/**
+	 * Tests retrieving all trainees.
+	 * Asserts that Status Code 200 - OK is returned.
+	 * 
+	 * @author Peter Alagna
+	 */
+	@Test
+	public void getAllTrainees() {
+		log.debug("Testing getting all trainees.");
+		given()
+		.port(port)
+		.basePath(BASE_URI)
+		.when()
+		.get()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.OK_200);
+	}
+
+	/**
+	 * Tests finding a trainee by batch.
+	 * Asserts that Status Code 200 - OK is returned.
+	 * 
+	 * @author Alejandro Iparraguirre
+	 */
+	@Test
+	public void getByBatch() {
+		log.debug("getByBatch unit test starts here.");
+		given()
+		.port(port)
+		.basePath(BASE_URI + "/batch/1")
+		.when()
+		.get()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.OK_200);
+	}
+
+	/**
+	 * Tests finding a trainee by an invalid id.
+	 * Asserts that Status Code 400 - BAD REQUEST is returned.
+	 * 
+	 * @author Alejandro Iparraguirre
+	 */
+	@Test
+	public void getByBatchAndBadId() {
+		log.debug("getByBatch unit test starts here.");
+		given()
+		.port(port)
+		.basePath(BASE_URI + "/batch/notRealId")
+		.when()
+		.get()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.BAD_REQUEST_400);
 	}
 
 	/** 
@@ -129,18 +268,57 @@ public class TraineeControllerTest extends KafkaTest {
 		String email = "howard.johnson@hotmail.com";
 		String firstName = "Howard";
 		given()
-			.port(port)
-			.basePath(BASE_URI + "/email")
-			.param("email",email)
-			.when()
-			.get()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.OK_200)
-			.and()
-			.body("firstName",equalTo(firstName));
+		.port(port)
+		.basePath(BASE_URI + "/email")
+		.param("email",email)
+		.when()
+		.get()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.OK_200)
+		.and()
+		.body("firstName",equalTo(firstName));
 	}
-	
+
+	/**
+	 * Test findByUserId method in TraineeController with a valid userId
+	 * 
+	 * @author James Kempf
+	 */
+	@Test
+	public void findByUserId() {
+		log.debug("Test valid findByUserId");
+		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
+				TrainingStatus.Training, 1, "Extensure");
+		trainee = traineeService.save(trainee);
+		given()
+		.port(port)
+		.basePath(BASE_URI + "/" + trainee.getUserId())
+		.when()
+		.get()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.OK_200);
+	}
+
+	/**
+	 * Test findByUserId method in TraineeController with an invalid userId.
+	 * 
+	 * @author James Kempf
+	 */
+	@Test
+	public void findByInvalidUserId() {
+		log.debug("Test valid findByUserId");
+		given()
+		.port(port)
+		.basePath(BASE_URI + "/99999999")
+		.when()
+		.get()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.NOT_FOUND_404);
+	}
+
 	/**
 	 * Tests finding the trainee "Laut" by the given email.
 	 * Asserts that Status Code 200 - OK is returned.
@@ -153,18 +331,18 @@ public class TraineeControllerTest extends KafkaTest {
 		String email = "dlaut1@hotmail.com";
 		String firstName = "Laut";
 		given()
-			.port(port)
-			.basePath(BASE_URI + "/email")
-			.param("email",email)
-			.when()
-			.get()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.OK_200)
-			.and()
-			.body("firstName",equalTo(firstName));
+		.port(port)
+		.basePath(BASE_URI + "/email")
+		.param("email",email)
+		.when()
+		.get()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.OK_200)
+		.and()
+		.body("firstName",equalTo(firstName));
 	}
-	
+
 	/**
 	 * Tests finding the trainee "Chang Fatt" by the given email.
 	 * Asserts that Status Code 200 - OK is returned.
@@ -177,18 +355,18 @@ public class TraineeControllerTest extends KafkaTest {
 		String email = "kchangfatt@gmail.com";
 		String firstName = "Chang Fatt";
 		given()
-			.port(port)
-			.basePath(BASE_URI + "/email")
-			.param("email", email)
-			.when()
-			.get()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.OK_200)
-			.and()
-			.body("firstName",equalTo(firstName));
+		.port(port)
+		.basePath(BASE_URI + "/email")
+		.param("email", email)
+		.when()
+		.get()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.OK_200)
+		.and()
+		.body("firstName",equalTo(firstName));
 	}
-	
+
 	/**
 	 * Tests finding a nonexistent email.
 	 * Asserts that Status Code 404 - NOT FOUND is returned.
@@ -200,187 +378,13 @@ public class TraineeControllerTest extends KafkaTest {
 		log.debug("Test null email.");
 		String email = "dsgdgsdg";
 		given()
-			.port(port)
-			.basePath(BASE_URI + "/email")
-			.param("email", email)
-			.when()
-			.get()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.NOT_FOUND_404);
-	}
-	
-	/**
-	 * Tests retrieving all trainees.
-	 * Asserts that Status Code 200 - OK is returned.
-	 * 
-	 * @author Peter Alagna
-	 */
-	@Test
-	public void getAllTrainees() {
-		log.debug("Testing getting all trainees.");
-		given()
-			.port(port)
-			.basePath(BASE_URI)
-			.when()
-			.get()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.OK_200);
-	}
-	
-	/**
-	 * Tests finding a trainee by batch and training status.
-	 * Asserts that Status Code 200 - OK is returned.
-	 * 
-	 * @author Brian Ethier
-	 */
-	@Test
-	public void getByBatchAndStatus() {
-		log.debug("getByBatchAndStatus unit test starts here.");
-		given()
-			.port(port)
-			.basePath(BASE_URI + "/batch/1/status/Training")
-			.when()
-			.get()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.OK_200);
-	}
-	
-	/**
-	 * Tests finding a trainee by an invalid training status.
-	 * Asserts that Status Code 400 - BAD REQUEST is returned.
-	 * 
-	 * @author Brian Ethier
-	 */
-	@Test
-	public void getByBatchAndBadStatus() {
-		log.debug("getByBatchAndStatus unit test starts here.");
-		given()
-			.port(port)
-			.basePath(BASE_URI + "/batch/1/status/Train")
-			.when()
-			.get()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.BAD_REQUEST_400);
-	}
-
-	/**
-	 * Tests finding a trainee by batch.
-	 * Asserts that Status Code 200 - OK is returned.
-	 * 
-	 * @author Alejandro Iparraguirre
-	 */
-	@Test
-	public void getByBatch() {
-		log.debug("getByBatch unit test starts here.");
-		given()
-			.port(port)
-			.basePath(BASE_URI + "/batch/1")
-			.when()
-			.get()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.OK_200);
-	}
-	
-	/**
-	 * Tests finding a trainee by an invalid id.
-	 * Asserts that Status Code 400 - BAD REQUEST is returned.
-	 * 
-	 * @author Alejandro Iparraguirre
-	 */
-	@Test
-	public void getByBatchAndBadId() {
-		log.debug("getByBatch unit test starts here.");
-		given()
-			.port(port)
-			.basePath(BASE_URI + "/batch/notRealId")
-			.when()
-			.get()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.BAD_REQUEST_400);
-	}
-		
-	/**
-	 * Two Tests:
-	 * First:  Tests updating a trainee's first name.
-	 * 		   Asserts that Status Code 204 - NO CONTENT is returned.
-	 * Second: Tests updating a nonexistent trainee.
-	 * 		   Asserts that Status Code 400 - BAD REQUEST is returned.
-	 * 
-	 * @author Ismael Khalil
-	 */
-	
-	@Test
-	public void testUpdate() {
-		log.debug("Trainee Controller test: Updating trainee's name");
-		Trainee trainee = new Trainee("Larry", "Miller", "larrymiller@gmail.com");
-		trainee.setUserId(13);
-		trainee.getBatches().add(2);
-		trainee.setFirstName("Howard");
-		trainee.setLastName("Johnson");
-		trainee.setEmail("howard.johnson@hotmail.com");
-		given()
-			.port(port)
-			.basePath(BASE_URI)
-			.header("Content-Type", "application/json")
-			.body(trainee)
-			.when()
-			.put()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.NO_CONTENT_204);
-			log.trace("Updated trainee: " + trainee);
-		
-		log.debug("Trainee Controller test: Update a nonexistent trainee");
-		given()
-			.port(port)
-			.basePath(BASE_URI)
-			.header("Content-Type", "application/json")
-			.when()
-			.put()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.BAD_REQUEST_400);
-			log.trace("Trainee does not exist.");
-	}
-	
-	/**
-	 * Test findByUserId method in TraineeController with a valid userId
-	 */
-	@Test
-	public void findByUserId() {
-		log.debug("Test valid findByUserId");
-		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
-				TrainingStatus.Training, 1, "Extensure");
-		trainee = traineeService.save(trainee);
-		given()
-			.port(port)
-			.basePath(BASE_URI + "/" + trainee.getUserId())
-			.when()
-			.get()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.OK_200);
-	}
-	
-	/**
-	 * Test findByUserId method in TraineeController with an invalid userId
-	 */
-	@Test
-	public void findByInvalidUserId() {
-		log.debug("Test valid findByUserId");
-		given()
-			.port(port)
-			.basePath(BASE_URI + "/99999999")
-			.when()
-			.get()
-			.then()
-			.assertThat()
-			.statusCode(HttpStatus.NOT_FOUND_404);
+		.port(port)
+		.basePath(BASE_URI + "/email")
+		.param("email", email)
+		.when()
+		.get()
+		.then()
+		.assertThat()
+		.statusCode(HttpStatus.NOT_FOUND_404);
 	}
 }

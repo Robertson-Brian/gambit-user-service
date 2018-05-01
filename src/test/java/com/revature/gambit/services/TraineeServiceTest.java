@@ -75,141 +75,6 @@ public class TraineeServiceTest extends KafkaTest {
 	}
 
 	/**
-	 * Tests finding a trainee by their email.
-	 * 
-	 * @author Joel DeJesus
-	 */
-	@Test
-	public void findByEmail() {
-		log.debug("Testing trainee save");
-		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
-				TrainingStatus.Training, 1, "Extensure");
-		traineeService.save(trainee);
-
-		assertEquals(trainee, traineeService.findByEmail("dan.pickles@gogomail.com"));
-	}
-
-	/**
-	 * Tests that null is returned when finding an email that doesn't exist.
-	 * 
-	 * @author Joel DeJesus
-	 */
-	@Test
-	public void findByInvalidEmail() {
-		log.debug("Testing trainee save");
-		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
-				TrainingStatus.Training, 1, "Extensure");
-		traineeService.save(trainee);
-
-		assertNotEquals(trainee, traineeService.findByEmail("this.email.does.not@exist.com"));
-	}
-
-	/**
-	 * Creates a List of all trainees, then cycles through them 
-	 * to verify that they exist in the table.
-	 * 
-	 * @author Alejandro Iparraguirre
-	 */
-	@Test
-	public void getAllEntitiesCorrespond(){
-		log.debug("Testing getAll entities match existing entities on table.");		
-		List<Trainee> listTrainee = traineeService.getAll();
-		for(Trainee trainee : listTrainee){
-			assertEquals(trainee, traineeService.findByEmail(trainee.getEmail())); 
-		}
-		log.trace("Entities correspond");
-	}
-
-	/** 
-	 * Verifies that table exists.
-	 * 
-	 * @author Alejandro Iparraguirre
-	 */
-	@Test
-	public void getAllNotNull(){
-		log.debug("Testing that a table exists.");
-		assertNotNull(traineeService.getAll());
-		log.trace("Trainee Table Exists.");
-	}	
-	/**
-	 * Tests deleting a trainee from the table.
-	 * 
-	 * @author Joseph Arbelaez
-	 */
-	@Test
-	public void delete() {
-		log.debug("TraineeServiceTest.delete()");
-		Trainee test = new Trainee("TestTrainDelete", "TestTrainDelete", "TestTrainDelete@brooks.net", "ajsy1b173h29479w",
-				TrainingStatus.Scheduled, "TestTrainDelete");
-		test = traineeService.save(test);
-		int initialSize = traineeService.getAll().size();
-		traineeService.delete(test);
-		int currentSize = traineeService.getAll().size();
-		assertNotEquals(initialSize,currentSize);
-	}
-	
-	/**
-	 * Checks for trainees in Batch.
-	 * Current database only has 15 trainees in batch 1.
-	 * 
-	 * @author Alejandro Iparraguirre
-	 */
-	@Test
-	public void findAllTraineeByBatch(){
-		log.debug("Testing find all by batch.");
-		List<Trainee> result = traineeService.findAllByBatch(1);
-		assertEquals(15, result.size());	
-	}
-
-	/**
-	 * Check for trainees in a batch that doesn't exist so it contains no trainees.
-	 * This should return a list of length 0.
-	 * 
-	 * @author Alejandro Iparraguirre
-	 */
-	@Test
-	public void findAllTraineeByBadBatch(){
-		log.debug("Testing find all by batch using non-existant batch number");
-		assertEquals(0,traineeService.findAllByBatch(20).size());
-	}
-	
-	/**
-	 * Checks for trainees in Batch  with a trainingStatus of 'training'.
-	 * Current database only has one trainee that matches those specifications.
-	 * 
-	 * @author Brian Ethier
-	 */
-	@Test
-	public void findAllTraineeByBatchAndStatus(){
-		log.debug("Testing find all by batch and status.");
-		List<Trainee> result = traineeService.findAllByBatchAndStatus(1, "Training");
-		assertEquals(1, result.size());	
-	}
-
-	/**
-	 * Check for trainees in a batch that doesn't contain any trainees.
-	 * This should return a list of length 0.
-	 * 
-	 * @author Brian Ethier
-	 */
-	@Test
-	public void findAllTraineeByBadBatchAndStatus(){
-		log.debug("Testing find all by batch and status using unused batch number");
-		assertEquals(0,traineeService.findAllByBatchAndStatus(3, "Training").size());
-	}
-	/**
-	 * Checks for trainees with an invalid training status.
-	 * The returned list should return null.
-	 * 
-	 * @author Brian Ethier
-	 */
-	@Test
-	public void findAllTraineeByBatchAndBadStatus(){
-		log.debug("Testing find all by batch and status using wrong status.");
-		assertNull(traineeService.findAllByBatchAndStatus(1, "invalid"));
-	}
-
-	/**
 	 * Tests creating and updating an employee.
 	 * 
 	 * @author Ismael Khalil
@@ -253,7 +118,117 @@ public class TraineeServiceTest extends KafkaTest {
 	}
 	
 	/**
-	 * Test findByUserId method in TraineeService with a valid userId
+	 * Tests deleting a trainee from the table.
+	 * 
+	 * @author Joseph Arbelaez
+	 */
+	@Test
+	public void delete() {
+		log.debug("TraineeServiceTest.delete()");
+		Trainee test = new Trainee("TestTrainDelete", "TestTrainDelete", "TestTrainDelete@brooks.net", "ajsy1b173h29479w",
+				TrainingStatus.Scheduled, "TestTrainDelete");
+		test = traineeService.save(test);
+		int initialSize = traineeService.getAll().size();
+		traineeService.delete(test);
+		int currentSize = traineeService.getAll().size();
+		assertNotEquals(initialSize,currentSize);
+	}
+	
+	/**
+	 * Checks for trainees in Batch  with a trainingStatus of 'training'.
+	 * Current database only has one trainee that matches those specifications.
+	 * 
+	 * @author Brian Ethier
+	 */
+	@Test
+	public void findAllTraineeByBatchAndStatus(){
+		log.debug("Testing find all by batch and status.");
+		List<Trainee> result = traineeService.findAllByBatchAndStatus(1, "Training");
+		assertEquals(1, result.size());	
+	}
+
+	/**
+	 * Check for trainees in a batch that doesn't contain any trainees.
+	 * This should return a list of length 0.
+	 * 
+	 * @author Brian Ethier
+	 */
+	@Test
+	public void findAllTraineeByBadBatchAndStatus(){
+		log.debug("Testing find all by batch and status using unused batch number");
+		assertEquals(0,traineeService.findAllByBatchAndStatus(3, "Training").size());
+	}
+	
+	/**
+	 * Checks for trainees with an invalid training status.
+	 * The returned list should return null.
+	 * 
+	 * @author Brian Ethier
+	 */
+	@Test
+	public void findAllTraineeByBatchAndBadStatus(){
+		log.debug("Testing find all by batch and status using wrong status.");
+		assertNull(traineeService.findAllByBatchAndStatus(1, "invalid"));
+	}
+	
+	/**
+	 * Checks for trainees in Batch.
+	 * Current database only has 15 trainees in batch 1.
+	 * 
+	 * @author Alejandro Iparraguirre
+	 */
+	@Test
+	public void findAllTraineeByBatch(){
+		log.debug("Testing find all by batch.");
+		List<Trainee> result = traineeService.findAllByBatch(1);
+		assertEquals(15, result.size());	
+	}
+
+	/**
+	 * Check for trainees in a batch that doesn't exist so it contains no trainees.
+	 * This should return a list of length 0.
+	 * 
+	 * @author Alejandro Iparraguirre
+	 */
+	@Test
+	public void findAllTraineeByBadBatch(){
+		log.debug("Testing find all by batch using non-existant batch number");
+		assertEquals(0,traineeService.findAllByBatch(20).size());
+	}
+
+	/**
+	 * Creates a List of all trainees, then cycles through them 
+	 * to verify that they exist in the table.
+	 * 
+	 * @author Alejandro Iparraguirre
+	 */
+	@Test
+	public void getAllEntitiesCorrespond(){
+		log.debug("Testing getAll entities match existing entities on table.");		
+		List<Trainee> listTrainee = traineeService.getAll();
+		for(Trainee trainee : listTrainee){
+			assertEquals(trainee, traineeService.findByEmail(trainee.getEmail())); 
+		}
+		log.trace("Entities correspond");
+	}
+
+	/** 
+	 * Verifies that table exists.
+	 * 
+	 * @author Alejandro Iparraguirre
+	 */
+	@Test
+	public void getAllNotNull(){
+		log.debug("Testing that a table exists.");
+		assertNotNull(traineeService.getAll());
+		log.trace("Trainee Table Exists.");
+	}	
+
+	
+	/**
+	 * Test findByUserId method in TraineeService with a valid userId.
+	 * 
+	 * @author James Kempf
 	 */
 	@Test
 	public void findByUserId() {
@@ -265,11 +240,43 @@ public class TraineeServiceTest extends KafkaTest {
 	}
 	
 	/**
-	 * Test findByUserId method in TraineeService with an invalid userId
+	 * Tests findByUserId method in TraineeService with an invalid userId.
+	 * 
+	 * @author James Kempf
 	 */
 	@Test
 	public void findByInvalidUserId() {
 		log.debug("Test valid findByUserId");
 		assertNull(traineeService.findByUserId(9999999));
+	}
+
+	/**
+	 * Tests finding a trainee by their email.
+	 * 
+	 * @author Joel DeJesus
+	 */
+	@Test
+	public void findByEmail() {
+		log.debug("Testing trainee save");
+		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
+				TrainingStatus.Training, 1, "Extensure");
+		traineeService.save(trainee);
+
+		assertEquals(trainee, traineeService.findByEmail("dan.pickles@gogomail.com"));
+	}
+
+	/**
+	 * Tests that null is returned when finding an email that doesn't exist.
+	 * 
+	 * @author Joel DeJesus
+	 */
+	@Test
+	public void findByInvalidEmail() {
+		log.debug("Testing trainee save");
+		Trainee trainee = new Trainee("Daniel", "Pickles", "dan.pickles@gogomail.com", "ayasn161hs9aes",
+				TrainingStatus.Training, 1, "Extensure");
+		traineeService.save(trainee);
+
+		assertNotEquals(trainee, traineeService.findByEmail("this.email.does.not@exist.com"));
 	}
 }

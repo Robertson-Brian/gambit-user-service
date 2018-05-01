@@ -97,12 +97,12 @@ public class TraineeControllerImpl implements TraineeController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@GetMapping("/email{email}")
+	@GetMapping("/email/{email}")
 	public ResponseEntity<Trainee> findByEmail(@RequestParam(value="email") String email) {
 		log.debug("Finding trainees by email: " + email);
 		Trainee trainee = traineeService.findByEmail(email);
 		if (trainee != null) {
-			return new ResponseEntity<>(trainee,HttpStatus.OK);
+			return new ResponseEntity<>(trainee, HttpStatus.OK);
 		}
 		else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -19,7 +19,7 @@ public interface TraineeService {
 	 * 
 	 * @author Shaleen Anwar
 	 * @param trainee
-	 * @return new trainee if email is not used; null if email exists.
+	 * @return new Trainee if email is not used; null if email exists.
 	 */
 	public Trainee save(Trainee trainee);
 
@@ -30,7 +30,7 @@ public interface TraineeService {
 	 * 
 	 * @author Ismael Khalil
 	 * @param trainee
-	 * @return null if email does not exist, updated trainee if email exists. 
+	 * @return null if email does not exist, updated Trainee if email exists. 
 	 */
 	public Trainee update(Trainee trainee);
 
@@ -39,6 +39,7 @@ public interface TraineeService {
 	 * 
 	 * @author Joseph Arbelaez
 	 * @param trainee
+	 * @return void
 	 */
 	public void delete(Trainee trainee);
 
@@ -47,16 +48,16 @@ public interface TraineeService {
 	 * 
 	 * @author Brian Ethier
 	 * @param batchId, status
-	 * @return - List of all trainees in that batch number with the specified status.
+	 * @return List<Trainee> of all trainees in that batch number with the specified status.
 	 */
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status);
 	
 	/**
 	 * Find all trainees given their batchId.
 	 * 
-	 * @param batchId
 	 * @author Alejandro Iparraguirre
-	 * @return - List of all trainees with that batch number.
+	 * @param batchId
+	 * @return List<Trainee> of all trainees with that batch number.
 	 */
 	public List<Trainee> findAllByBatch(int batchId);
 
@@ -64,15 +65,16 @@ public interface TraineeService {
 	 * Find all of the trainees without restriction.
 	 * 
 	 * @author Alejandro Iparraguirre
-	 * @return a List of all trainees
+	 * @return List<Trainee> of all trainees
 	 */
 	public List<Trainee> getAll();
 	
 	/**
-	 * Find a trainee by userId
+	 * Find a trainee by userId.
 	 * 
-	 * @param int userId
-	 * @return trainee with the corresponding userId
+	 * @author James Kempf
+	 * @param userId
+	 * @return Trainee with the corresponding userId
 	 */
 	public Trainee findByUserId(int userId);
 
@@ -81,8 +83,8 @@ public interface TraineeService {
 	 * Will return a 404 if email is null or not found.
 	 * 
 	 * @author Joel DeJesus
-	 * @param String email
-	 * @return trainee if found, 404 if not found.
+	 * @param email
+	 * @return Trainee if found, 404 if not found.
 	 */
 	public Trainee findByEmail(String email);
 

@@ -12,24 +12,27 @@ public interface UserController {
 	/**
 	 * Creates a new User.
 	 * 
-	 * @param user object to create
-	 * @return created user and http status CREATED.
+	 * @param user
+	 * @return ResponseEntity for the new User,
+	 * 			and HTTP Status 201 "CREATED" or HTTP Status 401 "UNAUTHORIZED".
 	 */
 	ResponseEntity<User> createUser(User user);
 
 	/**
 	 * Update User information.
 	 * 
-	 * @param User to update
-	 * @return http status success but no content
+	 * @param user
+	 * @return ResponseEntity for the updated User,
+	 * 		   and HTTP Status 204 "NO CONTENT" or HTTP Status 401 "UNAUTHORIZED".
 	 */
 	ResponseEntity<User> updateUser(User user);
 
 	/**
 	 * Finds the user by matching email address.
 	 * 
-	 * @param email to search by
-	 * @return user with requested email and status OK
+	 * @param email
+	 * @return ResponseEntity<User> associated with the email,
+	 * 		   and HTTP Status 200 "OK".
 	 */
 	ResponseEntity<User> findUserByEmail(String email);
 
@@ -37,38 +40,41 @@ public interface UserController {
 	 * Change User role to inactive.
 	 * 
 	 * @param user to deactivate
-	 * @return http status NO_CONTENT
+	 * @return empty ResponseEntity signifying an HTTP Status 204 "NO CONTENT".
 	 */
 	ResponseEntity<Void> makeInactive(User user);
 
 	/**
 	 * Get all User roles.
 	 * 
-	 * @return List<String> of all the roles a User can be.
+	 * @return List<String> of all the roles a User can be,
+	 * 		   and HTTP Status 200 "OK".
 	 */
 	ResponseEntity<List<UserRole>> getAllUserRoles();
 
 	/**
 	 * Retrieves all users from the User table.
 	 * 
-	 * @return List<user> of all users
+	 * @return List<user> of all users,
+	 * 		   and HTTP Status 200 "OK".
 	 */
 	ResponseEntity<List<User>> getAllUsers();
 
 	/**
 	 * Finds an User by Id.
 	 * 
-	 * @param id of user to find
-	 * @return user with the given id
+	 * @param id
+	 * @return ResponseEntity<User> with the corresponding userId,
+	 * 		   and HTTP Status 200 "OK".
 	 */
 	ResponseEntity<User> findUserById(Integer id);
 
 	/**
 	 * Find User by full name.
 	 * 
-	 * @param firstName
-	 * @param lastName
-	 * @return user with the associated first/last name
+	 * @param firstName, lastName
+	 * @return ResponseEntity<User> of the given User,
+	 * 		   and HTTP Status 200 "OK".
 	 */
 	ResponseEntity<User> findByName(String firstName, String lastName);
 	
