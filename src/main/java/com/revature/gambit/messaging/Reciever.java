@@ -20,6 +20,13 @@ public class Reciever {
 	@Autowired
 	TraineeService traineeService;
 	
+	/**
+	 * Removes the batch reference from all trainees with the deleted batch.
+	 * 
+	 * @author Mark Fleres
+	 * @param payload
+	 * 	The marshalled Batch Object
+	 */
 	@KafkaListener(topics=TOPIC_DELETE_BATCH)
 	public void removeDeletedBatchFromTrainees(String payload) {
 		ObjectMapper objectMapper = new ObjectMapper();

@@ -107,6 +107,15 @@ public class KafkaTest extends GambitTest {
 		}
 	}
 
+	/**
+	 * Receives the value posted to a specific topic. If there are no new postings over
+	 * POLLING_TIMEOUT, returns null. If clazz is null, the Object will not be unmarshalled.
+	 * 
+	 * @author Mark Fleres
+	 * @param topic
+	 * @param clazz
+	 * @return
+	 */
 	public Object receive(String topic, Class<?> clazz) {
 		// Use this to receive object from mock kafka server. It will unmarshalled the json.
 		BlockingQueue<ConsumerRecord<String, String>> backupRecords = new LinkedBlockingQueue<>();
@@ -117,10 +126,14 @@ public class KafkaTest extends GambitTest {
 					//Cleanup
 					backupRecords.addAll(records);
 					records = backupRecords;
-					try {
-						return mapper.readValue(received.value(), clazz);
-					} catch (Exception e) {
-						return null;
+					if(clazz == null) {
+						return received.value();
+					} else {
+						try {
+							return mapper.readValue(received.value(), clazz);
+						} catch (Exception e) {
+							return null;
+						}
 					}
 				} else {
 					backupRecords.put(received);
