@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.entities.TrainingStatus;
 import com.revature.gambit.messaging.KafkaTest;
+import com.revature.gambit.repositories.TraineeRepository;
 
 /**
  * Test methods for inserting, updating, retrieving, and deleting.
@@ -33,6 +34,8 @@ public class TraineeServiceTest extends KafkaTest {
 
 	@Autowired
 	private TraineeService traineeService;
+	@Autowired
+	private TraineeRepository traineeRepository;
 
 
 	/**
@@ -234,7 +237,7 @@ public class TraineeServiceTest extends KafkaTest {
 	@Transactional
 	public void testUpdate() {
 		log.debug("Testing trainee update");
-		Trainee targetTrainee = traineeService.findByEmail("dlaut1@hotmail.com");
+		Trainee targetTrainee = traineeRepository.findByEmail("dlaut1@hotmail.com");
 		log.trace("targetTrainee = " + targetTrainee);
 		assertEquals("Laut", targetTrainee.getFirstName());
 

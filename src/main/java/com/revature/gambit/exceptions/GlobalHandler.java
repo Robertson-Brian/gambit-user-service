@@ -25,7 +25,7 @@ public class GlobalHandler {
 	@ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleAnyException(Throwable t){
         logger.error("Bad request");
-        return new ResponseEntity<>(BAD_REQUEST,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 	
 	@ExceptionHandler(InvalidInputException.class)
