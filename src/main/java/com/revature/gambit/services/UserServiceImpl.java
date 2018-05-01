@@ -31,7 +31,9 @@ public class UserServiceImpl implements UserService {
 	public User makeUser(User user) {
 		if(findUserByEmail(user.getEmail())==null){
 			User savedUser = userRepository.save(user);
-			sender.publish(TOPIC_REGISTER_USER, savedUser);
+			if(savedUser != null) {
+				sender.publish(TOPIC_REGISTER_USER, savedUser);
+			}
 			return savedUser;
 		}
 		else{
@@ -50,7 +52,9 @@ public class UserServiceImpl implements UserService {
 		User updatingUser = userRepository.findByUserId(user.getUserId());
 		BeanUtils.copyProperties(user, updatingUser,"userId");
 		User updatedUser = userRepository.save(updatingUser);
-		sender.publish(TOPIC_UPDATE_USER, updatedUser);
+		if(updatedUser != null) {
+			sender.publish(TOPIC_UPDATE_USER, updatedUser);
+		}
 		return updatedUser;
 	}
 	
@@ -71,10 +75,12 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public User delete(Integer id) {
-		User user = userRepository.findOne(id);
+		User user = userRepository.findByUserId(id);
 		user.setRole(findUserRoleByName("INACTIVE"));
 		User inactivatedUser = userRepository.save(user);
-		sender.publish(TOPIC_DELETE_USER, inactivatedUser);
+		if(inactivatedUser != null) {
+			sender.publish(TOPIC_DELETE_USER, user);
+		}
 		return inactivatedUser;
 	}
 

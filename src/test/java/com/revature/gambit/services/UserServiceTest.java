@@ -1,5 +1,8 @@
 package com.revature.gambit.services;
 
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_USER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_USER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_USER;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
@@ -39,6 +42,12 @@ public class UserServiceTest extends KafkaTest {
 		log.debug("Testing UserService makeUser()");
     	User savedUser = userService.makeUser(newUser);
     	log.trace("savedTrainer = " + savedUser);
+    	
+    	//Kafka Test
+    	User kafkaUser = (User) receive(TOPIC_REGISTER_USER, User.class);
+    	assertNotNull(kafkaUser);
+    	assertEquals(savedUser.getUserId(),kafkaUser.getUserId());
+    	
     	assertNotEquals(0, savedUser.getUserId());
     	assertEquals(newUser.getFirstName(), savedUser.getFirstName());
     	assertNull(userService.makeUser(newUser));
@@ -74,6 +83,12 @@ public class UserServiceTest extends KafkaTest {
 		targetUser.setEmail("jj42@hotmail.com");
 		targetUser.setFirstName("Mathew");
 		User updateTargetUser =userService.update(targetUser);
+		
+		//Kafka Test
+    	User kafkaUser = (User) receive(TOPIC_UPDATE_USER, User.class);
+    	assertNotNull(kafkaUser);
+    	assertEquals(updateTargetUser.getUserId(),kafkaUser.getUserId());
+		
 		List<String> updatedList = Arrays.asList("Mathew","Steve","jj42@hotmail.com");
 		assertThat(updatedList,CoreMatchers.hasItems(updateTargetUser.getFirstName(),updateTargetUser.getLastName()));	
 	}
@@ -139,6 +154,12 @@ public class UserServiceTest extends KafkaTest {
     	User user= userService.findUserByEmail("wingz101@icloud.com");
     	User inactiveUser=userService.delete(user.getUserId());
     	userService.delete(user.getUserId());
+    	
+    	//Kafka Test
+    	User kafkaUser = (User) receive(TOPIC_DELETE_USER, User.class);
+    	assertNotNull(kafkaUser);
+    	assertEquals(user.getUserId(),kafkaUser.getUserId());
+    	
     	assertEquals("INACTIVE",inactiveUser.getRole().getRole());
 		
 	}
