@@ -10,6 +10,7 @@ public class MessagingUtil {
 	public static final String TOPIC_PROMOTE_USER_TO_TRAINER = "trainer.promote.t";
 	public static final String INVALID_INPUT="INVALID INPUT";
 	public static final String SOMETHING_WRONG="SOMTHING WRONG";
+	public static final String BAD_REQUEST = "BAD REQUEST";
 	public static final String INCOMPLETED_FIELD_DATA="ONE OR MORE FIELDS ARE EMPTY";
 	public static final String INVALID_USER_DATA="INVALID USER DATA";
 	public static final String UNAUTHORIZED_USER="UNAUTHORIZED";

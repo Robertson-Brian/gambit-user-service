@@ -1,6 +1,7 @@
 package com.revature.gambit.exceptions;
 
 
+import static com.revature.gambit.util.MessagingUtil.BAD_REQUEST;
 import static com.revature.gambit.util.MessagingUtil.INVALID_INPUT;
 import static com.revature.gambit.util.MessagingUtil.SOMETHING_WRONG;
 import static com.revature.gambit.util.MessagingUtil.UNAUTHORIZED_USER;
@@ -16,9 +17,15 @@ public class GlobalHandler {
 	private static Logger logger = Logger.getLogger(GlobalHandler.class);
 	
 	@ExceptionHandler(Throwable.class)
-    public ResponseEntity<String> handleAnyException(Throwable t){
+    public ResponseEntity<String> handleAnyThrowable(Throwable t){
         logger.error("Fatal error");
         return new ResponseEntity<>(SOMETHING_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+	
+	@ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleAnyException(Throwable t){
+        logger.error("Bad request");
+        return new ResponseEntity<>(BAD_REQUEST,HttpStatus.BAD_REQUEST);
     }
 	
 	@ExceptionHandler(InvalidInputException.class)
@@ -34,12 +41,4 @@ public class GlobalHandler {
 		
 		return new ResponseEntity<>(UNAUTHORIZED_USER,HttpStatus.UNAUTHORIZED);
 	}
-	
-	@ExceptionHandler(NumberFormatException.class)
-	public ResponseEntity<String>  handleNumberFormatException(NumberFormatException e){
-		logger.error("NumberFormatException "+e);
-		
-		return new ResponseEntity<>(INVALID_INPUT,HttpStatus.BAD_REQUEST);
-	}
-
 }

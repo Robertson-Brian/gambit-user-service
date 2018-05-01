@@ -165,7 +165,7 @@ public class TrainerControllerTest extends KafkaTest {
      * Tests that a delete fails with a nonexistent trainer.
      *
      * @author Raymond Xia
-     * @return Status Code 500 upon success.
+     * @return Status Code 400 upon success.
      */
     @Test
     public void testDeleteNonexistentTrainer() {
@@ -176,7 +176,7 @@ public class TrainerControllerTest extends KafkaTest {
     	       .delete(BASE_URI + "/{id}", trainerId)
     	       .then()
     	       .assertThat()
-    		   .statusCode(HttpStatus.INTERNAL_SERVER_ERROR_500);
+    		   .statusCode(HttpStatus.BAD_REQUEST_400);
     }
 
     /**
@@ -397,7 +397,7 @@ public class TrainerControllerTest extends KafkaTest {
     * Test 3: Testing that a trainer title can be updated.
     * 
     * @author Nikhil Pious
-    * @return Test 1: Status Code 500 upon success.
+    * @return Test 1: Status Code 400 upon success.
     * @return Test 2: Status Code 200 upon success.
     * @return Test 3: Status Code 200 upon success.
     */
@@ -414,7 +414,7 @@ public class TrainerControllerTest extends KafkaTest {
 			   .put(UPDATE_TRAINER_URI)
 		       .then()
 			   .assertThat()
-			   .statusCode(HttpStatus.INTERNAL_SERVER_ERROR_500);
+			   .statusCode(HttpStatus.BAD_REQUEST_400);
 
 		targetTrainer.setUserId(trainerService.findTrainerByEmail("patrick.walsh@revature.com").getUserId());
 		given()
