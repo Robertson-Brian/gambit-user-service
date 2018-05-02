@@ -9,8 +9,8 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.gambit.services.TraineeServiceImpl;
 import com.revature.gambit.services.TrainerServiceImpl;
@@ -27,7 +27,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableEurekaClient
 @EnableCircuitBreaker
 @EnableKafka
-public class Application {
+public class Application implements CommandLineRunner {
+	
+	private static Logger logger = Logger.getLogger(Application.class);
 	
 	@Autowired
 	ApplicationContext context;
@@ -46,14 +48,14 @@ public class Application {
 	@Transactional
 	@Override
 	public void run(String... arg0) throws Exception {
-		log.debug("Running init methods for all fallback classes");
-		log.trace("Loading All Trainers Information");
+		logger.debug("Running init methods for all fallback classes");
+		logger.trace("Loading all Trainers Information");
 		TrainerServiceImpl trainerService = context.getBean(TrainerServiceImpl.class);
 		trainerService.init();
-		log.trace("Loading All Trainees Information");
+		logger.trace("Loading all Trainees Information");
 		TraineeServiceImpl traineeService = context.getBean(TraineeServiceImpl.class);
 		traineeService.init();
-		log.trace("Loading All User Information");
+		logger.trace("Loading all User Information");
 		UserServiceImpl userService = context.getBean(UserServiceImpl.class);
 		userService.init();
 	}

@@ -1,7 +1,6 @@
 package com.revature.gambit.exceptions;
 
 
-import static com.revature.gambit.util.MessagingUtil.BAD_REQUEST;
 import static com.revature.gambit.util.MessagingUtil.INVALID_INPUT;
 import static com.revature.gambit.util.MessagingUtil.SOMETHING_WRONG;
 import static com.revature.gambit.util.MessagingUtil.UNAUTHORIZED_USER;
