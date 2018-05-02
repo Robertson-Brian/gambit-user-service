@@ -5,6 +5,7 @@ import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_BATCH;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,10 @@ import com.revature.gambit.services.TraineeService;
 
 @Component
 public class Receiver {
+	
+	private static Logger logger = Logger.getLogger(Receiver.class);
+	
+	private static final ObjectMapper objectMapper = new ObjectMapper();
 	
 	@Autowired
 	TraineeService traineeService;
@@ -29,16 +34,13 @@ public class Receiver {
 	 */
 	@KafkaListener(topics=TOPIC_DELETE_BATCH)
 	public void removeDeletedBatchFromTrainees(String payload) {
-		ObjectMapper objectMapper = new ObjectMapper();
-		BatchDTO batch = null;
+		logger.debug("Receiving payload for batch deletion: " + payload);
+		BatchDTO batch;
 		try {
-			batch = (BatchDTO)objectMapper.readValue(payload, BatchDTO.class);
+			batch = (BatchDTO) objectMapper.readValue(payload, BatchDTO.class);
 		} catch (Exception e) {
-			batch = null;
-		}finally {
-			 if(batch == null) {
-				 return;
-			 }
+			logger.warn("Unable to unmarshall batch deletion payload.", e);
+			return;
 		}
 
 		List<Trainee> affectedTrainees = traineeService.findAllByBatch(batch.getBatchId());
