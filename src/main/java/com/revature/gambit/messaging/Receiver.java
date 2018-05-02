@@ -15,7 +15,7 @@ import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.services.TraineeService;
 
 @Component
-public class Reciever {
+public class Receiver {
 	
 	@Autowired
 	TraineeService traineeService;

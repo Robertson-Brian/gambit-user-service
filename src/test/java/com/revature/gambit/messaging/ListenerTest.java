@@ -27,7 +27,7 @@ public class ListenerTest extends KafkaTest{
 	Sender sender;
 	
 	@Autowired
-	Reciever reciever;
+	Receiver receiver;
 	
 	/**
 	 * Tests the Kafka listener Reciever.removeDeletedBatchFromTrainees(String)
@@ -68,7 +68,7 @@ public class ListenerTest extends KafkaTest{
 		//Call the listener method using the information posted.
 		String deletedBatchJson = (String)receive(TOPIC_DELETE_BATCH,null);
 		assertNotNull(deletedBatchJson);
-		reciever.removeDeletedBatchFromTrainees(deletedBatchJson);
+		receiver.removeDeletedBatchFromTrainees(deletedBatchJson);
 		
 		//Test that there are no trainees in that batch after the listener method has completed.
 		traineesInBatch = traineeService.findAllByBatch(batchId);
