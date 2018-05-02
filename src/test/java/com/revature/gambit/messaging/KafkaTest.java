@@ -1,13 +1,6 @@
 package com.revature.gambit.messaging;
 
-import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_BATCH;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINER;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_PROMOTE_USER;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINER;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINER;
+import static com.revature.gambit.util.MessagingUtil.*;
 
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -71,9 +64,9 @@ public class KafkaTest extends GambitTest {
 
 		// set the topic that needs to be consumed
 		ContainerProperties containerProperties = new ContainerProperties(
-				TOPIC_DELETE_TRAINEE, TOPIC_DELETE_TRAINER,
-				TOPIC_REGISTER_TRAINEE, TOPIC_REGISTER_TRAINER,
-				TOPIC_UPDATE_TRAINEE, TOPIC_UPDATE_TRAINER,
+				TOPIC_DELETE_TRAINEE, TOPIC_DELETE_TRAINER, TOPIC_DELETE_USER,
+				TOPIC_REGISTER_TRAINEE, TOPIC_REGISTER_TRAINER, TOPIC_REGISTER_USER,
+				TOPIC_UPDATE_TRAINEE, TOPIC_UPDATE_TRAINER, TOPIC_UPDATE_USER,
 				TOPIC_PROMOTE_USER, TOPIC_DELETE_BATCH);
 
 
