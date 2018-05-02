@@ -314,16 +314,10 @@ public class TraineeControllerTest extends KafkaTest {
 	 * 
 	 * @author Ismael Khalil
 	 */
-	
 	@Test
 	public void testUpdate() {
 		log.debug("Trainee Controller test: Updating trainee's name");
-		Trainee trainee = new Trainee("Larry", "Miller", "larrymiller@gmail.com");
-		trainee.setUserId(13);
-		trainee.getBatches().add(2);
-		trainee.setFirstName("Howard");
-		trainee.setLastName("Johnson");
-		trainee.setEmail("howard.johnson@hotmail.com");
+		Trainee trainee = new Trainee("Jose","Sanchez","jcsanchez1218@yahoo.com");
 		given()
 			.port(port)
 			.basePath(BASE_URI)
@@ -333,14 +327,16 @@ public class TraineeControllerTest extends KafkaTest {
 			.put()
 			.then()
 			.assertThat()
-			.statusCode(HttpStatus.NO_CONTENT_204);
+			.statusCode(HttpStatus.OK_200);
 			log.trace("Updated trainee: " + trainee);
 		
 		log.debug("Trainee Controller test: Update a nonexistent trainee");
+		Trainee nonExistentTrainee = new Trainee("Larry", "Miller", "larrymiller@gmail.com");
 		given()
 			.port(port)
 			.basePath(BASE_URI)
 			.header("Content-Type", "application/json")
+			.body(nonExistentTrainee)
 			.when()
 			.put()
 			.then()

@@ -8,6 +8,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Length;
@@ -23,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Trainee extends User {
 
 	@JsonIgnore
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
 	private Set<Integer> batches;
 	
 	@Column(name = "RESOURCE_ID")

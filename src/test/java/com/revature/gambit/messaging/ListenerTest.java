@@ -1,9 +1,9 @@
 package com.revature.gambit.messaging;
 
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_BATCH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_BATCH;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,13 +11,11 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.gambit.entities.BatchDTO;
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.services.TraineeService;
 
-@Transactional
 public class ListenerTest extends KafkaTest{
 	
 	@Autowired

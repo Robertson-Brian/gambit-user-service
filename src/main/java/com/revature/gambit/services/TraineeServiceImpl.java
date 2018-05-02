@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.revature.gambit.entities.Trainee;
@@ -38,8 +37,6 @@ public class TraineeServiceImpl implements TraineeService {
 		log.info("All Trainee information"+ traineeList);
 	}
 
-
-	@Transactional
 	public Trainee save(Trainee trainee) {
 		log.debug("save trainee: " + trainee);
 		if(trainee.getFirstName() == "" || trainee.getLastName() == "" || trainee.getEmail() == "") {
@@ -59,20 +56,12 @@ public class TraineeServiceImpl implements TraineeService {
 		}
 	}
 
-	@Transactional
 	public Trainee update(Trainee trainee) {
 		log.debug("Testing update method for " + trainee);
 
 		Trainee preexisting = traineeRepository.findByEmail(trainee.getEmail());
 		log.trace("Trainee exists: " + preexisting);
 		if (preexisting != null) {
-			// if so, add the trainee's batch assignments
-			log.trace("adding prexisting batches: " + preexisting.getBatches() + " to new batches: "
-					+ trainee.getBatches());
-			trainee.getBatches().addAll(preexisting.getBatches());
-			// maintain their Salesforce resourceId
-			log.trace("setting resourceId for trainee as: " + preexisting.getResourceId());
-			trainee.setResourceId(preexisting.getResourceId());
 			trainee.setUserId(preexisting.getUserId());
 			Trainee updatedTrainee = traineeRepository.save(trainee);
 			if(updatedTrainee != null) {
@@ -83,14 +72,12 @@ public class TraineeServiceImpl implements TraineeService {
 		return null;
 	}
 
-	@Transactional
 	public void delete(Trainee trainee) {
 		log.debug("TraineeServiceImpl.delete" + trainee);
 		traineeRepository.delete(trainee);
 		sender.publish(TOPIC_DELETE_TRAINEE, trainee);
 	}
 
-	@Transactional
 	@HystrixCommand(fallbackMethod="findAllByBatchAndStatusFallBack")
 	public List<Trainee> findAllByBatchAndStatus(int batchId, String status) {
 		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId + " with status: " + status);
@@ -103,35 +90,29 @@ public class TraineeServiceImpl implements TraineeService {
 		return traineeRepository.findAllByBatchesAndTrainingStatus(batchId,trainingStatus);
 	}
 
-
-	@Transactional
 	@HystrixCommand(fallbackMethod="findAllByBatchFallBack")
 	public List<Trainee> findAllByBatch(int batchId) {
 		log.debug("Trainee Service recieved request: Finding all by batch: " + batchId);
 		return traineeRepository.findAllByBatches(batchId);
 	}
 	
-	@Transactional
 	@HystrixCommand(fallbackMethod="getAllFallBack")
 	public List<Trainee> getAll() {
 		log.debug("findAll Trainees.");
 		return traineeRepository.findAll();
 	}
 	
-	@Transactional
 	@HystrixCommand(fallbackMethod="findByUserIdFallBack")
 	public Trainee findByUserId(int userId) {
 		log.debug("Finding Trainee by userId: " + userId);
 		return traineeRepository.findByUserId(userId);
 	}
 
-	@Transactional
 	@HystrixCommand(fallbackMethod="findByEmailFallBack")
 	public Trainee findByEmail(String email) {
 		log.debug("findByEmail: " + email);
 			return traineeRepository.findByEmail(email);
 	}
-
 
 	/* FallBack methods for Read Operation */
 

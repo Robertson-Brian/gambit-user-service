@@ -3,6 +3,7 @@ package com.revature.gambit.repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.gambit.entities.Trainee;
 import com.revature.gambit.entities.TrainingStatus;
@@ -13,6 +14,7 @@ import com.revature.gambit.entities.TrainingStatus;
  * 
  * @author Charles Courtois
  */
+@Transactional
 public interface TraineeRepository extends JpaRepository<Trainee, Integer> {
 
 	/**

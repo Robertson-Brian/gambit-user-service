@@ -89,9 +89,9 @@ public class TraineeControllerImpl implements TraineeController {
 	@PutMapping
 	public ResponseEntity<Trainee> updateTrainee(@RequestBody Trainee trainee) {
 		log.debug("Trainee Controller received request: Updating trainee: " + trainee);
-		Trainee updatedTrainer = traineeService.update(trainee);
-		if(updatedTrainer!=null){
-			return new ResponseEntity<>(updatedTrainer,HttpStatus.NO_CONTENT);
+		Trainee updatedTrainee = traineeService.update(trainee);
+		if(updatedTrainee!=null){
+			return new ResponseEntity<>(updatedTrainee,HttpStatus.OK);
 		}
 		throw new InvalidInputException(INVALID_INPUT, HttpStatus.BAD_REQUEST);
 	}
