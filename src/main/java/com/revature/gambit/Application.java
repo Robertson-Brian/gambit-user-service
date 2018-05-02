@@ -10,6 +10,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.kafka.annotation.EnableKafka;
 
 import com.revature.gambit.services.TraineeServiceImpl;
 import com.revature.gambit.services.TrainerServiceImpl;
@@ -25,9 +26,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableCircuitBreaker
-public class Application implements CommandLineRunner{
-	
-	private static final Logger log = Logger.getLogger(Application.class);
+@EnableKafka
+public class Application {
 	
 	@Autowired
 	ApplicationContext context;
@@ -42,10 +42,10 @@ public class Application implements CommandLineRunner{
 		return new Docket(DocumentationType.SWAGGER_2).select()
 				.apis(RequestHandlerSelectors.basePackage("com.revature.gambit")).paths(PathSelectors.any()).build();
 	}
+
 	@Transactional
 	@Override
 	public void run(String... arg0) throws Exception {
-
 		log.debug("Running init methods for all fallback classes");
 		log.trace("Loading All Trainers Information");
 		TrainerServiceImpl trainerService = context.getBean(TrainerServiceImpl.class);
@@ -56,7 +56,5 @@ public class Application implements CommandLineRunner{
 		log.trace("Loading All User Information");
 		UserServiceImpl userService = context.getBean(UserServiceImpl.class);
 		userService.init();
-		        
-
 	}
 }

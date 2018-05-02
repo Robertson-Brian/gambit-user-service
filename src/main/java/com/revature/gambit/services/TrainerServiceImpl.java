@@ -2,7 +2,7 @@ package com.revature.gambit.services;
 
 
 import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINER;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_PROMOTE_USER_TO_TRAINER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_PROMOTE_USER;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINER;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINER;
 
@@ -91,7 +91,7 @@ public class TrainerServiceImpl implements TrainerService {
 		userRepository.delete(baseUser.getUserId());
 		Trainer promotedUser = new Trainer(baseUser,title);
 		promotedUser = trainerRepository.save(promotedUser);
-		sender.publish(TOPIC_PROMOTE_USER_TO_TRAINER, promotedUser);
+		sender.publish(TOPIC_PROMOTE_USER, promotedUser);
 		return promotedUser;
 	}
 

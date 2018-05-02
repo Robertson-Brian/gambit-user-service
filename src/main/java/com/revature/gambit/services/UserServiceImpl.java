@@ -1,5 +1,9 @@
 package com.revature.gambit.services;
 
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_USER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_USER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_USER;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.revature.gambit.entities.User;
 import com.revature.gambit.entities.UserRole;
+import com.revature.gambit.messaging.Sender;
 import com.revature.gambit.repositories.UserRepository;
 import com.revature.gambit.repositories.UserRoleRepository;
 
@@ -18,29 +23,38 @@ import com.revature.gambit.repositories.UserRoleRepository;
 public class UserServiceImpl implements UserService {
     
 	private static Logger log= Logger.getLogger(UserServiceImpl.class);
+  
 	@Autowired
 	UserRepository userRepository;
 	
 	@Autowired
 	UserRoleRepository userRoleRepository;
+
 	List<User> userList;
 	List<UserRole> userRoleList;
-	public void init(){
+	public void init() {
 		userList= userRepository.findAll();
         userRoleList=userRoleRepository.findAll();        
         log.trace("All Users:" +userList);        
         log.trace("All UserRole:"+userRoleList);
-		
 	}
-
+	
+	@Autowired
+	private Sender sender; 
+  
 	public User makeUser(User user) {
 		if(findUserByEmail(user.getEmail())==null){
-		return userRepository.save(user);
+			User savedUser = userRepository.save(user);
+			if(savedUser != null) {
+				sender.publish(TOPIC_REGISTER_USER, savedUser);
+			}
+			return savedUser;
 		}
 		else{
 			return null;
 		}
 	}
+  
 	@HystrixCommand(fallbackMethod="getAllUsersFallBack")
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
@@ -52,8 +66,13 @@ public class UserServiceImpl implements UserService {
 		}
 		User updatingUser = userRepository.findByUserId(user.getUserId());
 		BeanUtils.copyProperties(user, updatingUser,"userId");
-		return userRepository.save(updatingUser);
+		User updatedUser = userRepository.save(updatingUser);
+		if(updatedUser != null) {
+			sender.publish(TOPIC_UPDATE_USER, updatedUser);
+		}
+		return updatedUser;
 	}
+  
 	@HystrixCommand(fallbackMethod="findUserByEmailFallBack")
 	public User findUserByEmail(String email) {
 		return userRepository.findByEmail(email);
@@ -74,9 +93,13 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public User delete(Integer id) {
-		User user = userRepository.findOne(id);
+		User user = userRepository.findByUserId(id);
 		user.setRole(findUserRoleByName("INACTIVE"));
-		return userRepository.save(user);
+		User inactivatedUser = userRepository.save(user);
+		if(inactivatedUser != null) {
+			sender.publish(TOPIC_DELETE_USER, inactivatedUser);
+		}
+		return inactivatedUser;
 	}
 	
 	@HystrixCommand(fallbackMethod="findByRoleFallBack")
@@ -97,7 +120,6 @@ public class UserServiceImpl implements UserService {
 		log.info("Executing  getAllUsersFallBack");
 		return userList;
 	}
-	
 	
 	public User findUserByEmailFallBack(String email) {
 		log.info("Executing Find User By Email  Fall Back");
@@ -141,7 +163,6 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public UserRole findUserRoleByNameFallBack(String roleName){
-		
 		log.info("Executing findUserRoleByNameFallBack " );
            for(User users : userList){
         	  if(users.getRole().getRole().equals(roleName)){
@@ -149,7 +170,5 @@ public class UserServiceImpl implements UserService {
         	  }
            }
            return null;
-
-		
 	}
 }

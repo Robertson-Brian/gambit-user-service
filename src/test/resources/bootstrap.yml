@@ -11,6 +11,8 @@ spring:
   #Use embedded Kafka
   kafka:
     bootstrap-servers: ${spring.embedded.kafka.brokers}
+    consumer:
+      group-id: gambit
   #Disable Cloud Config
   cloud:
     config:
