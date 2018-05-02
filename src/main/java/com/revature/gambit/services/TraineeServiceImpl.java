@@ -29,7 +29,7 @@ public class TraineeServiceImpl implements TraineeService {
 	@Autowired
 	private Sender sender; // Use this to send messages to other services.
 
-	public List<Trainee>  traineeList;
+	private List<Trainee>  traineeList;
 
 	public void init(){
 		log.debug("Loading All Trainees when Application loads");
