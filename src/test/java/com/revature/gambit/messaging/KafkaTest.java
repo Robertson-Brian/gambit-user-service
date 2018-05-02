@@ -2,13 +2,13 @@ package com.revature.gambit.messaging;
 
 import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINEE;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_TRAINER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_USER;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_PROMOTE_USER_TO_TRAINER;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINEE;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_TRAINER;
+import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_USER;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINEE;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_TRAINER;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_DELETE_USER;
-import static com.revature.gambit.util.MessagingUtil.TOPIC_REGISTER_USER;
 import static com.revature.gambit.util.MessagingUtil.TOPIC_UPDATE_USER;
 
 import java.util.Map;
@@ -26,7 +26,6 @@ import org.springframework.kafka.listener.KafkaMessageListenerContainer;
 import org.springframework.kafka.listener.MessageListener;
 import org.springframework.kafka.listener.config.ContainerProperties;
 import org.springframework.kafka.test.rule.KafkaEmbedded;
-import org.springframework.kafka.test.utils.ContainerTestUtils;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,10 +46,14 @@ public class KafkaTest extends GambitTest {
 	private static final ObjectMapper mapper = new ObjectMapper();
 	
 	private static final int POLLING_TIMEOUT = 10;
+	
+	private static final int CONTAINER_COUNT = 1;
+	
+	private static final int PARTITION_COUNT = 1;
 
 	@ClassRule
 	public static KafkaEmbedded embeddedKafka =
-		new KafkaEmbedded(1, true, 10);
+		new KafkaEmbedded(CONTAINER_COUNT, true, PARTITION_COUNT);
 	
 	@Before
 	public void resetQueue() {
@@ -61,7 +64,7 @@ public class KafkaTest extends GambitTest {
 	public static void setUp() throws Exception {
 		// set up the Kafka consumer properties
 		Map<String, Object> consumerProperties =
-				KafkaTestUtils.consumerProps("sender", "false", embeddedKafka);
+				KafkaTestUtils.consumerProps("gambit", "false", embeddedKafka);
 
 		// create a Kafka consumer factory
 		DefaultKafkaConsumerFactory<String, String> consumerFactory =
@@ -88,9 +91,6 @@ public class KafkaTest extends GambitTest {
 
 		// start the container and underlying message listener
 		container.start();
-
-		// wait until the container has the required number of assigned partitions
-		ContainerTestUtils.waitForAssignment(container, embeddedKafka.getPartitionsPerTopic());
 	}
 
 	@AfterClass
