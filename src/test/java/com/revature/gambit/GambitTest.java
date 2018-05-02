@@ -1,10 +1,9 @@
 package com.revature.gambit;
 
-import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.kafka.test.rule.KafkaEmbedded;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
@@ -24,5 +23,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class GambitTest {
 	
 	@Test
+	@Ignore
 	public void run() {}
 }
