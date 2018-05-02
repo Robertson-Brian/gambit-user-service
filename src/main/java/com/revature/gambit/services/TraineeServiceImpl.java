@@ -120,7 +120,7 @@ public class TraineeServiceImpl implements TraineeService {
 		log.info("FallBack Method For findAllByBatchAndStatus");
 		return traineeList.stream()
 				.filter(
-						(trainee)->	
+						trainee->	
 						(trainee.getBatches().contains(batchId))
 						&&
 						(TrainingStatus.valueOf(status))
@@ -161,7 +161,7 @@ public class TraineeServiceImpl implements TraineeService {
 		log.debug("FallBack for find trainee by Email");
 		return traineeList.stream()
 				.filter(
-						(trainee)->
+						trainee->
 						email.equals(trainee.getEmail()))
 				.findAny()
 				.orElse(null);

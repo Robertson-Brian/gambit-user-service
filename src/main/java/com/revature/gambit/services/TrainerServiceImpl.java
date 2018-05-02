@@ -134,16 +134,13 @@ public class TrainerServiceImpl implements TrainerService {
 	 * Below are all fallback methods
 	 */
 	
-	@SuppressWarnings("unused")
-	private List<Trainer> getAllFallback(){
-		log.debug("This is the fallback method for TrainerService.getAll()."
-		  		+ "A list of trainers will be returned back.");		  
+	public List<Trainer> getAllFallback(){
+		log.debug("This is the fallback method for TrainerService.getAll().");		  
 		return trainers;
 	  }
    
 	public List<String> getTitlesFallback(){
-		log.debug("This is the fallback method for TrainerService.getAllTitles()."
-			  		+ "A list of titles will be returned back.");
+		log.debug("This is the fallback method for TrainerService.getAllTitles().");
 		List<String> titles = new ArrayList<>();
 		  for(Trainer trainer : trainers){
 			  titles.add(trainer.getTitle());
@@ -152,32 +149,29 @@ public class TrainerServiceImpl implements TrainerService {
 	  }
 	
 	public Trainer findByIdFallback(Integer trainerId){
-		log.debug("This is the fallback method for TrainerService.findById()."
-			  		+ "A list of trainers will be returned back.");		    
+		log.debug("This is the fallback method for TrainerService.findById().");		    
 		return  trainers
 				.stream()
-	            .filter((trainer)->trainerId == trainer.getUserId())
+	            .filter(trainer->trainerId == trainer.getUserId())
 	            .findAny()
 	            .orElse(null);
 	  }
 	  
 	  public Trainer findTrainerByEmailFallback(String email){
-		log.debug("This is the fallback method for TrainerService.findTrainerByEmailFallback()."
-			  		+ "A list of trainers will be returned back.");		
+		log.debug("This is the fallback method for TrainerService.findTrainerByEmailFallback().");		
 		return  trainers
 				.stream()
-				.filter((trainer)->email.equals(trainer.getEmail()))
+				.filter(trainer->email.equals(trainer.getEmail()))
 				.findAny()
 				.orElse(null);
 	  }
 	  
 	  public Trainer findByNameFallback(String firstName, String lastName){
-		log.debug("This is the fallback method for TrainerService.findByName()."
-			  		+ "A list of trainers will be returned back.");		
+		log.debug("This is the fallback method for TrainerService.findByName().");		
 		return  trainers
 				.stream()
 				.filter(
-				(trainer)->
+				trainer->
 				(firstName+lastName)
 				.equals
 				(trainer.getFirstName()+trainer.getLastName()))
